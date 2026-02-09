@@ -1,0 +1,166 @@
+.solutions {
+    padding-top: 72px;
+}
+
+.solutionsSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-primary);
+}
+
+.solutionsSection:nth-child(even) {
+    background-color: var(--color-bg-secondary);
+}
+
+.intro {
+    max-width: 700px;
+    margin: 0 auto var(--spacing-4xl);
+    text-align: center;
+}
+
+.pageTitle {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.pageSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.categoryTitle {
+    font-size: var(--font-size-4xl);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.categorySubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.solutionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.solutionCard {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    transition: all var(--transition-base);
+}
+
+.solutionsSection:nth-child(even) .solutionCard {
+    background-color: var(--color-bg-tertiary);
+}
+
+.solutionCard:hover {
+    border-color: var(--color-border-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.solutionIcon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.solutionContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.problemSection,
+.solutionSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.label {
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: var(--font-weight-semibold);
+    margin: 0;
+}
+
+.problemText,
+.solutionText {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--line-height-relaxed);
+}
+
+.solutionText {
+    color: var(--color-text-primary);
+}
+
+.arrow {
+    font-size: var(--font-size-xl);
+    color: var(--color-accent);
+    text-align: center;
+    margin: var(--spacing-xs) 0;
+}
+
+.ctaSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-secondary);
+}
+
+.ctaContent {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ctaTitle {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.ctaSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2xl);
+}
+
+@media (max-width: 768px) {
+    .solutions {
+        padding-top: 64px;
+    }
+
+    .solutionsSection {
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .intro {
+        margin-bottom: var(--spacing-3xl);
+    }
+
+    .pageTitle {
+        font-size: var(--font-size-4xl);
+    }
+
+    .categoryTitle {
+        font-size: var(--font-size-3xl);
+    }
+
+    .solutionsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .solutionCard {
+        padding: var(--spacing-xl);
+    }
+}

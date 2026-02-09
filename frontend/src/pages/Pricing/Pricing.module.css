@@ -1,0 +1,181 @@
+.pricing {
+    padding-top: 72px;
+}
+
+.pricingSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-primary);
+}
+
+.intro {
+    max-width: 700px;
+    margin: 0 auto var(--spacing-4xl);
+    text-align: center;
+}
+
+.pageTitle {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.pageSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.pricingGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-2xl);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.pricingCard {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-3xl);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all var(--transition-base);
+}
+
+.pricingCard:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-light);
+    box-shadow: var(--shadow-lg);
+}
+
+.pricingCard.popular {
+    border-color: var(--color-accent);
+    background-color: var(--color-bg-tertiary);
+    box-shadow: var(--shadow-glow);
+}
+
+.popularBadge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+    padding: var(--spacing-xs) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    box-shadow: var(--shadow-md);
+}
+
+.packageName {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+}
+
+.price {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.packageDescription {
+    text-align: center;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.featuresList {
+    list-style: none;
+    margin-bottom: var(--spacing-2xl);
+    flex-grow: 1;
+    padding: 0;
+}
+
+.featureItem {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+.checkIcon {
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: var(--font-size-base);
+    flex-shrink: 0;
+}
+
+.disclaimer {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.disclaimerText {
+    color: var(--color-text-secondary);
+    text-align: center;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    margin: 0;
+}
+
+.ctaSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-secondary);
+}
+
+.ctaContent {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ctaTitle {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.ctaSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2xl);
+}
+
+@media (max-width: 768px) {
+    .pricing {
+        padding-top: 64px;
+    }
+
+    .pricingSection {
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .intro {
+        margin-bottom: var(--spacing-3xl);
+    }
+
+    .pageTitle {
+        font-size: var(--font-size-4xl);
+    }
+
+    .pricingGrid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+
+    .pricingCard {
+        padding: var(--spacing-2xl);
+    }
+}

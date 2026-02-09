@@ -1,0 +1,184 @@
+.footer {
+    background-color: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
+    padding: var(--spacing-3xl) 0 var(--spacing-lg);
+    margin-top: var(--spacing-4xl);
+}
+
+.footerContent {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr 1fr;
+    gap: var(--spacing-3xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.footerSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* Column 1: Brand & Trust */
+.footerTitle {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    background: linear-gradient(135deg, var(--color-accent-light), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0;
+    letter-spacing: -0.01em;
+}
+
+.footerTagline {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--spacing-xs);
+}
+
+.trustBadge {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.badgeIcon {
+    color: var(--color-accent);
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+}
+
+.badgeText {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 0;
+}
+
+/* Column 2: Quick Links */
+.sectionTitle {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.footerNav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.footerLink {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+    width: fit-content;
+}
+
+.footerLink:hover {
+    color: var(--color-accent-light);
+}
+
+/* Column 3: Contact + CTA */
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.contactIcon {
+    font-size: var(--font-size-base);
+}
+
+.ctaSection {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+}
+
+.ctaText {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.ctaLink {
+    font-size: var(--font-size-base);
+    color: var(--color-accent);
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-fast);
+    display: inline-block;
+}
+
+.ctaLink:hover {
+    color: var(--color-accent-light);
+    transform: translateX(4px);
+}
+
+/* Bottom Bar */
+.footerBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.copyright {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-dim);
+}
+
+.legalLinks {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.legalLink {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-dim);
+    transition: color var(--transition-fast);
+}
+
+.legalLink:hover {
+    color: var(--color-text-secondary);
+}
+
+.separator {
+    color: var(--color-border);
+    font-size: var(--font-size-xs);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer {
+        padding: var(--spacing-2xl) 0 var(--spacing-lg);
+        margin-top: var(--spacing-3xl);
+    }
+
+    .footerContent {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-2xl);
+    }
+
+    .footerBottom {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+}

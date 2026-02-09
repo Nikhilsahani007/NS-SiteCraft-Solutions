@@ -1,0 +1,312 @@
+.home {
+    padding-top: 72px;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+    position: relative;
+    overflow: hidden;
+    padding: var(--spacing-4xl) 0;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle at center, var(--color-accent-glow) 0%, transparent 60%);
+    pointer-events: none;
+    /* Removed opacity - using CSS variable opacity in color instead */
+}
+
+.heroContent {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.heroTitle {
+    font-size: var(--font-size-6xl);
+    margin-bottom: var(--spacing-xl);
+    line-height: var(--line-height-tight);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.heroSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2xl);
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: var(--line-height-relaxed);
+    /* Ensure readability in both themes */
+}
+
+.heroCta {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Problems Section */
+.problemsSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-primary);
+}
+
+.sectionTitle {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+    font-size: var(--font-size-4xl);
+}
+
+.problemsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.problemCard {
+    background-color: var(--color-bg-secondary);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    transition: all var(--transition-base);
+}
+
+.problemCard:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-border-light);
+    background-color: var(--color-bg-tertiary);
+}
+
+.problemCard p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+.problemIcon {
+    font-size: var(--font-size-xl);
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+/* Services Section */
+.servicesSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-secondary);
+}
+
+.servicesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.serviceCard {
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    text-align: left;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+
+.serviceCard:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
+}
+
+.serviceIcon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.serviceTitle {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.serviceDescription {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+    flex-grow: 1;
+    line-height: var(--line-height-relaxed);
+}
+
+.serviceFor {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+    font-weight: var(--font-weight-medium);
+}
+
+.servicesCtaContainer {
+    text-align: center;
+    margin-top: var(--spacing-3xl);
+}
+
+/* Capabilities Section */
+.capabilitiesSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-primary);
+}
+
+.capabilitiesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.capabilityCard {
+    background-color: var(--color-bg-secondary);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: all var(--transition-base);
+}
+
+.capabilityCard:hover {
+    border-color: var(--color-accent);
+    background-color: var(--color-bg-tertiary);
+}
+
+.capabilityIcon {
+    font-size: var(--font-size-2xl);
+}
+
+.capabilityName {
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Why Section */
+.whySection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-secondary);
+}
+
+.whyGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.whyCard {
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    text-align: left;
+    transition: all var(--transition-base);
+}
+
+.whyCard:hover {
+    border-color: var(--color-border-light);
+    background-color: var(--color-bg-card-hover);
+}
+
+.whyIcon {
+    font-size: var(--font-size-3xl);
+    display: block;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-accent);
+}
+
+.whyTitle {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.whyDescription {
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--line-height-relaxed);
+}
+
+/* CTA Section */
+.ctaSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-primary);
+}
+
+.ctaContent {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ctaTitle {
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-4xl);
+}
+
+.ctaSubtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2xl);
+}
+
+@media (max-width: 768px) {
+    .home {
+        padding-top: 64px;
+    }
+
+    .hero {
+        min-height: 75vh;
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .heroTitle {
+        font-size: var(--font-size-4xl);
+    }
+
+    .heroSubtitle {
+        font-size: var(--font-size-base);
+    }
+
+    .heroCta {
+        gap: var(--spacing-md);
+    }
+
+    .problemsGrid,
+    .servicesGrid,
+    .capabilitiesGrid,
+    .whyGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .sectionTitle {
+        font-size: var(--font-size-3xl);
+    }
+}
