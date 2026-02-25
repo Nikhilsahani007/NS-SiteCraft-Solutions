@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nssitecraft.com/sitemap.xml
+Sitemap: https://ns-sitecraft-solutions.vercel.app/sitemap.xml
