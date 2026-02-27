@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Button from '../../components/Button/Button';
+import SEOHead from '../../components/SEOHead/SEOHead';
 import styles from './Pricing.module.css';
 
 const Pricing = () => {
@@ -55,73 +56,81 @@ const Pricing = () => {
     ];
 
     return (
-        <div className={styles.pricing}>
-            <section className={styles.pricingSection}>
-                <div className="container">
-                    <div className={styles.intro}>
-                        <h1 className={styles.pageTitle}>Pricing</h1>
-                        <p className={styles.pageSubtitle}>
-                            Transparent pricing. No hidden costs.
-                        </p>
-                    </div>
+        <>
+            <SEOHead
+                title="Pricing Plans - Web Development & Software"
+                description="Transparent pricing for custom web development, software solutions, and AI integration. Starting from ₹25,000. No hidden costs. Get a free quote for your project in Hyderabad."
+                canonicalPath="/pricing"
+                keywords="web development pricing Hyderabad, software development cost India, website design pricing, custom software pricing, affordable web development"
+            />
+            <div className={styles.pricing}>
+                <section className={styles.pricingSection}>
+                    <div className="container">
+                        <div className={styles.intro}>
+                            <h1 className={styles.pageTitle}>Pricing</h1>
+                            <p className={styles.pageSubtitle}>
+                                Transparent pricing. No hidden costs.
+                            </p>
+                        </div>
 
-                    <div className={styles.pricingGrid}>
-                        {packages.map((pkg, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className={`${styles.pricingCard} ${pkg.popular ? styles.popular : ''}`}
-                            >
-                                {pkg.popular && <div className={styles.popularBadge}>Recommended</div>}
-                                <h2 className={styles.packageName}>{pkg.name}</h2>
-                                <div className={styles.price}>{pkg.price}</div>
-                                <p className={styles.packageDescription}>{pkg.description}</p>
-                                <ul className={styles.featuresList}>
-                                    {pkg.features.map((feature, idx) => (
-                                        <li key={idx} className={styles.featureItem}>
-                                            <span className={styles.checkIcon}>✓</span>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <Link to="/contact">
-                                    <Button
-                                        variant={pkg.popular ? 'primary' : 'outline'}
-                                        size="large"
-                                        fullWidth
-                                    >
-                                        Get started
-                                    </Button>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </div>
+                        <div className={styles.pricingGrid}>
+                            {packages.map((pkg, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className={`${styles.pricingCard} ${pkg.popular ? styles.popular : ''}`}
+                                >
+                                    {pkg.popular && <div className={styles.popularBadge}>Recommended</div>}
+                                    <h2 className={styles.packageName}>{pkg.name}</h2>
+                                    <div className={styles.price}>{pkg.price}</div>
+                                    <p className={styles.packageDescription}>{pkg.description}</p>
+                                    <ul className={styles.featuresList}>
+                                        {pkg.features.map((feature, idx) => (
+                                            <li key={idx} className={styles.featureItem}>
+                                                <span className={styles.checkIcon}>✓</span>
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <Link to="/contact">
+                                        <Button
+                                            variant={pkg.popular ? 'primary' : 'outline'}
+                                            size="large"
+                                            fullWidth
+                                        >
+                                            Get started
+                                        </Button>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
 
-                    <div className={styles.disclaimer}>
-                        <p className={styles.disclaimerText}>
-                            Final pricing depends on project requirements. These are starting ranges.
-                        </p>
+                        <div className={styles.disclaimer}>
+                            <p className={styles.disclaimerText}>
+                                Final pricing depends on project requirements. These are starting ranges.
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section className={styles.ctaSection}>
-                <div className="container">
-                    <div className={styles.ctaContent}>
-                        <h2 className={styles.ctaTitle}>Need a custom quote?</h2>
-                        <p className={styles.ctaSubtitle}>
-                            Every project is different. Let's discuss yours.
-                        </p>
-                        <Link to="/contact">
-                            <Button size="large">Talk to us</Button>
-                        </Link>
+                <section className={styles.ctaSection}>
+                    <div className="container">
+                        <div className={styles.ctaContent}>
+                            <h2 className={styles.ctaTitle}>Need a custom quote?</h2>
+                            <p className={styles.ctaSubtitle}>
+                                Every project is different. Let's discuss yours.
+                            </p>
+                            <Link to="/contact">
+                                <Button size="large">Talk to us</Button>
+                            </Link>
+                        </div>
                     </div>
-                </div>
-            </section>
-        </div>
+                </section>
+            </div>
+        </>
     );
 };
 

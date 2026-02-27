@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import PageTransition from '../../components/PageTransition/PageTransition';
+import SEOHead from '../../components/SEOHead/SEOHead';
 import styles from './Services.module.css';
 
 const Services = () => {
@@ -79,8 +80,33 @@ const Services = () => {
         visible: { opacity: 1, scale: 1 }
     };
 
+    const serviceSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        'itemListElement': services.map((service, index) => ({
+            '@type': 'ListItem',
+            'position': index + 1,
+            'item': {
+                '@type': 'Service',
+                'name': service.title,
+                'description': service.what,
+                'provider': {
+                    '@type': 'Organization',
+                    'name': 'NS SiteCraft Solutions'
+                }
+            }
+        }))
+    };
+
     return (
         <PageTransition>
+            <SEOHead
+                title="Web Development & Software Services"
+                description="Professional web development, custom software, college management systems, and AI automation services in Hyderabad. View our full service offerings, features, and what you get."
+                canonicalPath="/services"
+                keywords="web development services Hyderabad, custom software development, college management system, AI automation, website design services, software company services"
+                structuredData={serviceSchema}
+            />
             <div className={styles.services}>
                 <section className={styles.servicesSection}>
                     <div className="container">

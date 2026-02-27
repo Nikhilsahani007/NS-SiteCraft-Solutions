@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Block admin/API paths
+Disallow: /api/
+Disallow: /admin/
+
+# Sitemap
 Sitemap: https://ns-sitecraft-solutions.vercel.app/sitemap.xml

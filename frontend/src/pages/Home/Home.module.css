@@ -309,4 +309,191 @@
     .sectionTitle {
         font-size: var(--font-size-3xl);
     }
+
+    .processGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .faqQuestion h3 {
+        font-size: var(--font-size-base);
+    }
+}
+
+/* Section Subtitles */
+.sectionSubtitle {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto var(--spacing-2xl);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+}
+
+/* Problem Card Title */
+.problemTitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Service Card Link */
+.serviceLink {
+    margin-top: var(--spacing-md);
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+.serviceLink:hover {
+    color: var(--color-accent-hover, var(--color-accent));
+    text-decoration: underline;
+}
+
+/* Process Section */
+.processSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-secondary);
+}
+
+.processGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-xl);
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.processCard {
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    text-align: left;
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.processCard:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+}
+
+.processStep {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-lg);
+}
+
+.processTitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-sm);
+}
+
+.processDescription {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin: 0;
+}
+
+/* Capability Description */
+.capabilityDescription {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: var(--spacing-xs) 0 0;
+    line-height: var(--line-height-relaxed);
+}
+
+/* FAQ Section */
+.faqSection {
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-bg-primary);
+}
+
+.faqList {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.faqItem {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-base);
+}
+
+.faqItem:hover {
+    border-color: var(--color-border-light);
+}
+
+.faqOpen {
+    border-color: var(--color-accent);
+}
+
+.faqQuestion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--spacing-xl);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+    font-family: inherit;
+    gap: var(--spacing-md);
+}
+
+.faqQuestion h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: var(--line-height-snug);
+}
+
+.faqToggle {
+    font-size: var(--font-size-2xl);
+    color: var(--color-accent);
+    flex-shrink: 0;
+    font-weight: var(--font-weight-bold);
+    width: 28px;
+    text-align: center;
+}
+
+.faqAnswer {
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
+}
+
+.faqAnswer p {
+    padding: 0 var(--spacing-xl) var(--spacing-xl);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin: 0;
+}
+
+/* CTA Buttons */
+.ctaButtons {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    flex-wrap: wrap;
 }

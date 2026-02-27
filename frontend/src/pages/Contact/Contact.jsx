@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 import Button from '../../components/Button/Button';
+import SEOHead from '../../components/SEOHead/SEOHead';
 import styles from './Contact.module.css';
 
 const Contact = () => {
@@ -105,135 +106,164 @@ const Contact = () => {
         }
     };
 
+    const contactSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ContactPage',
+        'name': 'Contact NS SiteCraft Solutions',
+        'description': 'Get in touch for a free consultation about your web development or software project.',
+        'url': 'https://ns-sitecraft-solutions.vercel.app/contact',
+        'mainEntity': {
+            '@type': 'Organization',
+            'name': 'NS SiteCraft Solutions',
+            'email': 'nssitecraftsolution@gmail.com',
+            'telephone': '+91-93909-69461',
+            'address': {
+                '@type': 'PostalAddress',
+                'addressLocality': 'Hyderabad',
+                'addressRegion': 'Telangana',
+                'addressCountry': 'IN'
+            }
+        }
+    };
+
     return (
-        <div className={styles.contact}>
-            <section className={styles.contactSection}>
-                <div className="container">
-                    <div className={styles.intro}>
-                        <h1 className={styles.pageTitle}>Contact</h1>
-                        <p className={styles.pageSubtitle}>
-                            Let's talk about your project. Free consultation, no pressure.
-                        </p>
+        <>
+            <SEOHead
+                title="Contact Us - Free Consultation"
+                description="Contact NS SiteCraft Solutions for a free consultation about your web development or software project. Based in Hyderabad, India. Email, phone, or fill out our contact form. We respond within 24 hours."
+                canonicalPath="/contact"
+                keywords="contact web developer Hyderabad, free consultation software development, hire developer India, web development inquiry"
+                structuredData={contactSchema}
+            />
+            <div className={styles.contact}>
+                <section className={styles.contactSection}>
+                    <div className="container">
+                        <div className={styles.intro}>
+                            <h1 className={styles.pageTitle}>Contact</h1>
+                            <p className={styles.pageSubtitle}>
+                                Let's talk about your project. Free consultation, no pressure.
+                            </p>
+                        </div>
+
+                        <div className={styles.contactGrid}>
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                className={styles.contactInfo}
+                            >
+                                <h2 className={styles.infoTitle}>Get in touch</h2>
+                                <p className={styles.infoText}>We'll respond within 24 hours.</p>
+
+                                <div className={styles.infoItems}>
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoIcon}>📧</div>
+                                        <div>
+                                            <h3 className={styles.infoLabel}>Email</h3>
+                                            <p className={styles.infoValue}>nssitecraftsolution@gmail.com</p>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoIcon}>📱</div>
+                                        <div>
+                                            <h3 className={styles.infoLabel}>Phone</h3>
+                                            <p className={styles.infoValue}>+91 93909 69461</p>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.infoItem}>
+                                        <div className={styles.infoIcon}>📍</div>
+                                        <div>
+                                            <h3 className={styles.infoLabel}>Location</h3>
+                                            <p className={styles.infoValue}>Hyderabad, India</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={styles.consultationBanner}>
+                                    <h3 className={styles.bannerTitle}>Free consultation</h3>
+                                    <p className={styles.bannerText}>
+                                        No cost. No commitment. Just clarity.
+                                    </p>
+                                </div>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                className={styles.formContainer}
+                            >
+                                <form onSubmit={handleSubmit} className={styles.form}>
+                                    <div className={styles.formGroup}>
+                                        <label className={styles.label}>Name *</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
+                                            placeholder="Your full name"
+                                        />
+                                        {errors.name && <span className={styles.errorText}>{errors.name}</span>}
+                                    </div>
+
+                                    <div className={styles.formGroup}>
+                                        <label className={styles.label}>Email *</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
+                                            placeholder="your.email@example.com"
+                                        />
+                                        {errors.email && <span className={styles.errorText}>{errors.email}</span>}
+                                    </div>
+
+                                    <div className={styles.formGroup}>
+                                        <label className={styles.label}>Phone</label>
+                                        <input
+                                            type="tel"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            className={`${styles.input} ${errors.phone ? styles.inputError : ''}`}
+                                            placeholder="+91 XXXXX XXXXX"
+                                        />
+                                        {errors.phone && <span className={styles.errorText}>{errors.phone}</span>}
+                                    </div>
+
+                                    <div className={styles.formGroup}>
+                                        <label className={styles.label}>Message *</label>
+                                        <textarea
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                            rows="6"
+                                            className={`${styles.textarea} ${errors.message ? styles.inputError : ''}`}
+                                            placeholder="Tell us about your project..."
+                                        />
+                                        {errors.message && <span className={styles.errorText}>{errors.message}</span>}
+                                    </div>
+
+                                    {submitStatus && (
+                                        <div className={`${styles.statusMessage} ${styles[submitStatus.type]}`}>
+                                            {submitStatus.message}
+                                        </div>
+                                    )}
+
+                                    <Button type="submit" size="large" fullWidth disabled={isSubmitting}>
+                                        {isSubmitting ? 'Sending...' : 'Send message'}
+                                    </Button>
+                                </form>
+                            </motion.div>
+                        </div>
                     </div>
-
-                    <div className={styles.contactGrid}>
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            className={styles.contactInfo}
-                        >
-                            <h2 className={styles.infoTitle}>Get in touch</h2>
-                            <p className={styles.infoText}>We'll respond within 24 hours.</p>
-
-                            <div className={styles.infoItems}>
-                                <div className={styles.infoItem}>
-                                    <div className={styles.infoIcon}>📧</div>
-                                    <div>
-                                        <h3 className={styles.infoLabel}>Email</h3>
-                                        <p className={styles.infoValue}>nssitecraftsolution@gmail.com</p>
-                                    </div>
-                                </div>
-
-                                <div className={styles.infoItem}>
-                                    <div className={styles.infoIcon}>📱</div>
-                                    <div>
-                                        <h3 className={styles.infoLabel}>Phone</h3>
-                                        <p className={styles.infoValue}>+91 93909 69461</p>
-                                    </div>
-                                </div>
-
-                                <div className={styles.infoItem}>
-                                    <div className={styles.infoIcon}>📍</div>
-                                    <div>
-                                        <h3 className={styles.infoLabel}>Location</h3>
-                                        <p className={styles.infoValue}>Hyderabad, India</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className={styles.consultationBanner}>
-                                <h3 className={styles.bannerTitle}>Free consultation</h3>
-                                <p className={styles.bannerText}>
-                                    No cost. No commitment. Just clarity.
-                                </p>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            className={styles.formContainer}
-                        >
-                            <form onSubmit={handleSubmit} className={styles.form}>
-                                <div className={styles.formGroup}>
-                                    <label className={styles.label}>Name *</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-                                        placeholder="Your full name"
-                                    />
-                                    {errors.name && <span className={styles.errorText}>{errors.name}</span>}
-                                </div>
-
-                                <div className={styles.formGroup}>
-                                    <label className={styles.label}>Email *</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-                                        placeholder="your.email@example.com"
-                                    />
-                                    {errors.email && <span className={styles.errorText}>{errors.email}</span>}
-                                </div>
-
-                                <div className={styles.formGroup}>
-                                    <label className={styles.label}>Phone</label>
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        className={`${styles.input} ${errors.phone ? styles.inputError : ''}`}
-                                        placeholder="+91 XXXXX XXXXX"
-                                    />
-                                    {errors.phone && <span className={styles.errorText}>{errors.phone}</span>}
-                                </div>
-
-                                <div className={styles.formGroup}>
-                                    <label className={styles.label}>Message *</label>
-                                    <textarea
-                                        name="message"
-                                        value={formData.message}
-                                        onChange={handleChange}
-                                        rows="6"
-                                        className={`${styles.textarea} ${errors.message ? styles.inputError : ''}`}
-                                        placeholder="Tell us about your project..."
-                                    />
-                                    {errors.message && <span className={styles.errorText}>{errors.message}</span>}
-                                </div>
-
-                                {submitStatus && (
-                                    <div className={`${styles.statusMessage} ${styles[submitStatus.type]}`}>
-                                        {submitStatus.message}
-                                    </div>
-                                )}
-
-                                <Button type="submit" size="large" fullWidth disabled={isSubmitting}>
-                                    {isSubmitting ? 'Sending...' : 'Send message'}
-                                </Button>
-                            </form>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
-        </div>
+                </section>
+            </div>
+        </>
     );
 };
 
