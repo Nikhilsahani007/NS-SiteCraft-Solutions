@@ -110,18 +110,6 @@ const Services = () => {
             <div className={styles.services}>
                 <section className={styles.servicesSection}>
                     <div className="container">
-                        <motion.div
-                            initial="hidden"
-                            animate="visible"
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                            className={styles.intro}
-                        >
-                            <h1 className={styles.pageTitle}>Services</h1>
-                            <p className={styles.pageSubtitle}>
-                                We build software that solves real problems. No templates, no shortcuts.
-                            </p>
-                        </motion.div>
 
                         {services.map((service, index) => (
                             <motion.div

@@ -138,12 +138,6 @@ const Contact = () => {
             <div className={styles.contact}>
                 <section className={styles.contactSection}>
                     <div className="container">
-                        <div className={styles.intro}>
-                            <h1 className={styles.pageTitle}>Contact</h1>
-                            <p className={styles.pageSubtitle}>
-                                Let's talk about your project. Free consultation, no pressure.
-                            </p>
-                        </div>
 
                         <div className={styles.contactGrid}>
                             <motion.div

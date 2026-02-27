@@ -66,12 +66,6 @@ const Pricing = () => {
             <div className={styles.pricing}>
                 <section className={styles.pricingSection}>
                     <div className="container">
-                        <div className={styles.intro}>
-                            <h1 className={styles.pageTitle}>Pricing</h1>
-                            <p className={styles.pageSubtitle}>
-                                Transparent pricing. No hidden costs.
-                            </p>
-                        </div>
 
                         <div className={styles.pricingGrid}>
                             {packages.map((pkg, index) => (

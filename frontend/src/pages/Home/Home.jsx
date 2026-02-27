@@ -240,12 +240,11 @@ const Home = () => {
                             className={styles.heroContent}
                         >
                             <h1 className={styles.heroTitle}>
-                                Custom Web & Software Development in <span className="text-gradient">Hyderabad</span>
+                                Software that solves <span className="text-gradient">real problems</span>
                             </h1>
                             <p className={styles.heroSubtitle}>
-                                We build custom websites, software applications, college management systems, and AI-powered
-                                automation solutions for businesses and educational institutions. MSME registered company
-                                delivering scalable technology that solves real problems.
+                                We build custom web and software solutions for colleges and businesses that need
+                                clarity, efficiency, and long-term scalability.
                             </p>
                             <div className={styles.heroCta}>
                                 <Link to="/contact">

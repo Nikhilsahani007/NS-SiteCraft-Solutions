@@ -39,12 +39,6 @@ const About = () => {
             <div className={styles.about}>
                 <section className={styles.storySection}>
                     <div className="container">
-                        <div className={styles.intro}>
-                            <h1 className={styles.pageTitle}>About</h1>
-                            <p className={styles.pageSubtitle}>
-                                We build software for people who understand that technology should solve problems, not create them.
-                            </p>
-                        </div>
 
                         <div className={styles.storyContent}>
                             <motion.div

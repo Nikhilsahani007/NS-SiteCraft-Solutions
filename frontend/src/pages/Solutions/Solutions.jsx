@@ -73,12 +73,6 @@ const Solutions = () => {
                 {/* Business Solutions */}
                 <section className={styles.solutionsSection}>
                     <div className="container">
-                        <div className={styles.intro}>
-                            <h1 className={styles.pageTitle}>Solutions</h1>
-                            <p className={styles.pageSubtitle}>
-                                Real problems, practical solutions. Built for your workflows.
-                            </p>
-                        </div>
 
                         <h2 className={styles.categoryTitle}>For Businesses</h2>
                         <p className={styles.categorySubtitle}>
