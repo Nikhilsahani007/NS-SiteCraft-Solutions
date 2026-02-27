@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Button from '../../components/Button/Button';
 import PageTransition from '../../components/PageTransition/PageTransition';
 import SEOHead from '../../components/SEOHead/SEOHead';
+import { featuredProjects } from '../../data/projects';
 import styles from './Home.module.css';
 
 const Home = () => {
@@ -542,6 +543,55 @@ const Home = () => {
                                     </div>
                                 </motion.div>
                             ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Featured Projects Section */}
+                <section className={styles.featuredProjectsSection}>
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-80px' }}
+                            variants={fadeUpVariants}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2 className={styles.sectionTitle}>Featured Projects</h2>
+                            <p className={styles.sectionSubtitle}>
+                                Real-world applications built with modern technologies
+                            </p>
+                        </motion.div>
+
+                        <div className={styles.featuredGrid}>
+                            {featuredProjects.map((project, index) => (
+                                <motion.div
+                                    key={project.id}
+                                    initial={{ opacity: 0, y: 24 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.12, duration: 0.45 }}
+                                    className={styles.featuredCard}
+                                >
+                                    <div className={styles.featuredCategory}>{project.category}</div>
+                                    <h3 className={styles.featuredCardTitle}>{project.title}</h3>
+                                    <p className={styles.featuredCardImpact}>{project.impact}</p>
+                                    <div className={styles.featuredTechStack}>
+                                        {project.techStack.map(tech => (
+                                            <span key={tech} className={styles.featuredTechBadge}>{tech}</span>
+                                        ))}
+                                    </div>
+                                    <Link to="/projects" className={styles.featuredCardLink}>
+                                        View Project →
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        <div style={{ textAlign: 'center', marginTop: 'var(--spacing-2xl)' }}>
+                            <Link to="/projects">
+                                <Button variant="secondary" size="large">Explore All Projects</Button>
+                            </Link>
                         </div>
                     </div>
                 </section>
