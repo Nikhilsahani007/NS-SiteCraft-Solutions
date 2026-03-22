@@ -1,625 +1,678 @@
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Button from '../../components/Button/Button';
+import { motion } from 'framer-motion';
 import PageTransition from '../../components/PageTransition/PageTransition';
 import SEOHead from '../../components/SEOHead/SEOHead';
 import { featuredProjects } from '../../data/projects';
 import styles from './Home.module.css';
 
 const Home = () => {
-    const [openFaq, setOpenFaq] = useState(null);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        projectType: '',
+        message: '',
+    });
+    const [formStatus, setFormStatus] = useState('idle'); // idle | sending | sent | error
+
+    // Animation variants
+    const fadeUp = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0 },
+    };
+
+    const staggerContainer = {
+        hidden: {},
+        visible: {
+            transition: { staggerChildren: 0.1 },
+        },
+    };
+
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setFormStatus('sending');
+        // Simulate form submission
+        setTimeout(() => {
+            setFormStatus('sent');
+            setFormData({ name: '', email: '', projectType: '', message: '' });
+            setTimeout(() => setFormStatus('idle'), 4000);
+        }, 1500);
+    };
+
+    // Data
+    const painPoints = [
+        {
+            icon: '💸',
+            text: "You've already wasted money on freelancers who ghosted you.",
+        },
+        {
+            icon: '😵',
+            text: "You don't know if you need a website, an app, or both — and no one explains it clearly.",
+        },
+        {
+            icon: '⏳',
+            text: "Your competitor launched 6 months ago. You're still stuck at 'idea stage.'",
+        },
+        {
+            icon: '🤷',
+            text: 'You want someone who just handles it — without the jargon and the runaround.',
+        },
+    ];
 
     const services = [
         {
-            title: 'Website Development',
-            description: 'We design and develop fast, modern, responsive websites that convert visitors into customers. Every site is custom-built with SEO best practices, optimized performance, and mobile-first design to ensure your business stands out online.',
             icon: '🌐',
-            forWho: 'For businesses and institutions',
-            link: '/services'
+            title: 'Websites That Convert',
+            description:
+                'Beautiful, fast, SEO-optimized websites that turn visitors into customers. Not just a digital brochure — a revenue engine.',
         },
         {
-            title: 'Custom Software Development',
-            description: 'Our team builds tailor-made software applications designed specifically for your unique business workflows. From inventory management to CRM systems, we create solutions that eliminate manual processes and boost productivity.',
-            icon: '💻',
-            forWho: 'For growing teams',
-            link: '/services'
+            icon: '📱',
+            title: 'Apps That People Actually Use',
+            description:
+                'Mobile and web applications designed around your users. Intuitive, reliable, and built to retain.',
         },
         {
-            title: 'College Management Systems',
-            description: 'Complete end-to-end management systems for educational institutions. Student information systems, attendance tracking, fee management, examination portals, and faculty dashboards — all built specifically for Indian colleges and universities.',
-            icon: '🎓',
-            forWho: 'For educational institutions',
-            link: '/solutions'
+            icon: '⚙️',
+            title: 'Custom Software That Saves You Time',
+            description:
+                'Automate the repetitive. Streamline the complex. Get custom tools that do the heavy lifting so your team can focus on growth.',
         },
-        {
-            title: 'AI & Process Automation',
-            description: 'Leverage artificial intelligence and intelligent automation to reduce repetitive manual work. We integrate AI-powered chatbots, automated workflows, data processing pipelines, and smart analytics into your existing systems.',
-            icon: '🤖',
-            forWho: 'For efficiency-focused teams',
-            link: '/services'
-        }
-    ];
-
-    const problems = [
-        {
-            title: 'Manual Processes',
-            description: 'Spending hours on repetitive tasks that could be automated — from data entry to report generation'
-        },
-        {
-            title: 'Outdated Systems',
-            description: 'Legacy software holding your team back with slow performance, poor UX, and no mobile support'
-        },
-        {
-            title: 'No Online Presence',
-            description: 'Missing out on potential customers because your business has no professional website or digital footprint'
-        },
-        {
-            title: 'Disconnected Tools',
-            description: 'Using multiple siloed tools that don\'t talk to each other, causing data inconsistency and wasted time'
-        }
-    ];
-
-    const whyChooseUs = [
-        {
-            title: 'Custom-Built Solutions',
-            description: 'No templates or one-size-fits-all approaches. Every project is built from scratch to match your exact requirements, workflows, and business goals.',
-            icon: '⚙️'
-        },
-        {
-            title: 'Scalable Architecture',
-            description: 'Our solutions are designed to grow with your business. Whether you have 10 users today or 10,000 tomorrow, your software will perform flawlessly.',
-            icon: '📈'
-        },
-        {
-            title: 'Hyderabad-Based Team',
-            description: 'Work with a local team that understands your market. We combine Hyderabad\'s tech expertise with global development standards and best practices.',
-            icon: '📍'
-        },
-        {
-            title: 'MSME Registered',
-            description: 'Officially recognized by the Government of India as a Micro, Small and Medium Enterprise. Trusted, reliable, and fully compliant with Indian business regulations.',
-            icon: '✓'
-        }
-    ];
-
-    const capabilities = [
-        { name: 'AI Integration', icon: '🤖', description: 'Smart chatbots, document processing, and predictive analytics' },
-        { name: 'Process Automation', icon: '⚡', description: 'Workflow automation, scheduled tasks, and event-driven systems' },
-        { name: 'Custom Dashboards', icon: '📊', description: 'Real-time business intelligence dashboards with interactive charts' },
-        { name: 'Real-time Analytics', icon: '📈', description: 'Live data tracking, performance monitoring, and actionable insights' }
     ];
 
     const processSteps = [
         {
-            step: 1,
-            title: 'Discovery & Consultation',
-            description: 'We start with a free consultation to understand your business, challenges, and goals. No jargon — just a clear conversation about what you need.'
+            step: '01',
+            title: 'Discovery Call',
+            description:
+                "We listen. You tell us your idea, your goals, and your budget. We tell you exactly what's possible — no pressure, no jargon.",
         },
         {
-            step: 2,
-            title: 'Planning & Architecture',
-            description: 'We design the technical architecture and create detailed wireframes. You approve every detail before development begins.'
+            step: '02',
+            title: 'Design & Build',
+            description:
+                'We design, develop, and keep you in the loop at every milestone. You see progress weekly. No vanishing acts.',
         },
         {
-            step: 3,
-            title: 'Development & Testing',
-            description: 'Our engineers build your solution using modern technologies, with regular progress demos so you always know where things stand.'
+            step: '03',
+            title: 'Launch & Support',
+            description:
+                'We launch your product, make sure everything works perfectly, and stay available for ongoing support and growth.',
         },
-        {
-            step: 4,
-            title: 'Launch & Ongoing Support',
-            description: 'We deploy your solution, provide thorough training, and offer ongoing maintenance and support to keep everything running smoothly.'
-        }
     ];
 
-    const faqs = [
+    const advantages = [
         {
-            question: 'What types of businesses does NS SiteCraft Solutions work with?',
-            answer: 'We work with small to medium-sized businesses (SMBs), startups, educational institutions (colleges and universities), and enterprises across Hyderabad and India. Our clients range from local businesses needing a professional website to colleges requiring complete management systems handling thousands of students.'
+            icon: '🎯',
+            title: 'Outcome-Obsessed',
+            description: 'We measure success by your business results — not just deliverables.',
         },
         {
-            question: 'How much does custom web development cost in Hyderabad?',
-            answer: 'Our web development projects start from affordable packages tailored to your scope. A basic business website typically ranges from ₹15,000 to ₹50,000, while custom web applications and software solutions are quoted based on complexity. We offer a free consultation to provide an accurate estimate for your specific project.'
+            icon: '💬',
+            title: 'Transparent Communication',
+            description: 'Weekly updates, open timelines, honest conversations. Always.',
         },
         {
-            question: 'How long does it take to build a custom website or software?',
-            answer: 'A standard business website takes 2-4 weeks. Custom web applications take 4-8 weeks depending on features. Complex software solutions like college management systems take 8-16 weeks. We provide detailed timelines during our planning phase and keep you updated with regular progress demos.'
+            icon: '🚀',
+            title: 'Fast, Focused Delivery',
+            description: 'Most projects launch in 4–8 weeks. No scope creep, no delays.',
         },
         {
-            question: 'Do you provide website maintenance and support after launch?',
-            answer: 'Yes, we offer comprehensive post-launch support including bug fixes, security updates, performance monitoring, feature enhancements, and hosting management. We believe in long-term partnerships — our job doesn\'t end at launch. We offer flexible maintenance plans to suit your needs.'
+            icon: '🔧',
+            title: 'Full-Service',
+            description: 'Design, development, deployment, support. One team. One point of contact.',
         },
         {
-            question: 'What technologies do you use for web and software development?',
-            answer: 'We use modern, battle-tested technologies including React, Node.js, Python, PostgreSQL, and MongoDB for development. For AI features, we integrate OpenAI APIs, TensorFlow, and custom machine learning models. Our infrastructure runs on cloud platforms like AWS and Vercel for reliability and scalability.'
+            icon: '🤝',
+            title: 'Founder-Friendly',
+            description: 'We speak your language — business, not code.',
         },
         {
-            question: 'Is NS SiteCraft Solutions a registered company?',
-            answer: 'Yes, NS SiteCraft Solutions is officially registered as a Micro, Small and Medium Enterprise (MSME) with the Government of India. We are based in Hyderabad, Telangana, and fully comply with Indian business regulations. Our MSME registration ensures accountability, transparency, and trust.'
-        }
+            icon: '🛡️',
+            title: 'Post-Launch Support',
+            description: "We don't disappear after launch. Your success is our reputation.",
+        },
     ];
 
-    // JSON-LD schemas
+    // SEO Structured Data
     const localBusinessSchema = {
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
-        'name': 'NS SiteCraft Solutions',
-        'description': 'Custom web development, software solutions, college management systems, and AI-powered automation for businesses in Hyderabad, India.',
-        'url': 'https://ns-sitecraft-solutions.vercel.app',
-        'logo': 'https://ns-sitecraft-solutions.vercel.app/favicon.svg',
-        'image': 'https://ns-sitecraft-solutions.vercel.app/og-image.png',
-        'address': {
+        name: 'NS SiteCraft Solutions',
+        description:
+            'We turn bold ideas into digital products that drive real revenue. Custom websites, apps, and software for startups and businesses.',
+        url: 'https://ns-sitecraft-solutions.vercel.app',
+        logo: 'https://ns-sitecraft-solutions.vercel.app/favicon.svg',
+        address: {
             '@type': 'PostalAddress',
-            'addressLocality': 'Hyderabad',
-            'addressRegion': 'Telangana',
-            'addressCountry': 'IN'
+            addressLocality: 'Hyderabad',
+            addressRegion: 'Telangana',
+            addressCountry: 'IN',
         },
-        'geo': {
-            '@type': 'GeoCoordinates',
-            'latitude': '17.385044',
-            'longitude': '78.486671'
-        },
-        'areaServed': [
-            { '@type': 'City', 'name': 'Hyderabad' },
-            { '@type': 'Country', 'name': 'India' }
+        areaServed: [
+            { '@type': 'City', name: 'Hyderabad' },
+            { '@type': 'Country', name: 'India' },
         ],
-        'priceRange': '₹₹',
-        'openingHoursSpecification': {
-            '@type': 'OpeningHoursSpecification',
-            'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            'opens': '09:00',
-            'closes': '18:00'
-        },
-        'hasOfferCatalog': {
-            '@type': 'OfferCatalog',
-            'name': 'Software Development Services',
-            'itemListElement': [
-                {
-                    '@type': 'Offer',
-                    'itemOffered': { '@type': 'Service', 'name': 'Custom Web Development', 'description': 'Responsive business websites and web applications' }
-                },
-                {
-                    '@type': 'Offer',
-                    'itemOffered': { '@type': 'Service', 'name': 'Custom Software Development', 'description': 'Tailor-made software for business operations' }
-                },
-                {
-                    '@type': 'Offer',
-                    'itemOffered': { '@type': 'Service', 'name': 'College Management Systems', 'description': 'End-to-end management for educational institutions' }
-                },
-                {
-                    '@type': 'Offer',
-                    'itemOffered': { '@type': 'Service', 'name': 'AI & Process Automation', 'description': 'AI integration and workflow automation' }
-                }
-            ]
-        }
-    };
-
-    const faqSchema = {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        'mainEntity': faqs.map(faq => ({
-            '@type': 'Question',
-            'name': faq.question,
-            'acceptedAnswer': {
-                '@type': 'Answer',
-                'text': faq.answer
-            }
-        }))
-    };
-
-    // Animation variants
-    const fadeUpVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
-    };
-
-    const scaleInVariants = {
-        hidden: { opacity: 0, scale: 0.95 },
-        visible: { opacity: 1, scale: 1 }
+        priceRange: '₹₹',
     };
 
     return (
         <PageTransition>
             <SEOHead
-                title="Custom Web Development & Software Solutions in Hyderabad"
-                description="NS SiteCraft Solutions builds custom websites, software applications, college management systems, and AI-powered automation for businesses in Hyderabad. MSME registered. Free consultation available."
+                title="NS SiteCraft Solutions — We Turn Bold Ideas Into Digital Products"
+                description="NS SiteCraft Solutions helps startups, businesses, and ambitious founders launch websites, apps, and custom software — on time, on budget, and built to grow."
                 canonicalPath="/"
-                keywords="web development Hyderabad, custom software development Hyderabad, college management system, AI solutions India, business automation, website design Hyderabad, software company Hyderabad, MSME registered"
-                structuredData={[localBusinessSchema, faqSchema]}
+                keywords="web development, custom software, mobile app development, startup technology partner, business website, digital products"
+                structuredData={[localBusinessSchema]}
             />
 
             <div className={styles.home}>
-                {/* Hero Section */}
+                {/* ═══════════════════════════════════════════
+                    SECTION 1: HERO
+                ═══════════════════════════════════════════ */}
                 <section className={styles.hero}>
+                    <div className={styles.heroGlow} />
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             animate="visible"
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                             className={styles.heroContent}
                         >
                             <h1 className={styles.heroTitle}>
-                                Software that solves <span className="text-gradient">real problems</span>
+                                We Turn Bold Ideas Into Digital Products
+                                <br />
+                                <span className={styles.heroTitleAccent}>That Drive Real Revenue.</span>
                             </h1>
                             <p className={styles.heroSubtitle}>
-                                We build custom web and software solutions for colleges and businesses that need
-                                clarity, efficiency, and long-term scalability.
+                                NS SiteCraft Solutions helps startups, businesses, and ambitious founders
+                                launch websites, apps, and custom software — on time, on budget, and built to grow.
                             </p>
                             <div className={styles.heroCta}>
-                                <Link to="/contact">
-                                    <Button size="large">Get Free Consultation</Button>
-                                </Link>
-                                <Link to="/services">
-                                    <Button variant="secondary" size="large">Explore Our Services</Button>
-                                </Link>
+                                <a
+                                    href="#contact"
+                                    className={styles.btnPrimary}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    }}
+                                >
+                                    Start Your Project →
+                                </a>
+                                <a
+                                    href="#projects"
+                                    className={styles.btnSecondary}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    }}
+                                >
+                                    See Our Work ↓
+                                </a>
                             </div>
                         </motion.div>
                     </div>
+
+                    {/* Trust Bar */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                        className={styles.trustBar}
+                    >
+                        <div className="container">
+                            <div className={styles.trustBarInner}>
+                                <span className={styles.trustItem}>✓ 50+ Projects Delivered</span>
+                                <span className={styles.trustDivider} />
+                                <span className={styles.trustItem}>✓ Trusted by Startups & SMBs</span>
+                                <span className={styles.trustDivider} />
+                                <span className={styles.trustItem}>✓ End-to-End Development</span>
+                            </div>
+                        </div>
+                    </motion.div>
                 </section>
 
-                {/* Problems Section */}
-                <section className={styles.problemsSection}>
+                {/* ═══════════════════════════════════════════
+                    SECTION 2: PROBLEM — Make Them Feel Understood
+                ═══════════════════════════════════════════ */}
+                <section className={styles.problemSection}>
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-100px' }}
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
                         >
+                            <span className={styles.sectionLabel}>THE CHALLENGE</span>
                             <h2 className={styles.sectionTitle}>
-                                Business Challenges We Solve Every Day
+                                You Have the Vision. But Turning It Into
+                                <br />Reality Feels Impossible.
                             </h2>
                             <p className={styles.sectionSubtitle}>
-                                Whether you're a growing business or an educational institution, these common technology
-                                challenges are holding you back. We've helped dozens of organizations overcome them.
+                                You're not a developer. You don't speak "tech." And every agency you've talked to
+                                either over-promises, over-charges, or disappears mid-project.
                             </p>
                         </motion.div>
-                        <div className={styles.problemsGrid}>
-                            {problems.map((problem, index) => (
+
+                        <motion.div
+                            className={styles.painGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={staggerContainer}
+                        >
+                            {painPoints.map((pain, index) => (
                                 <motion.div
                                     key={index}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: '-50px' }}
-                                    variants={fadeUpVariants}
-                                    transition={{
-                                        duration: 0.5,
-                                        delay: index * 0.1,
-                                        ease: [0.4, 0, 0.2, 1]
-                                    }}
-                                    className={styles.problemCard}
+                                    className={styles.painCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
                                 >
-                                    <span className={styles.problemIcon}>→</span>
-                                    <div>
-                                        <h3 className={styles.problemTitle}>{problem.title}</h3>
-                                        <p>{problem.description}</p>
-                                    </div>
+                                    <span className={styles.painIcon}>{pain.icon}</span>
+                                    <p className={styles.painText}>{pain.text}</p>
                                 </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
 
-                {/* Services Overview */}
-                <section className={styles.servicesSection} id="services-overview">
+                {/* ═══════════════════════════════════════════
+                    SECTION 3: SERVICES — Outcome-Based
+                ═══════════════════════════════════════════ */}
+                <section className={styles.servicesSection} id="services">
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-100px' }}
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
                         >
-                            <h2 className={styles.sectionTitle}>
-                                Web Development & Software Services We Offer
+                            <span className={styles.sectionLabel}>WHAT WE BUILD</span>
+                            <h2 className={styles.sectionTitleLight}>
+                                Digital Products Designed to Make You Money.
                             </h2>
-                            <p className={styles.sectionSubtitle}>
-                                From professional business websites to complex enterprise software, we deliver
-                                end-to-end technology solutions tailored to your specific needs and budget.
+                            <p className={styles.sectionSubtitleLight}>
+                                We don't just write code — we build business tools that attract customers,
+                                automate workflows, and scale with you.
                             </p>
                         </motion.div>
-                        <div className={styles.servicesGrid}>
+
+                        <motion.div
+                            className={styles.servicesGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={staggerContainer}
+                        >
                             {services.map((service, index) => (
                                 <motion.div
                                     key={index}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: '-50px' }}
-                                    variants={scaleInVariants}
-                                    transition={{
-                                        duration: 0.4,
-                                        delay: index * 0.1,
-                                        ease: [0.4, 0, 0.2, 1]
-                                    }}
-                                    whileHover={{
-                                        y: -4,
-                                        transition: { duration: 0.2 }
-                                    }}
                                     className={styles.serviceCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                    whileHover={{ y: -6, transition: { duration: 0.2 } }}
                                 >
-                                    <div className={styles.serviceIcon}>{service.icon}</div>
+                                    <span className={styles.serviceIcon}>{service.icon}</span>
                                     <h3 className={styles.serviceTitle}>{service.title}</h3>
                                     <p className={styles.serviceDescription}>{service.description}</p>
-                                    <span className={styles.serviceFor}>{service.forWho}</span>
-                                    <Link to={service.link} className={styles.serviceLink}>
-                                        Learn more →
-                                    </Link>
                                 </motion.div>
                             ))}
-                        </div>
-                        <div className={styles.servicesCtaContainer}>
-                            <Link to="/services">
-                                <Button variant="outline" size="large">View All Services & Pricing</Button>
-                            </Link>
-                        </div>
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.sectionCta}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                        >
+                            <a
+                                href="#contact"
+                                className={styles.btnPrimary}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                            >
+                                Let's Talk About Your Idea →
+                            </a>
+                        </motion.div>
                     </div>
                 </section>
 
-                {/* How We Work — Process Section */}
-                <section className={styles.processSection}>
+                {/* ═══════════════════════════════════════════
+                    SECTION 4: PROJECTS / PROOF
+                ═══════════════════════════════════════════ */}
+                <section className={styles.projectsSection} id="projects">
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-100px' }}
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
                         >
-                            <h2 className={styles.sectionTitle}>
-                                How We Build Your Software — Our Development Process
-                            </h2>
+                            <span className={styles.sectionLabel}>OUR WORK</span>
+                            <h2 className={styles.sectionTitle}>Real Products. Real Results.</h2>
                             <p className={styles.sectionSubtitle}>
-                                A transparent, collaborative process that keeps you informed and in control at every stage.
-                                No surprises. No hidden costs. Just clear communication and quality delivery.
+                                Every project is a partnership. Here's what we've built — and the impact it made.
                             </p>
                         </motion.div>
-                        <div className={styles.processGrid}>
-                            {processSteps.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: '-50px' }}
-                                    variants={fadeUpVariants}
-                                    transition={{
-                                        duration: 0.5,
-                                        delay: index * 0.12,
-                                        ease: [0.4, 0, 0.2, 1]
-                                    }}
-                                    className={styles.processCard}
-                                >
-                                    <div className={styles.processStep}>{item.step}</div>
-                                    <h3 className={styles.processTitle}>{item.title}</h3>
-                                    <p className={styles.processDescription}>{item.description}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
 
-                {/* Capabilities */}
-                <section className={styles.capabilitiesSection}>
-                    <div className="container">
                         <motion.div
+                            className={styles.projectsGrid}
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={staggerContainer}
                         >
-                            <h2 className={styles.sectionTitle}>
-                                Technology Capabilities & Expertise
-                            </h2>
-                            <p className={styles.sectionSubtitle}>
-                                We leverage cutting-edge technologies to build solutions that are fast, secure, and future-proof.
-                            </p>
-                        </motion.div>
-                        <div className={styles.capabilitiesGrid}>
-                            {capabilities.map((capability, index) => (
+                            {featuredProjects.map((project) => (
                                 <motion.div
-                                    key={index}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: '-50px' }}
-                                    variants={scaleInVariants}
-                                    transition={{
-                                        duration: 0.3,
-                                        delay: index * 0.08,
-                                        ease: [0.4, 0, 0.2, 1]
-                                    }}
-                                    whileHover={{
-                                        scale: 1.05,
-                                        transition: { duration: 0.2 }
-                                    }}
-                                    className={styles.capabilityCard}
+                                    key={project.id}
+                                    className={styles.projectCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
                                 >
-                                    <span className={styles.capabilityIcon}>{capability.icon}</span>
-                                    <div>
-                                        <span className={styles.capabilityName}>{capability.name}</span>
-                                        <p className={styles.capabilityDescription}>{capability.description}</p>
+                                    <span className={styles.projectCategory}>{project.category}</span>
+                                    <h3 className={styles.projectTitle}>{project.title}</h3>
+                                    <p className={styles.projectImpact}>{project.impact}</p>
+                                    <div className={styles.projectTags}>
+                                        {project.techStack.map((tech) => (
+                                            <span key={tech} className={styles.projectTag}>{tech}</span>
+                                        ))}
                                     </div>
                                 </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
 
-                {/* Why Choose Us */}
+                {/* ═══════════════════════════════════════════
+                    SECTION 5: HOW IT WORKS — 3 Steps
+                ═══════════════════════════════════════════ */}
+                <section className={styles.processSection} id="process">
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-100px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className={styles.sectionLabel}>HOW IT WORKS</span>
+                            <h2 className={styles.sectionTitleLight}>
+                                From First Call to Launch — In Three Clear Steps.
+                            </h2>
+                            <p className={styles.sectionSubtitleLight}>
+                                No confusing processes. No surprises. Just a clear path from your idea to a product you're proud of.
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.stepsGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={staggerContainer}
+                        >
+                            {processSteps.map((item, index) => (
+                                <motion.div
+                                    key={index}
+                                    className={styles.stepCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <span className={styles.stepNumber}>{item.step}</span>
+                                    <h3 className={styles.stepTitle}>{item.title}</h3>
+                                    <p className={styles.stepDescription}>{item.description}</p>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.sectionCta}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                        >
+                            <a
+                                href="#contact"
+                                className={styles.btnPrimaryLight}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                            >
+                                Book Your Free Discovery Call →
+                            </a>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 6: WHY CHOOSE US
+                ═══════════════════════════════════════════ */}
                 <section className={styles.whySection}>
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-100px' }}
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                        >
-                            <h2 className={styles.sectionTitle}>
-                                Why Businesses Choose NS SiteCraft Solutions
-                            </h2>
-                            <p className={styles.sectionSubtitle}>
-                                We're not just another web development agency. We're your technology partner
-                                committed to building solutions that deliver real business results.
-                            </p>
-                        </motion.div>
-                        <div className={styles.whyGrid}>
-                            {whyChooseUs.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: '-50px' }}
-                                    variants={fadeUpVariants}
-                                    transition={{
-                                        duration: 0.5,
-                                        delay: index * 0.1,
-                                        ease: [0.4, 0, 0.2, 1]
-                                    }}
-                                    className={styles.whyCard}
-                                >
-                                    <span className={styles.whyIcon}>{item.icon}</span>
-                                    <h3 className={styles.whyTitle}>{item.title}</h3>
-                                    <p className={styles.whyDescription}>{item.description}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* FAQ Section */}
-                <section className={styles.faqSection} id="faq">
-                    <div className="container">
-                        <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
-                            variants={fadeUpVariants}
-                            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                        >
-                            <h2 className={styles.sectionTitle}>
-                                Frequently Asked Questions About Our Services
-                            </h2>
-                            <p className={styles.sectionSubtitle}>
-                                Have questions about custom web development, pricing, or our process?
-                                Here are answers to the most common questions we receive.
-                            </p>
-                        </motion.div>
-                        <div className={styles.faqList}>
-                            {faqs.map((faq, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: '-30px' }}
-                                    variants={fadeUpVariants}
-                                    transition={{
-                                        duration: 0.4,
-                                        delay: index * 0.08,
-                                        ease: [0.4, 0, 0.2, 1]
-                                    }}
-                                    className={`${styles.faqItem} ${openFaq === index ? styles.faqOpen : ''}`}
-                                >
-                                    <button
-                                        className={styles.faqQuestion}
-                                        onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                                        aria-expanded={openFaq === index}
-                                    >
-                                        <h3>{faq.question}</h3>
-                                        <span className={styles.faqToggle}>
-                                            {openFaq === index ? '−' : '+'}
-                                        </span>
-                                    </button>
-                                    <div
-                                        className={styles.faqAnswer}
-                                        style={{
-                                            maxHeight: openFaq === index ? '500px' : '0',
-                                            opacity: openFaq === index ? 1 : 0
-                                        }}
-                                    >
-                                        <p>{faq.answer}</p>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Featured Projects Section */}
-                <section className={styles.featuredProjectsSection}>
-                    <div className="container">
-                        <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-80px' }}
-                            variants={fadeUpVariants}
+                            variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className={styles.sectionTitle}>Featured Projects</h2>
+                            <span className={styles.sectionLabel}>WHY NS SITECRAFT</span>
+                            <h2 className={styles.sectionTitle}>
+                                We're Not Just Developers. We're Your Growth Partner.
+                            </h2>
                             <p className={styles.sectionSubtitle}>
-                                Real-world applications built with modern technologies
+                                Here's what working with us actually looks like.
                             </p>
                         </motion.div>
 
-                        <div className={styles.featuredGrid}>
-                            {featuredProjects.map((project, index) => (
+                        <motion.div
+                            className={styles.advantagesGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={staggerContainer}
+                        >
+                            {advantages.map((item, index) => (
                                 <motion.div
-                                    key={project.id}
-                                    initial={{ opacity: 0, y: 24 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.12, duration: 0.45 }}
-                                    className={styles.featuredCard}
+                                    key={index}
+                                    className={styles.advantageCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                    whileHover={{ y: -3, transition: { duration: 0.15 } }}
                                 >
-                                    <div className={styles.featuredCategory}>{project.category}</div>
-                                    <h3 className={styles.featuredCardTitle}>{project.title}</h3>
-                                    <p className={styles.featuredCardImpact}>{project.impact}</p>
-                                    <div className={styles.featuredTechStack}>
-                                        {project.techStack.map(tech => (
-                                            <span key={tech} className={styles.featuredTechBadge}>{tech}</span>
-                                        ))}
-                                    </div>
-                                    <Link to="/projects" className={styles.featuredCardLink}>
-                                        View Project →
-                                    </Link>
+                                    <span className={styles.advantageIcon}>{item.icon}</span>
+                                    <h3 className={styles.advantageTitle}>{item.title}</h3>
+                                    <p className={styles.advantageDescription}>{item.description}</p>
                                 </motion.div>
                             ))}
-                        </div>
-
-                        <div style={{ textAlign: 'center', marginTop: 'var(--spacing-2xl)' }}>
-                            <Link to="/projects">
-                                <Button variant="secondary" size="large">Explore All Projects</Button>
-                            </Link>
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
 
-                {/* CTA Section */}
-                <section className={styles.ctaSection}>
+                {/* ═══════════════════════════════════════════
+                    SECTION 7: FINAL CTA — Emotional Push
+                ═══════════════════════════════════════════ */}
+                <section className={styles.finalCtaSection}>
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-100px' }}
-                            variants={scaleInVariants}
-                            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                            className={styles.ctaContent}
+                            variants={fadeUp}
+                            transition={{ duration: 0.6 }}
+                            className={styles.finalCtaContent}
                         >
-                            <h2 className={styles.ctaTitle}>Ready to Transform Your Business with Technology?</h2>
-                            <p className={styles.ctaSubtitle}>
-                                Get a free, no-obligation consultation. We'll discuss your challenges,
-                                explore solutions, and give you a clear roadmap — no pressure, no jargon,
-                                just honest advice from experienced developers.
+                            <h2 className={styles.finalCtaTitle}>
+                                Your Idea Deserves More Than a "Maybe."
+                            </h2>
+                            <p className={styles.finalCtaSubtitle}>
+                                Every week you wait, someone else is launching the product you're still
+                                thinking about. Let's change that — starting today.
                             </p>
-                            <div className={styles.ctaButtons}>
-                                <Link to="/contact">
-                                    <Button size="large">Schedule Free Consultation</Button>
-                                </Link>
-                                <Link to="/pricing">
-                                    <Button variant="secondary" size="large">View Pricing Plans</Button>
-                                </Link>
+                            <a
+                                href="#contact"
+                                className={styles.btnPrimaryLarge}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                            >
+                                Start Your Project →
+                            </a>
+                            <p className={styles.finalCtaMicro}>
+                                Free discovery call · No commitment · Response within 24 hours
+                            </p>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 8: CONTACT — Frictionless
+                ═══════════════════════════════════════════ */}
+                <section className={styles.contactSection} id="contact">
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-100px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className={styles.sectionLabel}>GET IN TOUCH</span>
+                            <h2 className={styles.sectionTitle}>
+                                Let's Build Something Great Together.
+                            </h2>
+                            <p className={styles.sectionSubtitle}>
+                                Fill out the form below and we'll get back to you within 24 hours.
+                                Or just email us directly.
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.contactGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                        >
+                            {/* Contact Form */}
+                            <form className={styles.contactForm} onSubmit={handleSubmit}>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="name" className={styles.formLabel}>Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        placeholder="Your full name"
+                                        className={styles.formInput}
+                                        required
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="email" className={styles.formLabel}>Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        placeholder="you@company.com"
+                                        className={styles.formInput}
+                                        required
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="projectType" className={styles.formLabel}>Project Type</label>
+                                    <select
+                                        id="projectType"
+                                        name="projectType"
+                                        value={formData.projectType}
+                                        onChange={handleInputChange}
+                                        className={styles.formSelect}
+                                        required
+                                    >
+                                        <option value="" disabled>Select a project type</option>
+                                        <option value="website">Website</option>
+                                        <option value="mobile-app">Mobile App</option>
+                                        <option value="custom-software">Custom Software</option>
+                                        <option value="not-sure">Not Sure Yet</option>
+                                    </select>
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label htmlFor="message" className={styles.formLabel}>Brief Message</label>
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleInputChange}
+                                        placeholder="Tell us briefly about your project..."
+                                        className={styles.formTextarea}
+                                        rows={3}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className={styles.formSubmit}
+                                    disabled={formStatus === 'sending'}
+                                >
+                                    {formStatus === 'sending' ? 'Sending...' :
+                                        formStatus === 'sent' ? '✓ Message Sent!' :
+                                            'Send Message →'}
+                                </button>
+                            </form>
+
+                            {/* Contact Info */}
+                            <div className={styles.contactInfo}>
+                                <div className={styles.contactInfoItem}>
+                                    <span className={styles.contactInfoIcon}>📧</span>
+                                    <div>
+                                        <p className={styles.contactInfoLabel}>Email us directly</p>
+                                        <a href="mailto:nssitecraftsolution@gmail.com" className={styles.contactInfoValue}>
+                                            nssitecraftsolution@gmail.com
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className={styles.contactInfoItem}>
+                                    <span className={styles.contactInfoIcon}>📱</span>
+                                    <div>
+                                        <p className={styles.contactInfoLabel}>Call us</p>
+                                        <a href="tel:+919390969461" className={styles.contactInfoValue}>
+                                            +91 93909 69461
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className={styles.contactInfoItem}>
+                                    <span className={styles.contactInfoIcon}>📍</span>
+                                    <div>
+                                        <p className={styles.contactInfoLabel}>Based in</p>
+                                        <p className={styles.contactInfoValue}>Hyderabad, India</p>
+                                    </div>
+                                </div>
+                                <div className={styles.contactInfoItem}>
+                                    <span className={styles.contactInfoIcon}>⏱️</span>
+                                    <div>
+                                        <p className={styles.contactInfoLabel}>Response time</p>
+                                        <p className={styles.contactInfoValue}>Within 24 hours</p>
+                                    </div>
+                                </div>
                             </div>
                         </motion.div>
                     </div>

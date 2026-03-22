@@ -4,10 +4,10 @@
   --color-primary-light: #151B2E;
   --color-primary-lighter: #1E2842;
 
-  --color-accent: #06B6D4;
-  --color-accent-dark: #0891B2;
-  --color-accent-light: #22D3EE;
-  --color-accent-glow: rgba(6, 182, 212, 0.15);
+  --color-accent: #6366F1;
+  --color-accent-dark: #4F46E5;
+  --color-accent-light: #818CF8;
+  --color-accent-glow: rgba(99, 102, 241, 0.15);
 
   --color-text-primary: #F1F5F9;
   --color-text-secondary: #CBD5E1;
@@ -127,10 +127,10 @@
   --color-primary-light: #F8FAFC;
   --color-primary-lighter: #F1F5F9;
 
-  --color-accent: #0891B2;
-  --color-accent-dark: #0E7490;
-  --color-accent-light: #06B6D4;
-  --color-accent-glow: rgba(8, 145, 178, 0.12);
+  --color-accent: #6366F1;
+  --color-accent-dark: #4F46E5;
+  --color-accent-light: #818CF8;
+  --color-accent-glow: rgba(99, 102, 241, 0.12);
 
   --color-text-primary: #0F172A;
   --color-text-secondary: #334155;
@@ -272,7 +272,7 @@ select {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--color-accent-light), var(--color-accent));
+  background: linear-gradient(135deg, var(--color-accent-light), var(--color-accent), var(--color-accent-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
