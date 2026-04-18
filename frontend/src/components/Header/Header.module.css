@@ -60,7 +60,7 @@
 }
 
 .navLink {
-    color: var(--color-text-muted);
+    color: #CBD5E1;
     font-weight: var(--font-weight-medium);
     font-size: var(--font-size-sm);
     padding: 6px 14px;
@@ -72,8 +72,8 @@
 }
 
 .navLink:hover {
-    color: var(--color-text-primary);
-    background-color: rgba(255, 255, 255, 0.06);
+    color: #F1F5F9;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .navLink.active {
