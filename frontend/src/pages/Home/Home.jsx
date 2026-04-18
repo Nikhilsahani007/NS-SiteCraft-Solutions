@@ -12,19 +12,16 @@ const Home = () => {
         projectType: '',
         message: '',
     });
-    const [formStatus, setFormStatus] = useState('idle'); // idle | sending | sent | error
+    const [formStatus, setFormStatus] = useState('idle');
 
-    // Animation variants
     const fadeUp = {
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 24 },
         visible: { opacity: 1, y: 0 },
     };
 
-    const staggerContainer = {
+    const stagger = {
         hidden: {},
-        visible: {
-            transition: { staggerChildren: 0.1 },
-        },
+        visible: { transition: { staggerChildren: 0.12 } },
     };
 
     const handleInputChange = (e) => {
@@ -34,7 +31,6 @@ const Home = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFormStatus('sending');
-        // Simulate form submission
         setTimeout(() => {
             setFormStatus('sent');
             setFormData({ name: '', email: '', projectType: '', message: '' });
@@ -42,108 +38,105 @@ const Home = () => {
         }, 1500);
     };
 
-    // Data
-    const painPoints = [
-        {
-            icon: '💸',
-            text: "You've already wasted money on freelancers who ghosted you.",
-        },
-        {
-            icon: '😵',
-            text: "You don't know if you need a website, an app, or both — and no one explains it clearly.",
-        },
-        {
-            icon: '⏳',
-            text: "Your competitor launched 6 months ago. You're still stuck at 'idea stage.'",
-        },
-        {
-            icon: '🤷',
-            text: 'You want someone who just handles it — without the jargon and the runaround.',
-        },
-    ];
+    const scrollTo = (id) => (e) => {
+        e.preventDefault();
+        const el = document.getElementById(id);
+        if (el) {
+            const offset = 80;
+            const pos = el.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: pos, behavior: 'smooth' });
+        }
+    };
 
-    const services = [
+    // ── DATA ──────────────────────────────────────────
+
+    const benefits = [
         {
-            icon: '🌐',
-            title: 'Websites That Convert',
-            description:
-                'Beautiful, fast, SEO-optimized websites that turn visitors into customers. Not just a digital brochure — a revenue engine.',
+            icon: '🎯',
+            title: 'A website that actually brings you customers',
+            description: 'Not just a pretty page. A fast, clean, search-friendly website designed to turn visitors into paying clients.',
         },
         {
-            icon: '📱',
-            title: 'Apps That People Actually Use',
-            description:
-                'Mobile and web applications designed around your users. Intuitive, reliable, and built to retain.',
+            icon: '⚡',
+            title: 'Go from idea to live website in weeks, not months',
+            description: 'We move fast without cutting corners. You get a finished, polished product — not an endless "work in progress."',
         },
         {
-            icon: '⚙️',
-            title: 'Custom Software That Saves You Time',
-            description:
-                'Automate the repetitive. Streamline the complex. Get custom tools that do the heavy lifting so your team can focus on growth.',
+            icon: '🧘',
+            title: 'Zero tech headaches — we handle everything',
+            description: 'You focus on your business. We take care of design, development, hosting, and all the technical details.',
+        },
+        {
+            icon: '📈',
+            title: 'A digital presence that grows with your business',
+            description: 'Built to scale. As your business evolves, your website evolves with it — no starting over from scratch.',
         },
     ];
 
     const processSteps = [
         {
-            step: '01',
-            title: 'Discovery Call',
-            description:
-                "We listen. You tell us your idea, your goals, and your budget. We tell you exactly what's possible — no pressure, no jargon.",
+            num: '01',
+            title: 'Tell us your idea',
+            description: 'We hop on a quick call. You share your vision, your goals, your timeline. We listen, ask the right questions, and figure out exactly what you need.',
         },
         {
-            step: '02',
-            title: 'Design & Build',
-            description:
-                'We design, develop, and keep you in the loop at every milestone. You see progress weekly. No vanishing acts.',
+            num: '02',
+            title: 'We design & build it',
+            description: 'We get to work — designing, developing, and keeping you in the loop at every step. No disappearing acts. You see real progress every week.',
         },
         {
-            step: '03',
-            title: 'Launch & Support',
-            description:
-                'We launch your product, make sure everything works perfectly, and stay available for ongoing support and growth.',
+            num: '03',
+            title: 'Launch & grow',
+            description: 'We launch your website, make sure everything runs smoothly, and stick around for support. Your success is our success.',
         },
     ];
 
-    const advantages = [
-        {
-            icon: '🎯',
-            title: 'Outcome-Obsessed',
-            description: 'We measure success by your business results — not just deliverables.',
-        },
+    const whyPoints = [
         {
             icon: '💬',
-            title: 'Transparent Communication',
-            description: 'Weekly updates, open timelines, honest conversations. Always.',
+            title: 'We communicate like humans',
+            description: 'No jargon. No confusing emails. Just clear, honest updates so you always know what\'s happening.',
         },
         {
             icon: '🚀',
-            title: 'Fast, Focused Delivery',
-            description: 'Most projects launch in 4–8 weeks. No scope creep, no delays.',
+            title: 'We deliver fast — and we mean it',
+            description: 'Most projects go live in 3–6 weeks. We respect your time and your deadlines.',
         },
         {
-            icon: '🔧',
-            title: 'Full-Service',
-            description: 'Design, development, deployment, support. One team. One point of contact.',
+            icon: '🎨',
+            title: 'Design that looks premium, not templated',
+            description: 'Every website is custom-built. No cookie-cutter templates. Your brand deserves better.',
         },
         {
             icon: '🤝',
-            title: 'Founder-Friendly',
-            description: 'We speak your language — business, not code.',
-        },
-        {
-            icon: '🛡️',
-            title: 'Post-Launch Support',
-            description: "We don't disappear after launch. Your success is our reputation.",
+            title: 'We don\'t vanish after launch',
+            description: 'Need a tweak? Have a question? We\'re here. Post-launch support is part of the deal.',
         },
     ];
 
-    // SEO Structured Data
+    const testimonials = [
+        {
+            quote: 'I had a rough idea and a tight budget. NS SiteCraft turned it into a website I\'m genuinely proud of. They explained everything in simple terms and delivered exactly what they promised.',
+            name: 'Arjun Mehta',
+            role: 'Founder, FreshCart Groceries',
+        },
+        {
+            quote: 'Working with NS SiteCraft felt different from every other developer I\'ve tried. They actually listened, kept me updated, and launched on time. That\'s rare.',
+            name: 'Priya Sharma',
+            role: 'Owner, Bloom Studio',
+        },
+        {
+            quote: 'I don\'t understand tech at all, and that was never a problem. They handled everything — from design to going live. My business has gotten more leads in the last month than the past quarter.',
+            name: 'Rahul Desai',
+            role: 'Director, Nexus Consulting',
+        },
+    ];
+
     const localBusinessSchema = {
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
         name: 'NS SiteCraft Solutions',
-        description:
-            'We turn bold ideas into digital products that drive real revenue. Custom websites, apps, and software for startups and businesses.',
+        description: 'We build clean, modern websites and digital products for startups, small businesses, and individuals.',
         url: 'https://ns-sitecraft-solutions.vercel.app',
         logo: 'https://ns-sitecraft-solutions.vercel.app/favicon.svg',
         address: {
@@ -152,20 +145,16 @@ const Home = () => {
             addressRegion: 'Telangana',
             addressCountry: 'IN',
         },
-        areaServed: [
-            { '@type': 'City', name: 'Hyderabad' },
-            { '@type': 'Country', name: 'India' },
-        ],
         priceRange: '₹₹',
     };
 
     return (
         <PageTransition>
             <SEOHead
-                title="NS SiteCraft Solutions — We Turn Bold Ideas Into Digital Products"
-                description="NS SiteCraft Solutions helps startups, businesses, and ambitious founders launch websites, apps, and custom software — on time, on budget, and built to grow."
+                title="NS SiteCraft Solutions — Your Idea, Built Right"
+                description="We build clean, modern websites for startups and small businesses. From idea to live product — fast, affordable, and built to grow."
                 canonicalPath="/"
-                keywords="web development, custom software, mobile app development, startup technology partner, business website, digital products"
+                keywords="website development, startup website, small business website, web design, affordable web development, custom website"
                 structuredData={[localBusinessSchema]}
             />
 
@@ -173,7 +162,7 @@ const Home = () => {
                 {/* ═══════════════════════════════════════════
                     SECTION 1: HERO
                 ═══════════════════════════════════════════ */}
-                <section className={styles.hero}>
+                <section className={styles.hero} id="home">
                     <div className={styles.heroGlow} />
                     <div className="container">
                         <motion.div
@@ -184,44 +173,26 @@ const Home = () => {
                             className={styles.heroContent}
                         >
                             <h1 className={styles.heroTitle}>
-                                We Turn Bold Ideas Into Digital Products
+                                You have an idea.
                                 <br />
-                                <span className={styles.heroTitleAccent}>That Drive Real Revenue.</span>
+                                <span className={styles.heroTitleAccent}>We'll build it.</span>
                             </h1>
                             <p className={styles.heroSubtitle}>
-                                NS SiteCraft Solutions helps startups, businesses, and ambitious founders
-                                launch websites, apps, and custom software — on time, on budget, and built to grow.
+                                NS SiteCraft Solutions helps startups, small businesses, and individuals
+                                turn ideas into clean, modern websites — fast, affordable, and without the tech headaches.
                             </p>
                             <div className={styles.heroCta}>
-                                <a
-                                    href="#contact"
-                                    className={styles.btnPrimary}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                    }}
-                                >
+                                <a href="#contact" className={styles.btnPrimary} onClick={scrollTo('contact')}>
                                     Start Your Project →
-                                </a>
-                                <a
-                                    href="#projects"
-                                    className={styles.btnSecondary}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                    }}
-                                >
-                                    See Our Work ↓
                                 </a>
                             </div>
                         </motion.div>
                     </div>
 
-                    {/* Trust Bar */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
                         className={styles.trustBar}
                     >
                         <div className="container">
@@ -237,44 +208,43 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 2: PROBLEM — Make Them Feel Understood
+                    SECTION 2: WHAT YOU GET (Benefits)
                 ═══════════════════════════════════════════ */}
-                <section className={styles.problemSection}>
+                <section className={styles.benefitsSection} id="benefits">
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
+                            viewport={{ once: true, margin: '-80px' }}
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className={styles.sectionLabel}>THE CHALLENGE</span>
+                            <span className={styles.sectionLabel}>WHAT YOU GET</span>
                             <h2 className={styles.sectionTitle}>
-                                You Have the Vision. But Turning It Into
-                                <br />Reality Feels Impossible.
+                                It's not about the website.
+                                <br />It's about what the website does for you.
                             </h2>
-                            <p className={styles.sectionSubtitle}>
-                                You're not a developer. You don't speak "tech." And every agency you've talked to
-                                either over-promises, over-charges, or disappears mid-project.
-                            </p>
                         </motion.div>
 
                         <motion.div
-                            className={styles.painGrid}
+                            className={styles.benefitsGrid}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-50px' }}
-                            variants={staggerContainer}
+                            variants={stagger}
                         >
-                            {painPoints.map((pain, index) => (
+                            {benefits.map((item, i) => (
                                 <motion.div
-                                    key={index}
-                                    className={styles.painCard}
+                                    key={i}
+                                    className={styles.benefitCard}
                                     variants={fadeUp}
                                     transition={{ duration: 0.4 }}
                                 >
-                                    <span className={styles.painIcon}>{pain.icon}</span>
-                                    <p className={styles.painText}>{pain.text}</p>
+                                    <span className={styles.benefitIcon}>{item.icon}</span>
+                                    <div>
+                                        <h3 className={styles.benefitTitle}>{item.title}</h3>
+                                        <p className={styles.benefitDesc}>{item.description}</p>
+                                    </div>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -282,45 +252,43 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 3: SERVICES — Outcome-Based
+                    SECTION 3: HOW IT WORKS (3 Steps)
                 ═══════════════════════════════════════════ */}
-                <section className={styles.servicesSection} id="services">
+                <section className={styles.processSection} id="process">
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
+                            viewport={{ once: true, margin: '-80px' }}
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className={styles.sectionLabel}>WHAT WE BUILD</span>
+                            <span className={styles.sectionLabel}>HOW IT WORKS</span>
                             <h2 className={styles.sectionTitleLight}>
-                                Digital Products Designed to Make You Money.
+                                Three steps. That's it.
                             </h2>
                             <p className={styles.sectionSubtitleLight}>
-                                We don't just write code — we build business tools that attract customers,
-                                automate workflows, and scale with you.
+                                No complicated processes. No confusing timelines. Just a clear path from your idea to a live product.
                             </p>
                         </motion.div>
 
                         <motion.div
-                            className={styles.servicesGrid}
+                            className={styles.stepsGrid}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-50px' }}
-                            variants={staggerContainer}
+                            variants={stagger}
                         >
-                            {services.map((service, index) => (
+                            {processSteps.map((step, i) => (
                                 <motion.div
-                                    key={index}
-                                    className={styles.serviceCard}
+                                    key={i}
+                                    className={styles.stepCard}
                                     variants={fadeUp}
                                     transition={{ duration: 0.4 }}
-                                    whileHover={{ y: -6, transition: { duration: 0.2 } }}
                                 >
-                                    <span className={styles.serviceIcon}>{service.icon}</span>
-                                    <h3 className={styles.serviceTitle}>{service.title}</h3>
-                                    <p className={styles.serviceDescription}>{service.description}</p>
+                                    <span className={styles.stepNumber}>{step.num}</span>
+                                    <h3 className={styles.stepTitle}>{step.title}</h3>
+                                    <p className={styles.stepDesc}>{step.description}</p>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -331,38 +299,33 @@ const Home = () => {
                             whileInView="visible"
                             viewport={{ once: true }}
                             variants={fadeUp}
-                            transition={{ duration: 0.5, delay: 0.3 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
                         >
-                            <a
-                                href="#contact"
-                                className={styles.btnPrimary}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                            >
-                                Let's Talk About Your Idea →
+                            <a href="#contact" className={styles.btnPrimaryLight} onClick={scrollTo('contact')}>
+                                Book a Free Call →
                             </a>
                         </motion.div>
                     </div>
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 4: PROJECTS / PROOF
+                    SECTION 4: SHOWCASE / WORK
                 ═══════════════════════════════════════════ */}
-                <section className={styles.projectsSection} id="projects">
+                <section className={styles.workSection} id="work">
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
+                            viewport={{ once: true, margin: '-80px' }}
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
                             <span className={styles.sectionLabel}>OUR WORK</span>
-                            <h2 className={styles.sectionTitle}>Real Products. Real Results.</h2>
+                            <h2 className={styles.sectionTitle}>
+                                Built with care. Shipped with confidence.
+                            </h2>
                             <p className={styles.sectionSubtitle}>
-                                Every project is a partnership. Here's what we've built — and the impact it made.
+                                Every project started as an idea. Here's what they became.
                             </p>
                         </motion.div>
 
@@ -371,7 +334,7 @@ const Home = () => {
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-50px' }}
-                            variants={staggerContainer}
+                            variants={stagger}
                         >
                             {featuredProjects.map((project) => (
                                 <motion.div
@@ -381,7 +344,9 @@ const Home = () => {
                                     transition={{ duration: 0.4 }}
                                     whileHover={{ y: -4, transition: { duration: 0.2 } }}
                                 >
-                                    <span className={styles.projectCategory}>{project.category}</span>
+                                    <div className={styles.projectHeader}>
+                                        <span className={styles.projectCategory}>{project.category}</span>
+                                    </div>
                                     <h3 className={styles.projectTitle}>{project.title}</h3>
                                     <p className={styles.projectImpact}>{project.impact}</p>
                                     <div className={styles.projectTags}>
@@ -396,108 +361,41 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 5: HOW IT WORKS — 3 Steps
-                ═══════════════════════════════════════════ */}
-                <section className={styles.processSection} id="process">
-                    <div className="container">
-                        <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
-                            variants={fadeUp}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <span className={styles.sectionLabel}>HOW IT WORKS</span>
-                            <h2 className={styles.sectionTitleLight}>
-                                From First Call to Launch — In Three Clear Steps.
-                            </h2>
-                            <p className={styles.sectionSubtitleLight}>
-                                No confusing processes. No surprises. Just a clear path from your idea to a product you're proud of.
-                            </p>
-                        </motion.div>
-
-                        <motion.div
-                            className={styles.stepsGrid}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-50px' }}
-                            variants={staggerContainer}
-                        >
-                            {processSteps.map((item, index) => (
-                                <motion.div
-                                    key={index}
-                                    className={styles.stepCard}
-                                    variants={fadeUp}
-                                    transition={{ duration: 0.4 }}
-                                >
-                                    <span className={styles.stepNumber}>{item.step}</span>
-                                    <h3 className={styles.stepTitle}>{item.title}</h3>
-                                    <p className={styles.stepDescription}>{item.description}</p>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-
-                        <motion.div
-                            className={styles.sectionCta}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            variants={fadeUp}
-                            transition={{ duration: 0.5, delay: 0.3 }}
-                        >
-                            <a
-                                href="#contact"
-                                className={styles.btnPrimaryLight}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                            >
-                                Book Your Free Discovery Call →
-                            </a>
-                        </motion.div>
-                    </div>
-                </section>
-
-                {/* ═══════════════════════════════════════════
-                    SECTION 6: WHY CHOOSE US
+                    SECTION 5: WHY CHOOSE US
                 ═══════════════════════════════════════════ */}
                 <section className={styles.whySection}>
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
+                            viewport={{ once: true, margin: '-80px' }}
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className={styles.sectionLabel}>WHY NS SITECRAFT</span>
-                            <h2 className={styles.sectionTitle}>
-                                We're Not Just Developers. We're Your Growth Partner.
+                            <span className={styles.sectionLabel}>WHY US</span>
+                            <h2 className={styles.sectionTitleLight}>
+                                There are thousands of developers.
+                                <br />Here's why people choose us.
                             </h2>
-                            <p className={styles.sectionSubtitle}>
-                                Here's what working with us actually looks like.
-                            </p>
                         </motion.div>
 
                         <motion.div
-                            className={styles.advantagesGrid}
+                            className={styles.whyGrid}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-50px' }}
-                            variants={staggerContainer}
+                            variants={stagger}
                         >
-                            {advantages.map((item, index) => (
+                            {whyPoints.map((item, i) => (
                                 <motion.div
-                                    key={index}
-                                    className={styles.advantageCard}
+                                    key={i}
+                                    className={styles.whyCard}
                                     variants={fadeUp}
                                     transition={{ duration: 0.4 }}
-                                    whileHover={{ y: -3, transition: { duration: 0.15 } }}
                                 >
-                                    <span className={styles.advantageIcon}>{item.icon}</span>
-                                    <h3 className={styles.advantageTitle}>{item.title}</h3>
-                                    <p className={styles.advantageDescription}>{item.description}</p>
+                                    <span className={styles.whyIcon}>{item.icon}</span>
+                                    <h3 className={styles.whyTitle}>{item.title}</h3>
+                                    <p className={styles.whyDesc}>{item.description}</p>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -505,61 +403,104 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 7: FINAL CTA — Emotional Push
+                    SECTION 6: TESTIMONIALS
+                ═══════════════════════════════════════════ */}
+                <section className={styles.testimonialsSection}>
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-80px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className={styles.sectionLabel}>WHAT PEOPLE SAY</span>
+                            <h2 className={styles.sectionTitle}>
+                                Don't take our word for it.
+                            </h2>
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.testimonialsGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={stagger}
+                        >
+                            {testimonials.map((t, i) => (
+                                <motion.div
+                                    key={i}
+                                    className={styles.testimonialCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <div className={styles.testimonialStars}>★★★★★</div>
+                                    <blockquote className={styles.testimonialQuote}>
+                                        "{t.quote}"
+                                    </blockquote>
+                                    <div className={styles.testimonialAuthor}>
+                                        <div className={styles.testimonialAvatar}>
+                                            {t.name.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <p className={styles.testimonialName}>{t.name}</p>
+                                            <p className={styles.testimonialRole}>{t.role}</p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 7: FINAL CTA
                 ═══════════════════════════════════════════ */}
                 <section className={styles.finalCtaSection}>
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
+                            viewport={{ once: true, margin: '-80px' }}
                             variants={fadeUp}
                             transition={{ duration: 0.6 }}
                             className={styles.finalCtaContent}
                         >
                             <h2 className={styles.finalCtaTitle}>
-                                Your Idea Deserves More Than a "Maybe."
+                                You've scrolled this far.
+                                <br />That means you're serious.
                             </h2>
                             <p className={styles.finalCtaSubtitle}>
-                                Every week you wait, someone else is launching the product you're still
-                                thinking about. Let's change that — starting today.
+                                Let's stop thinking about it and start building it. One quick conversation is all it takes to get started.
                             </p>
-                            <a
-                                href="#contact"
-                                className={styles.btnPrimaryLarge}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                            >
+                            <a href="#contact" className={styles.btnPrimaryLarge} onClick={scrollTo('contact')}>
                                 Start Your Project →
                             </a>
                             <p className={styles.finalCtaMicro}>
-                                Free discovery call · No commitment · Response within 24 hours
+                                Free consultation · No commitment · Response within 24 hours
                             </p>
                         </motion.div>
                     </div>
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 8: CONTACT — Frictionless
+                    SECTION 8: CONTACT
                 ═══════════════════════════════════════════ */}
                 <section className={styles.contactSection} id="contact">
                     <div className="container">
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true, margin: '-100px' }}
+                            viewport={{ once: true, margin: '-80px' }}
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className={styles.sectionLabel}>GET IN TOUCH</span>
+                            <span className={styles.sectionLabel}>LET'S TALK</span>
                             <h2 className={styles.sectionTitle}>
-                                Let's Build Something Great Together.
+                                Ready? Let's make it happen.
                             </h2>
                             <p className={styles.sectionSubtitle}>
-                                Fill out the form below and we'll get back to you within 24 hours.
-                                Or just email us directly.
+                                Tell us a little about your project. We'll get back to you within 24 hours.
                             </p>
                         </motion.div>
 
@@ -571,106 +512,76 @@ const Home = () => {
                             variants={fadeUp}
                             transition={{ duration: 0.5, delay: 0.1 }}
                         >
-                            {/* Contact Form */}
                             <form className={styles.contactForm} onSubmit={handleSubmit}>
-                                <div className={styles.formGroup}>
-                                    <label htmlFor="name" className={styles.formLabel}>Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        placeholder="Your full name"
-                                        className={styles.formInput}
-                                        required
-                                    />
+                                <div className={styles.formRow}>
+                                    <div className={styles.formGroup}>
+                                        <label htmlFor="name" className={styles.formLabel}>Name</label>
+                                        <input
+                                            type="text" id="name" name="name"
+                                            value={formData.name} onChange={handleInputChange}
+                                            placeholder="Your name" className={styles.formInput} required
+                                        />
+                                    </div>
+                                    <div className={styles.formGroup}>
+                                        <label htmlFor="email" className={styles.formLabel}>Email</label>
+                                        <input
+                                            type="email" id="email" name="email"
+                                            value={formData.email} onChange={handleInputChange}
+                                            placeholder="you@email.com" className={styles.formInput} required
+                                        />
+                                    </div>
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label htmlFor="email" className={styles.formLabel}>Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        placeholder="you@company.com"
-                                        className={styles.formInput}
-                                        required
-                                    />
-                                </div>
-                                <div className={styles.formGroup}>
-                                    <label htmlFor="projectType" className={styles.formLabel}>Project Type</label>
+                                    <label htmlFor="projectType" className={styles.formLabel}>What do you need?</label>
                                     <select
-                                        id="projectType"
-                                        name="projectType"
-                                        value={formData.projectType}
-                                        onChange={handleInputChange}
-                                        className={styles.formSelect}
-                                        required
+                                        id="projectType" name="projectType"
+                                        value={formData.projectType} onChange={handleInputChange}
+                                        className={styles.formSelect} required
                                     >
-                                        <option value="" disabled>Select a project type</option>
-                                        <option value="website">Website</option>
-                                        <option value="mobile-app">Mobile App</option>
-                                        <option value="custom-software">Custom Software</option>
-                                        <option value="not-sure">Not Sure Yet</option>
+                                        <option value="" disabled>Choose one</option>
+                                        <option value="website">A website</option>
+                                        <option value="web-app">A web application</option>
+                                        <option value="redesign">A redesign of my existing site</option>
+                                        <option value="not-sure">Not sure yet — help me figure it out</option>
                                     </select>
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label htmlFor="message" className={styles.formLabel}>Brief Message</label>
+                                    <label htmlFor="message" className={styles.formLabel}>Tell us more (optional)</label>
                                     <textarea
-                                        id="message"
-                                        name="message"
-                                        value={formData.message}
-                                        onChange={handleInputChange}
-                                        placeholder="Tell us briefly about your project..."
-                                        className={styles.formTextarea}
-                                        rows={3}
+                                        id="message" name="message"
+                                        value={formData.message} onChange={handleInputChange}
+                                        placeholder="What's the idea? What's the goal? Any timeline in mind?"
+                                        className={styles.formTextarea} rows={4}
                                     />
                                 </div>
                                 <button
-                                    type="submit"
-                                    className={styles.formSubmit}
+                                    type="submit" className={styles.formSubmit}
                                     disabled={formStatus === 'sending'}
                                 >
                                     {formStatus === 'sending' ? 'Sending...' :
-                                        formStatus === 'sent' ? '✓ Message Sent!' :
-                                            'Send Message →'}
+                                     formStatus === 'sent' ? '✓ Sent! We\'ll be in touch.' :
+                                     'Send Message →'}
                                 </button>
                             </form>
 
-                            {/* Contact Info */}
                             <div className={styles.contactInfo}>
-                                <div className={styles.contactInfoItem}>
-                                    <span className={styles.contactInfoIcon}>📧</span>
-                                    <div>
-                                        <p className={styles.contactInfoLabel}>Email us directly</p>
+                                <div className={styles.contactInfoCard}>
+                                    <h3 className={styles.contactInfoHeading}>Prefer to reach out directly?</h3>
+                                    <div className={styles.contactInfoItem}>
+                                        <span className={styles.contactInfoIcon}>📧</span>
                                         <a href="mailto:nssitecraftsolution@gmail.com" className={styles.contactInfoValue}>
                                             nssitecraftsolution@gmail.com
                                         </a>
                                     </div>
-                                </div>
-                                <div className={styles.contactInfoItem}>
-                                    <span className={styles.contactInfoIcon}>📱</span>
-                                    <div>
-                                        <p className={styles.contactInfoLabel}>Call us</p>
+                                    <div className={styles.contactInfoItem}>
+                                        <span className={styles.contactInfoIcon}>📱</span>
                                         <a href="tel:+919390969461" className={styles.contactInfoValue}>
                                             +91 93909 69461
                                         </a>
                                     </div>
-                                </div>
-                                <div className={styles.contactInfoItem}>
-                                    <span className={styles.contactInfoIcon}>📍</span>
-                                    <div>
-                                        <p className={styles.contactInfoLabel}>Based in</p>
-                                        <p className={styles.contactInfoValue}>Hyderabad, India</p>
-                                    </div>
-                                </div>
-                                <div className={styles.contactInfoItem}>
-                                    <span className={styles.contactInfoIcon}>⏱️</span>
-                                    <div>
-                                        <p className={styles.contactInfoLabel}>Response time</p>
-                                        <p className={styles.contactInfoValue}>Within 24 hours</p>
+                                    <div className={styles.contactInfoItem}>
+                                        <span className={styles.contactInfoIcon}>📍</span>
+                                        <span className={styles.contactInfoValue}>Hyderabad, India</span>
                                     </div>
                                 </div>
                             </div>

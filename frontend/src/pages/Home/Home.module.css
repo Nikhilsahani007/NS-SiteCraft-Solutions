@@ -1,5 +1,5 @@
 /* ============================================================
-   NS SiteCraft Solutions — One-Page Conversion Website
+   NS SiteCraft Solutions — One-Page Conversion Website v2
    Home.module.css
    ============================================================ */
 
@@ -24,30 +24,32 @@
 
 .heroGlow {
     position: absolute;
-    top: -30%;
-    right: -10%;
-    width: 60%;
-    height: 120%;
-    background: radial-gradient(ellipse at center,
-            rgba(99, 102, 241, 0.08) 0%,
-            rgba(99, 102, 241, 0.03) 40%,
-            transparent 70%);
+    top: -20%;
+    right: -15%;
+    width: 55%;
+    height: 110%;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(99, 102, 241, 0.07) 0%,
+        rgba(99, 102, 241, 0.02) 45%,
+        transparent 70%
+    );
     pointer-events: none;
 }
 
 .heroContent {
     text-align: center;
-    max-width: 860px;
+    max-width: 780px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
 }
 
 .heroTitle {
-    font-size: 3.75rem;
+    font-size: 4rem;
     font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-xl);
 }
@@ -60,18 +62,16 @@
 }
 
 .heroSubtitle {
-    font-size: 1.25rem;
+    font-size: 1.1875rem;
     color: var(--color-text-secondary);
-    line-height: 1.7;
-    max-width: 640px;
+    line-height: 1.75;
+    max-width: 580px;
     margin: 0 auto var(--spacing-2xl);
 }
 
 .heroCta {
     display: flex;
-    gap: var(--spacing-lg);
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 /* Trust Bar */
@@ -80,7 +80,7 @@
     margin-top: auto;
     padding: var(--spacing-lg) 0;
     border-top: 1px solid var(--color-border);
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.015);
 }
 
 .trustBarInner {
@@ -92,27 +92,28 @@
 }
 
 .trustItem {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
-    font-weight: var(--font-weight-medium);
+    font-weight: 500;
     letter-spacing: 0.01em;
 }
 
 .trustDivider {
     width: 1px;
-    height: 16px;
+    height: 14px;
     background: var(--color-border);
 }
 
 /* ════════════════════════════════════════════════════════════
-   SHARED BUTTONS
+   BUTTONS
    ════════════════════════════════════════════════════════════ */
 .btnPrimary,
 .btnPrimaryLight,
 .btnPrimaryLarge {
     display: inline-flex;
     align-items: center;
-    padding: 14px 32px;
+    justify-content: center;
+    padding: 14px 36px;
     background: var(--color-accent);
     color: #ffffff;
     font-size: 1rem;
@@ -131,43 +132,23 @@
     background: var(--color-accent-dark);
     color: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(99, 102, 241, 0.25);
+    box-shadow: 0 8px 28px rgba(99, 102, 241, 0.25);
 }
 
 .btnPrimaryLight {
-    background: var(--color-accent-light);
-    color: #0A1628;
+    background: #ffffff;
+    color: #111827;
 }
 
 .btnPrimaryLight:hover {
-    background: var(--color-accent);
-    color: #ffffff;
+    background: #F1F5F9;
+    color: #111827;
+    box-shadow: 0 8px 28px rgba(255, 255, 255, 0.15);
 }
 
 .btnPrimaryLarge {
-    padding: 18px 40px;
+    padding: 18px 44px;
     font-size: 1.125rem;
-}
-
-.btnSecondary {
-    display: inline-flex;
-    align-items: center;
-    padding: 14px 32px;
-    background: transparent;
-    color: var(--color-text-secondary);
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 9999px;
-    border: 1px solid var(--color-border-light);
-    text-decoration: none;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.btnSecondary:hover {
-    color: var(--color-text-primary);
-    border-color: var(--color-text-muted);
-    background: rgba(255, 255, 255, 0.04);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -176,24 +157,24 @@
 .sectionLabel {
     display: block;
     font-family: var(--font-family-mono);
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: 0.75rem;
+    font-weight: 600;
     color: var(--color-accent);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-align: center;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
 }
 
 .sectionTitle {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2.375rem;
     font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-lg);
-    max-width: 700px;
+    max-width: 680px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -205,7 +186,7 @@
 
 .sectionSubtitle {
     text-align: center;
-    max-width: 600px;
+    max-width: 560px;
     margin: 0 auto var(--spacing-3xl);
     color: var(--color-text-secondary);
     font-size: 1.0625rem;
@@ -223,44 +204,54 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 2: PROBLEM
+   SECTION 2: BENEFITS (What You Get)
    ════════════════════════════════════════════════════════════ */
-.problemSection {
+.benefitsSection {
     padding: 120px 0;
     background: var(--color-bg-secondary);
 }
 
-.painGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.benefitsGrid {
+    display: flex;
+    flex-direction: column;
     gap: var(--spacing-lg);
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 720px;
+    margin: var(--spacing-2xl) auto 0;
 }
 
-.painCard {
+.benefitCard {
     display: flex;
     align-items: flex-start;
-    gap: var(--spacing-md);
+    gap: var(--spacing-lg);
     padding: var(--spacing-xl) var(--spacing-xl);
     background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    border-left: 3px solid var(--color-accent);
     transition: all 0.2s ease;
 }
 
-.painCard:hover {
+.benefitCard:hover {
+    border-color: var(--color-accent-glow);
     background: var(--color-bg-card-hover);
     transform: translateX(4px);
 }
 
-.painIcon {
-    font-size: 1.5rem;
+.benefitIcon {
+    font-size: 1.75rem;
     flex-shrink: 0;
-    line-height: 1;
+    line-height: 1.3;
 }
 
-.painText {
+.benefitTitle {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+}
+
+.benefitDesc {
     color: var(--color-text-secondary);
     font-size: 0.9375rem;
     line-height: 1.65;
@@ -268,49 +259,45 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 3: SERVICES
+   SECTION 3: HOW IT WORKS (3 Steps)
    ════════════════════════════════════════════════════════════ */
-.servicesSection {
+.processSection {
     padding: 120px 0;
     background: #111827;
 }
 
-.servicesGrid {
+.stepsGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-xl);
+    gap: var(--spacing-2xl);
+    max-width: 960px;
+    margin: 0 auto;
 }
 
-.serviceCard {
-    padding: var(--spacing-2xl);
-    border-radius: var(--radius-xl);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(8px);
-    transition: all 0.25s ease;
+.stepCard {
+    position: relative;
 }
 
-.serviceCard:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(99, 102, 241, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-.serviceIcon {
-    font-size: 2.5rem;
+.stepNumber {
+    font-family: var(--font-family-mono);
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(99, 102, 241, 0.12);
+    line-height: 1;
     display: block;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -0.04em;
 }
 
-.serviceTitle {
-    font-size: 1.25rem;
+.stepTitle {
+    font-size: 1.1875rem;
     font-weight: 700;
     color: #F1F5F9;
     margin-bottom: var(--spacing-sm);
     letter-spacing: -0.01em;
 }
 
-.serviceDescription {
+.stepDesc {
     color: #94A3B8;
     font-size: 0.9375rem;
     line-height: 1.7;
@@ -318,9 +305,9 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 4: PROJECTS
+   SECTION 4: WORK / SHOWCASE
    ════════════════════════════════════════════════════════════ */
-.projectsSection {
+.workSection {
     padding: 120px 0;
     background: var(--color-bg-secondary);
 }
@@ -343,7 +330,11 @@
 
 .projectCard:hover {
     border-color: var(--color-accent);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.projectHeader {
+    margin-bottom: var(--spacing-sm);
 }
 
 .projectCategory {
@@ -353,7 +344,6 @@
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: var(--spacing-sm);
 }
 
 .projectTitle {
@@ -388,97 +378,125 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 5: PROCESS / HOW IT WORKS
+   SECTION 5: WHY CHOOSE US
    ════════════════════════════════════════════════════════════ */
-.processSection {
+.whySection {
     padding: 120px 0;
     background: #111827;
 }
 
-.stepsGrid {
+.whyGrid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-2xl);
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.stepCard {
-    text-align: left;
-    position: relative;
-}
-
-.stepNumber {
-    font-family: var(--font-family-mono);
-    font-size: 4.5rem;
-    font-weight: 700;
-    color: rgba(99, 102, 241, 0.15);
-    line-height: 1;
-    display: block;
-    margin-bottom: var(--spacing-md);
-    letter-spacing: -0.04em;
-}
-
-.stepTitle {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #F1F5F9;
-    margin-bottom: var(--spacing-sm);
-    letter-spacing: -0.01em;
-}
-
-.stepDescription {
-    color: #94A3B8;
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    margin: 0;
-}
-
-/* ════════════════════════════════════════════════════════════
-   SECTION 6: WHY CHOOSE US
-   ════════════════════════════════════════════════════════════ */
-.whySection {
-    padding: 120px 0;
-    background: var(--color-bg-secondary);
-}
-
-.advantagesGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-xl);
+    max-width: 800px;
+    margin: var(--spacing-2xl) auto 0;
 }
 
-.advantageCard {
-    padding: var(--spacing-xl) var(--spacing-xl);
+.whyCard {
+    padding: var(--spacing-xl);
     border-radius: var(--radius-lg);
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     transition: all 0.2s ease;
 }
 
-.advantageCard:hover {
-    border-color: var(--color-border-light);
-    background: var(--color-bg-card-hover);
+.whyCard:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(99, 102, 241, 0.25);
 }
 
-.advantageIcon {
-    font-size: 1.75rem;
+.whyIcon {
+    font-size: 1.5rem;
     display: block;
     margin-bottom: var(--spacing-md);
 }
 
-.advantageTitle {
+.whyTitle {
     font-size: 1.0625rem;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: #F1F5F9;
     margin-bottom: 6px;
     letter-spacing: -0.01em;
 }
 
-.advantageDescription {
-    color: var(--color-text-secondary);
+.whyDesc {
+    color: #94A3B8;
     font-size: 0.875rem;
     line-height: 1.65;
+    margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SECTION 6: TESTIMONIALS
+   ════════════════════════════════════════════════════════════ */
+.testimonialsSection {
+    padding: 120px 0;
+    background: var(--color-bg-secondary);
+}
+
+.testimonialsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+}
+
+.testimonialCard {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonialStars {
+    font-size: 0.875rem;
+    color: #FBBF24;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-md);
+}
+
+.testimonialQuote {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--spacing-xl);
+    flex-grow: 1;
+    font-style: italic;
+}
+
+.testimonialAuthor {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.testimonialAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.testimonialName {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.testimonialRole {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
     margin: 0;
 }
 
@@ -486,31 +504,32 @@
    SECTION 7: FINAL CTA
    ════════════════════════════════════════════════════════════ */
 .finalCtaSection {
-    padding: 160px 0;
-    background: linear-gradient(180deg,
-            #0A1628 0%,
-            #0F172A 50%,
-            #111827 100%);
-    position: relative;
+    padding: 140px 0;
+    background: linear-gradient(
+        180deg,
+        #0A1628 0%,
+        #0F172A 50%,
+        #111827 100%
+    );
 }
 
 .finalCtaContent {
     text-align: center;
-    max-width: 650px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
 .finalCtaTitle {
-    font-size: 2.75rem;
+    font-size: 2.5rem;
     font-weight: 800;
     color: #F1F5F9;
-    line-height: 1.12;
+    line-height: 1.15;
     letter-spacing: -0.03em;
     margin-bottom: var(--spacing-lg);
 }
 
 .finalCtaSubtitle {
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     color: #94A3B8;
     line-height: 1.7;
     margin-bottom: var(--spacing-2xl);
@@ -532,16 +551,21 @@
 
 .contactGrid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: 1.3fr 0.7fr;
     gap: var(--spacing-3xl);
-    max-width: 900px;
+    max-width: 880px;
     margin: 0 auto;
 }
 
-/* Form */
 .contactForm {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-lg);
 }
 
@@ -552,8 +576,8 @@
 }
 
 .formLabel {
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 0.8125rem;
+    font-weight: 600;
     color: var(--color-text-primary);
 }
 
@@ -566,8 +590,9 @@
     border-radius: var(--radius-md);
     color: var(--color-text-primary);
     font-size: 0.9375rem;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
+    outline: none;
 }
 
 .formInput:focus,
@@ -592,11 +617,11 @@
 
 .formTextarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px;
 }
 
 .formSubmit {
-    padding: 14px 32px;
+    padding: 14px 36px;
     background: var(--color-accent);
     color: #ffffff;
     font-size: 1rem;
@@ -619,38 +644,47 @@
     cursor: not-allowed;
 }
 
-/* Contact Info Sidebar */
+/* Contact Info */
 .contactInfo {
     display: flex;
+    align-items: flex-start;
+    padding-top: var(--spacing-md);
+}
+
+.contactInfoCard {
+    display: flex;
     flex-direction: column;
-    gap: var(--spacing-xl);
-    padding-top: var(--spacing-xl);
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    width: 100%;
+}
+
+.contactInfoHeading {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
 }
 
 .contactInfoItem {
     display: flex;
-    gap: var(--spacing-md);
-    align-items: flex-start;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 
 .contactInfoIcon {
-    font-size: 1.25rem;
+    font-size: 1rem;
     flex-shrink: 0;
-    line-height: 1.4;
-}
-
-.contactInfoLabel {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    margin: 0 0 2px;
 }
 
 .contactInfoValue {
-    font-size: 0.9375rem;
-    color: var(--color-text-primary);
-    font-weight: 500;
-    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
     text-decoration: none;
+    transition: color 0.15s ease;
 }
 
 a.contactInfoValue:hover {
@@ -658,7 +692,7 @@ a.contactInfoValue:hover {
 }
 
 /* ════════════════════════════════════════════════════════════
-   RESPONSIVE — TABLET (768px)
+   RESPONSIVE — TABLET
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
     .hero {
@@ -667,33 +701,27 @@ a.contactInfoValue:hover {
     }
 
     .heroTitle {
-        font-size: 2.25rem;
-        letter-spacing: -0.02em;
+        font-size: 2.5rem;
     }
 
     .heroSubtitle {
         font-size: 1.0625rem;
     }
 
-    .heroCta {
-        gap: var(--spacing-md);
-    }
-
     .trustBarInner {
         flex-direction: column;
-        gap: var(--spacing-sm);
+        gap: var(--spacing-xs);
     }
 
     .trustDivider {
         display: none;
     }
 
-    /* Sections */
-    .problemSection,
-    .servicesSection,
-    .projectsSection,
+    .benefitsSection,
     .processSection,
+    .workSection,
     .whySection,
+    .testimonialsSection,
     .contactSection {
         padding: 80px 0;
     }
@@ -707,14 +735,13 @@ a.contactInfoValue:hover {
         font-size: 1.875rem;
     }
 
-    .painGrid {
+    .stepsGrid,
+    .projectsGrid,
+    .testimonialsGrid {
         grid-template-columns: 1fr;
     }
 
-    .servicesGrid,
-    .projectsGrid,
-    .stepsGrid,
-    .advantagesGrid {
+    .whyGrid {
         grid-template-columns: 1fr;
     }
 
@@ -723,8 +750,12 @@ a.contactInfoValue:hover {
         gap: var(--spacing-2xl);
     }
 
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+
     .finalCtaTitle {
-        font-size: 2rem;
+        font-size: 1.875rem;
     }
 
     .stepNumber {
@@ -737,42 +768,39 @@ a.contactInfoValue:hover {
 }
 
 /* ════════════════════════════════════════════════════════════
-   RESPONSIVE — MOBILE (480px)
+   RESPONSIVE — MOBILE
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     .heroTitle {
-        font-size: 1.875rem;
+        font-size: 2rem;
     }
 
     .heroSubtitle {
-        font-size: 1rem;
-    }
-
-    .heroCta {
-        flex-direction: column;
-        align-items: center;
+        font-size: 0.9375rem;
     }
 
     .btnPrimary,
-    .btnSecondary,
     .btnPrimaryLight,
     .btnPrimaryLarge {
         width: 100%;
-        justify-content: center;
-        text-align: center;
     }
 
     .sectionTitle,
     .sectionTitleLight {
-        font-size: 1.625rem;
+        font-size: 1.5rem;
     }
 
     .finalCtaTitle {
-        font-size: 1.625rem;
+        font-size: 1.5rem;
     }
 
     .btnPrimaryLarge {
         padding: 16px 32px;
         font-size: 1rem;
+    }
+
+    .benefitCard {
+        flex-direction: column;
+        gap: var(--spacing-sm);
     }
 }
