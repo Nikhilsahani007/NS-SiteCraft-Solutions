@@ -21,7 +21,7 @@ const Header = () => {
     useEffect(() => {
         if (!isHomePage) return;
 
-        const sectionIds = ['benefits', 'work', 'process', 'contact'];
+        const sectionIds = ['about', 'services', 'work', 'contact'];
         const observers = [];
 
         const handleIntersect = (entries) => {
@@ -69,9 +69,9 @@ const Header = () => {
 
     // Navigation links for homepage (smooth scroll) vs other pages
     const homeNavLinks = [
-        { id: 'benefits', label: 'Benefits' },
+        { id: 'about', label: 'About' },
+        { id: 'services', label: 'Services' },
         { id: 'work', label: 'Work' },
-        { id: 'process', label: 'Process' },
         { id: 'contact', label: 'Contact' },
     ];
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import PageTransition from '../../components/PageTransition/PageTransition';
 import SEOHead from '../../components/SEOHead/SEOHead';
@@ -48,69 +48,103 @@ const Home = () => {
         }
     };
 
+    // ── Animated Stats Counter ──
+    const useCountUp = (end, duration = 2000) => {
+        const [count, setCount] = useState(0);
+        const ref = useRef(null);
+        const counted = useRef(false);
+
+        useEffect(() => {
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting && !counted.current) {
+                        counted.current = true;
+                        const startTime = Date.now();
+                        const animate = () => {
+                            const elapsed = Date.now() - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const eased = 1 - Math.pow(1 - progress, 3);
+                            setCount(Math.floor(eased * end));
+                            if (progress < 1) requestAnimationFrame(animate);
+                        };
+                        requestAnimationFrame(animate);
+                    }
+                },
+                { threshold: 0.3 }
+            );
+            if (ref.current) observer.observe(ref.current);
+            return () => observer.disconnect();
+        }, [end, duration]);
+
+        return [count, ref];
+    };
+
     // ── DATA ──────────────────────────────────────────
 
-    const benefits = [
+    const services = [
         {
-            icon: '🎯',
-            title: 'A website that actually brings you customers',
-            description: 'Not just a pretty page. A fast, clean, search-friendly website designed to turn visitors into paying clients.',
+            icon: '🌐',
+            title: 'Web Design & Development',
+            description: 'Professional websites that look great, load fast, and convert visitors into customers.',
+            items: ['Business Websites', 'Landing Pages', 'E-Commerce Stores', 'Website Redesigns'],
         },
         {
-            icon: '⚡',
-            title: 'Go from idea to live website in weeks, not months',
-            description: 'We move fast without cutting corners. You get a finished, polished product — not an endless "work in progress."',
+            icon: '⚙️',
+            title: 'Software Development',
+            description: 'Custom-built web applications and backend systems tailored to your specific business needs.',
+            items: ['Custom Web Apps', 'Management Systems', 'API & Backend Development', 'Process Automation'],
         },
         {
-            icon: '🧘',
-            title: 'Zero tech headaches — we handle everything',
-            description: 'You focus on your business. We take care of design, development, hosting, and all the technical details.',
-        },
-        {
-            icon: '📈',
-            title: 'A digital presence that grows with your business',
-            description: 'Built to scale. As your business evolves, your website evolves with it — no starting over from scratch.',
+            icon: '📊',
+            title: 'Digital Strategy',
+            description: 'Technical consulting to help you make smart decisions about your digital presence and infrastructure.',
+            items: ['SEO Foundation', 'Performance Optimization', 'Analytics Setup', 'Technical Consulting'],
         },
     ];
 
     const processSteps = [
         {
             num: '01',
-            title: 'Tell us your idea',
-            description: 'We hop on a quick call. You share your vision, your goals, your timeline. We listen, ask the right questions, and figure out exactly what you need.',
+            title: 'Discover',
+            description: 'We start with a conversation. You share your goals, your audience, and your timeline. We ask the right questions to build a clear project brief.',
         },
         {
             num: '02',
-            title: 'We design & build it',
-            description: 'We get to work — designing, developing, and keeping you in the loop at every step. No disappearing acts. You see real progress every week.',
+            title: 'Design',
+            description: 'You see wireframes and visual mockups before we write a single line of code. Nothing moves forward until you approve the direction.',
         },
         {
             num: '03',
-            title: 'Launch & grow',
-            description: 'We launch your website, make sure everything runs smoothly, and stick around for support. Your success is our success.',
+            title: 'Develop',
+            description: 'We build with clean, modern code — keeping you updated with weekly progress. No disappearing acts. You see real results every step of the way.',
+        },
+        {
+            num: '04',
+            title: 'Deploy',
+            description: 'We launch your project, run final tests, optimize performance, and provide hands-on support. Your success doesn\'t end at deployment.',
         },
     ];
 
-    const whyPoints = [
+    const benefits = [
         {
-            icon: '💬',
-            title: 'We communicate like humans',
-            description: 'No jargon. No confusing emails. Just clear, honest updates so you always know what\'s happening.',
+            icon: '🎯',
+            title: 'A website that generates leads',
+            description: 'Not just a pretty page. A fast, search-optimized, mobile-ready website designed to turn visitors into paying clients — with clear CTAs and conversion-focused structure.',
         },
         {
-            icon: '🚀',
-            title: 'We deliver fast — and we mean it',
-            description: 'Most projects go live in 3–6 weeks. We respect your time and your deadlines.',
+            icon: '⚡',
+            title: 'Launch-ready in 3–6 weeks',
+            description: 'We move fast without cutting corners. Most projects go from first call to live launch within 3–6 weeks. You get a finished product, not an endless "work in progress."',
         },
         {
-            icon: '🎨',
-            title: 'Design that looks premium, not templated',
-            description: 'Every website is custom-built. No cookie-cutter templates. Your brand deserves better.',
+            icon: '🔑',
+            title: 'Full ownership of everything',
+            description: 'Your code, your domain, your hosting — it\'s all yours. No vendor lock-in, no hidden dependencies. You own 100% of what we build for you.',
         },
         {
             icon: '🤝',
-            title: 'We don\'t vanish after launch',
-            description: 'Need a tweak? Have a question? We\'re here. Post-launch support is part of the deal.',
+            title: 'A partner, not a vendor',
+            description: 'We don\'t disappear after launch. Need a tweak? Have a question? Want to add a feature? Post-launch support and guidance is part of every engagement.',
         },
     ];
 
@@ -119,24 +153,34 @@ const Home = () => {
             quote: 'I had a rough idea and a tight budget. NS SiteCraft turned it into a website I\'m genuinely proud of. They explained everything in simple terms and delivered exactly what they promised.',
             name: 'Arjun Mehta',
             role: 'Founder, FreshCart Groceries',
+            context: 'E-commerce website',
         },
         {
             quote: 'Working with NS SiteCraft felt different from every other developer I\'ve tried. They actually listened, kept me updated, and launched on time. That\'s rare.',
             name: 'Priya Sharma',
             role: 'Owner, Bloom Studio',
+            context: 'Business website',
         },
         {
-            quote: 'I don\'t understand tech at all, and that was never a problem. They handled everything — from design to going live. My business has gotten more leads in the last month than the past quarter.',
+            quote: 'I don\'t understand tech at all, and that was never a problem. They handled everything — from design to going live. My business has gotten more inquiries in the last month than the past quarter.',
             name: 'Rahul Desai',
             role: 'Director, Nexus Consulting',
+            context: 'Corporate website + SEO',
         },
+    ];
+
+    const stats = [
+        { value: 15, suffix: '+', label: 'Projects Delivered' },
+        { value: 98, suffix: '%', label: 'On-Time Delivery' },
+        { value: 4, suffix: ' weeks', label: 'Avg. Turnaround' },
+        { value: 24, suffix: 'hr', label: 'Response Time' },
     ];
 
     const localBusinessSchema = {
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
         name: 'NS SiteCraft Solutions',
-        description: 'We build clean, modern websites and digital products for startups, small businesses, and individuals.',
+        description: 'We build websites, web applications, and custom software for startups and small businesses in Hyderabad.',
         url: 'https://ns-sitecraft-solutions.vercel.app',
         logo: 'https://ns-sitecraft-solutions.vercel.app/favicon.svg',
         address: {
@@ -148,13 +192,21 @@ const Home = () => {
         priceRange: '₹₹',
     };
 
+    // Stats counter hooks
+    const [stat0, stat0Ref] = useCountUp(stats[0].value);
+    const [stat1, stat1Ref] = useCountUp(stats[1].value);
+    const [stat2, stat2Ref] = useCountUp(stats[2].value);
+    const [stat3, stat3Ref] = useCountUp(stats[3].value);
+    const statValues = [stat0, stat1, stat2, stat3];
+    const statRefs = [stat0Ref, stat1Ref, stat2Ref, stat3Ref];
+
     return (
         <PageTransition>
             <SEOHead
-                title="NS SiteCraft Solutions — Your Idea, Built Right"
-                description="We build clean, modern websites for startups and small businesses. From idea to live product — fast, affordable, and built to grow."
+                title="NS SiteCraft Solutions — Digital Solutions That Help Your Business Grow"
+                description="We design and build websites, web applications, and custom software for startups and small businesses ready to establish a strong digital presence. Based in Hyderabad."
                 canonicalPath="/"
-                keywords="website development, startup website, small business website, web design, affordable web development, custom website"
+                keywords="website development, startup website, small business website, web design Hyderabad, custom software development, web application development"
                 structuredData={[localBusinessSchema]}
             />
 
@@ -172,18 +224,24 @@ const Home = () => {
                             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                             className={styles.heroContent}
                         >
+                            <span className={styles.heroBadge}>
+                                🚀 MSME Registered · Based in Hyderabad
+                            </span>
                             <h1 className={styles.heroTitle}>
-                                You have an idea.
+                                Digital Solutions That Help
                                 <br />
-                                <span className={styles.heroTitleAccent}>We'll build it.</span>
+                                <span className={styles.heroTitleAccent}>Your Business Grow</span>
                             </h1>
                             <p className={styles.heroSubtitle}>
-                                NS SiteCraft Solutions helps startups, small businesses, and individuals
-                                turn ideas into clean, modern websites — fast, affordable, and without the tech headaches.
+                                We design and build websites, web applications, and custom software
+                                for startups and small businesses ready to establish a strong digital presence.
                             </p>
                             <div className={styles.heroCta}>
                                 <a href="#contact" className={styles.btnPrimary} onClick={scrollTo('contact')}>
                                     Start Your Project →
+                                </a>
+                                <a href="#work" className={styles.btnSecondary} onClick={scrollTo('work')}>
+                                    See Our Work
                                 </a>
                             </div>
                         </motion.div>
@@ -197,9 +255,11 @@ const Home = () => {
                     >
                         <div className="container">
                             <div className={styles.trustBarInner}>
-                                <span className={styles.trustItem}>✓ 50+ Projects Delivered</span>
+                                <span className={styles.trustItem}>✓ MSME Registered</span>
                                 <span className={styles.trustDivider} />
-                                <span className={styles.trustItem}>✓ Trusted by Startups & SMBs</span>
+                                <span className={styles.trustItem}>✓ 15+ Projects Delivered</span>
+                                <span className={styles.trustDivider} />
+                                <span className={styles.trustItem}>✓ Based in Hyderabad, India</span>
                                 <span className={styles.trustDivider} />
                                 <span className={styles.trustItem}>✓ End-to-End Development</span>
                             </div>
@@ -208,7 +268,176 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 2: WHAT YOU GET (Benefits)
+                    SECTION 2: ABOUT
+                ═══════════════════════════════════════════ */}
+                <section className={styles.aboutSection} id="about">
+                    <div className="container">
+                        <motion.div
+                            className={styles.aboutGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-80px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <div className={styles.aboutContent}>
+                                <span className={styles.sectionLabel}>WHO WE ARE</span>
+                                <h2 className={styles.sectionTitle} style={{ textAlign: 'left' }}>
+                                    A Small Team Solving
+                                    <br />Real Business Problems
+                                </h2>
+                                <p className={styles.aboutText}>
+                                    NS SiteCraft Solutions is a Hyderabad-based digital agency founded with one
+                                    clear belief: every business deserves a professional digital presence — regardless
+                                    of size or budget.
+                                </p>
+                                <p className={styles.aboutText}>
+                                    We're a focused team of developers and designers who build digital products that
+                                    solve real problems. No over-promising. No enterprise jargon. Just honest work
+                                    that helps your business grow online.
+                                </p>
+                            </div>
+                            <div className={styles.aboutValues}>
+                                <div className={styles.aboutValueCard}>
+                                    <span className={styles.aboutValueIcon}>🎯</span>
+                                    <div>
+                                        <h4 className={styles.aboutValueTitle}>Outcome-Focused</h4>
+                                        <p className={styles.aboutValueDesc}>We measure success by your results, not just deliverables.</p>
+                                    </div>
+                                </div>
+                                <div className={styles.aboutValueCard}>
+                                    <span className={styles.aboutValueIcon}>💬</span>
+                                    <div>
+                                        <h4 className={styles.aboutValueTitle}>Transparent Process</h4>
+                                        <p className={styles.aboutValueDesc}>Weekly updates, clear timelines, no surprises.</p>
+                                    </div>
+                                </div>
+                                <div className={styles.aboutValueCard}>
+                                    <span className={styles.aboutValueIcon}>⚡</span>
+                                    <div>
+                                        <h4 className={styles.aboutValueTitle}>Fast Execution</h4>
+                                        <p className={styles.aboutValueDesc}>Most projects go live within 3–6 weeks.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 3: SERVICES (NatSoft-inspired grid)
+                ═══════════════════════════════════════════ */}
+                <section className={styles.servicesSection} id="services">
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-80px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className={styles.sectionLabelLight}>WHAT WE DO</span>
+                            <h2 className={styles.sectionTitleLight}>
+                                Services Built Around
+                                <br />Your Business Needs
+                            </h2>
+                            <p className={styles.sectionSubtitleLight}>
+                                We don't do everything. We do three things really well — and we make sure
+                                each one directly impacts your bottom line.
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.servicesGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={stagger}
+                        >
+                            {services.map((service, i) => (
+                                <motion.div
+                                    key={i}
+                                    className={styles.serviceCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <span className={styles.serviceIcon}>{service.icon}</span>
+                                    <h3 className={styles.serviceTitle}>{service.title}</h3>
+                                    <p className={styles.serviceDesc}>{service.description}</p>
+                                    <ul className={styles.serviceList}>
+                                        {service.items.map((item, j) => (
+                                            <li key={j} className={styles.serviceListItem}>
+                                                <span className={styles.serviceListBullet}>→</span>
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.sectionCta}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                            <a href="#contact" className={styles.btnPrimaryLight} onClick={scrollTo('contact')}>
+                                Discuss Your Project →
+                            </a>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 4: PROCESS (4-Step Workflow)
+                ═══════════════════════════════════════════ */}
+                <section className={styles.processSection} id="process">
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-80px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className={styles.sectionLabel}>HOW WE WORK</span>
+                            <h2 className={styles.sectionTitle}>
+                                A Clear Process. No Guesswork.
+                            </h2>
+                            <p className={styles.sectionSubtitle}>
+                                Every project follows the same proven workflow — so you always know
+                                what's happening, what's next, and when it'll be done.
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.stepsGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={stagger}
+                        >
+                            {processSteps.map((step, i) => (
+                                <motion.div
+                                    key={i}
+                                    className={styles.stepCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <span className={styles.stepNumber}>{step.num}</span>
+                                    <h3 className={styles.stepTitle}>{step.title}</h3>
+                                    <p className={styles.stepDesc}>{step.description}</p>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 5: SOLUTIONS / BENEFITS
                 ═══════════════════════════════════════════ */}
                 <section className={styles.benefitsSection} id="benefits">
                     <div className="container">
@@ -219,10 +448,10 @@ const Home = () => {
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className={styles.sectionLabel}>WHAT YOU GET</span>
-                            <h2 className={styles.sectionTitle}>
-                                It's not about the website.
-                                <br />It's about what the website does for you.
+                            <span className={styles.sectionLabelLight}>WHAT YOU GET</span>
+                            <h2 className={styles.sectionTitleLight}>
+                                Real Outcomes,
+                                <br />Not Just Deliverables
                             </h2>
                         </motion.div>
 
@@ -252,64 +481,7 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 3: HOW IT WORKS (3 Steps)
-                ═══════════════════════════════════════════ */}
-                <section className={styles.processSection} id="process">
-                    <div className="container">
-                        <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-80px' }}
-                            variants={fadeUp}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <span className={styles.sectionLabel}>HOW IT WORKS</span>
-                            <h2 className={styles.sectionTitleLight}>
-                                Three steps. That's it.
-                            </h2>
-                            <p className={styles.sectionSubtitleLight}>
-                                No complicated processes. No confusing timelines. Just a clear path from your idea to a live product.
-                            </p>
-                        </motion.div>
-
-                        <motion.div
-                            className={styles.stepsGrid}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-50px' }}
-                            variants={stagger}
-                        >
-                            {processSteps.map((step, i) => (
-                                <motion.div
-                                    key={i}
-                                    className={styles.stepCard}
-                                    variants={fadeUp}
-                                    transition={{ duration: 0.4 }}
-                                >
-                                    <span className={styles.stepNumber}>{step.num}</span>
-                                    <h3 className={styles.stepTitle}>{step.title}</h3>
-                                    <p className={styles.stepDesc}>{step.description}</p>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-
-                        <motion.div
-                            className={styles.sectionCta}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            variants={fadeUp}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                        >
-                            <a href="#contact" className={styles.btnPrimaryLight} onClick={scrollTo('contact')}>
-                                Book a Free Call →
-                            </a>
-                        </motion.div>
-                    </div>
-                </section>
-
-                {/* ═══════════════════════════════════════════
-                    SECTION 4: SHOWCASE / WORK
+                    SECTION 6: PORTFOLIO / WORK
                 ═══════════════════════════════════════════ */}
                 <section className={styles.workSection} id="work">
                     <div className="container">
@@ -322,10 +494,11 @@ const Home = () => {
                         >
                             <span className={styles.sectionLabel}>OUR WORK</span>
                             <h2 className={styles.sectionTitle}>
-                                Built with care. Shipped with confidence.
+                                Projects We've Built
                             </h2>
                             <p className={styles.sectionSubtitle}>
-                                Every project started as an idea. Here's what they became.
+                                Real solutions for real businesses. Here's a look at the work
+                                we've shipped and the outcomes we've delivered.
                             </p>
                         </motion.div>
 
@@ -361,49 +534,7 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 5: WHY CHOOSE US
-                ═══════════════════════════════════════════ */}
-                <section className={styles.whySection}>
-                    <div className="container">
-                        <motion.div
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-80px' }}
-                            variants={fadeUp}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <span className={styles.sectionLabel}>WHY US</span>
-                            <h2 className={styles.sectionTitleLight}>
-                                There are thousands of developers.
-                                <br />Here's why people choose us.
-                            </h2>
-                        </motion.div>
-
-                        <motion.div
-                            className={styles.whyGrid}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: '-50px' }}
-                            variants={stagger}
-                        >
-                            {whyPoints.map((item, i) => (
-                                <motion.div
-                                    key={i}
-                                    className={styles.whyCard}
-                                    variants={fadeUp}
-                                    transition={{ duration: 0.4 }}
-                                >
-                                    <span className={styles.whyIcon}>{item.icon}</span>
-                                    <h3 className={styles.whyTitle}>{item.title}</h3>
-                                    <p className={styles.whyDesc}>{item.description}</p>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    </div>
-                </section>
-
-                {/* ═══════════════════════════════════════════
-                    SECTION 6: TESTIMONIALS
+                    SECTION 7: TESTIMONIALS
                 ═══════════════════════════════════════════ */}
                 <section className={styles.testimonialsSection}>
                     <div className="container">
@@ -414,9 +545,9 @@ const Home = () => {
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className={styles.sectionLabel}>WHAT PEOPLE SAY</span>
-                            <h2 className={styles.sectionTitle}>
-                                Don't take our word for it.
+                            <span className={styles.sectionLabelLight}>CLIENT FEEDBACK</span>
+                            <h2 className={styles.sectionTitleLight}>
+                                What Our Clients Say
                             </h2>
                         </motion.div>
 
@@ -438,14 +569,17 @@ const Home = () => {
                                     <blockquote className={styles.testimonialQuote}>
                                         "{t.quote}"
                                     </blockquote>
-                                    <div className={styles.testimonialAuthor}>
-                                        <div className={styles.testimonialAvatar}>
-                                            {t.name.charAt(0)}
+                                    <div className={styles.testimonialFooter}>
+                                        <div className={styles.testimonialAuthor}>
+                                            <div className={styles.testimonialAvatar}>
+                                                {t.name.charAt(0)}
+                                            </div>
+                                            <div>
+                                                <p className={styles.testimonialName}>{t.name}</p>
+                                                <p className={styles.testimonialRole}>{t.role}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className={styles.testimonialName}>{t.name}</p>
-                                            <p className={styles.testimonialRole}>{t.role}</p>
-                                        </div>
+                                        <span className={styles.testimonialContext}>{t.context}</span>
                                     </div>
                                 </motion.div>
                             ))}
@@ -454,7 +588,37 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 7: FINAL CTA
+                    SECTION 8: STATS
+                ═══════════════════════════════════════════ */}
+                <section className={styles.statsSection}>
+                    <div className="container">
+                        <motion.div
+                            className={styles.statsGrid}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={stagger}
+                        >
+                            {stats.map((stat, i) => (
+                                <motion.div
+                                    key={i}
+                                    className={styles.statCard}
+                                    variants={fadeUp}
+                                    transition={{ duration: 0.4 }}
+                                    ref={statRefs[i]}
+                                >
+                                    <span className={styles.statValue}>
+                                        {statValues[i]}{stat.suffix}
+                                    </span>
+                                    <span className={styles.statLabel}>{stat.label}</span>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 9: FINAL CTA
                 ═══════════════════════════════════════════ */}
                 <section className={styles.finalCtaSection}>
                     <div className="container">
@@ -467,11 +631,12 @@ const Home = () => {
                             className={styles.finalCtaContent}
                         >
                             <h2 className={styles.finalCtaTitle}>
-                                You've scrolled this far.
-                                <br />That means you're serious.
+                                Ready to Build
+                                <br />Something Real?
                             </h2>
                             <p className={styles.finalCtaSubtitle}>
-                                Let's stop thinking about it and start building it. One quick conversation is all it takes to get started.
+                                Every great project starts with a conversation. Tell us about your idea —
+                                we'll respond within 24 hours with a clear plan and honest estimate.
                             </p>
                             <a href="#contact" className={styles.btnPrimaryLarge} onClick={scrollTo('contact')}>
                                 Start Your Project →
@@ -484,7 +649,7 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 8: CONTACT
+                    SECTION 10: CONTACT
                 ═══════════════════════════════════════════ */}
                 <section className={styles.contactSection} id="contact">
                     <div className="container">
@@ -495,12 +660,13 @@ const Home = () => {
                             variants={fadeUp}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className={styles.sectionLabel}>LET'S TALK</span>
+                            <span className={styles.sectionLabel}>GET IN TOUCH</span>
                             <h2 className={styles.sectionTitle}>
-                                Ready? Let's make it happen.
+                                Let's Make It Happen
                             </h2>
                             <p className={styles.sectionSubtitle}>
-                                Tell us a little about your project. We'll get back to you within 24 hours.
+                                Tell us about your project. We'll get back to you within 24 hours
+                                with a clear next step.
                             </p>
                         </motion.div>
 
@@ -539,9 +705,11 @@ const Home = () => {
                                         className={styles.formSelect} required
                                     >
                                         <option value="" disabled>Choose one</option>
-                                        <option value="website">A website</option>
+                                        <option value="website">A business website</option>
                                         <option value="web-app">A web application</option>
+                                        <option value="software">Custom software / backend</option>
                                         <option value="redesign">A redesign of my existing site</option>
+                                        <option value="consulting">Technical consulting</option>
                                         <option value="not-sure">Not sure yet — help me figure it out</option>
                                     </select>
                                 </div>
@@ -550,7 +718,7 @@ const Home = () => {
                                     <textarea
                                         id="message" name="message"
                                         value={formData.message} onChange={handleInputChange}
-                                        placeholder="What's the idea? What's the goal? Any timeline in mind?"
+                                        placeholder="What's the idea? Who's it for? Any timeline in mind?"
                                         className={styles.formTextarea} rows={4}
                                     />
                                 </div>
@@ -583,6 +751,11 @@ const Home = () => {
                                         <span className={styles.contactInfoIcon}>📍</span>
                                         <span className={styles.contactInfoValue}>Hyderabad, India</span>
                                     </div>
+                                    <div className={styles.contactInfoDivider} />
+                                    <p className={styles.contactInfoNote}>
+                                        We typically respond within 24 hours. For urgent projects,
+                                        call us directly.
+                                    </p>
                                 </div>
                             </div>
                         </motion.div>

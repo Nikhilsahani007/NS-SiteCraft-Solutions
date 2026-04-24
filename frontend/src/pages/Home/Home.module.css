@@ -1,6 +1,6 @@
 /* ============================================================
-   NS SiteCraft Solutions — One-Page Conversion Website v2
-   Home.module.css
+   NS SiteCraft Solutions — One-Page Professional Website
+   Home.module.css — Complete Redesign
    ============================================================ */
 
 .home {
@@ -39,10 +39,24 @@
 
 .heroContent {
     text-align: center;
-    max-width: 780px;
+    max-width: 800px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+}
+
+.heroBadge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 9999px;
+    font-family: var(--font-family-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-accent-light);
+    letter-spacing: 0.04em;
+    margin-bottom: var(--spacing-xl);
 }
 
 .heroTitle {
@@ -65,13 +79,14 @@
     font-size: 1.1875rem;
     color: var(--color-text-secondary);
     line-height: 1.75;
-    max-width: 580px;
+    max-width: 600px;
     margin: 0 auto var(--spacing-2xl);
 }
 
 .heroCta {
     display: flex;
     justify-content: center;
+    gap: var(--spacing-md);
 }
 
 /* Trust Bar */
@@ -135,6 +150,30 @@
     box-shadow: 0 8px 28px rgba(99, 102, 241, 0.25);
 }
 
+.btnSecondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 36px;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid var(--color-border-light);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+}
+
+.btnSecondary:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-2px);
+}
+
 .btnPrimaryLight {
     background: #ffffff;
     color: #111827;
@@ -166,9 +205,14 @@
     margin-bottom: var(--spacing-md);
 }
 
+.sectionLabelLight {
+    composes: sectionLabel;
+    color: var(--color-accent-light);
+}
+
 .sectionTitle {
     text-align: center;
-    font-size: 2.375rem;
+    font-size: 2.5rem;
     font-weight: 700;
     line-height: 1.18;
     letter-spacing: -0.025em;
@@ -204,18 +248,234 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 2: BENEFITS (What You Get)
+   SECTION 2: ABOUT
    ════════════════════════════════════════════════════════════ */
-.benefitsSection {
+.aboutSection {
     padding: 120px 0;
     background: var(--color-bg-secondary);
 }
 
-.benefitsGrid {
+.aboutGrid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--spacing-4xl);
+    align-items: start;
+    max-width: 1060px;
+    margin: 0 auto;
+}
+
+.aboutContent {}
+
+.aboutText {
+    font-size: 1.0625rem;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    margin-bottom: var(--spacing-lg);
+}
+
+.aboutValues {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
-    max-width: 720px;
+}
+
+.aboutValueCard {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s ease;
+}
+
+.aboutValueCard:hover {
+    border-color: var(--color-accent-glow);
+    background: var(--color-bg-card-hover);
+}
+
+.aboutValueIcon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    line-height: 1.3;
+}
+
+.aboutValueTitle {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+    letter-spacing: -0.01em;
+}
+
+.aboutValueDesc {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SECTION 3: SERVICES (NatSoft-inspired grid)
+   ════════════════════════════════════════════════════════════ */
+.servicesSection {
+    padding: 120px 0;
+    background: #111827;
+}
+
+.servicesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+.serviceCard {
+    padding: var(--spacing-2xl);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.serviceCard:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.serviceIcon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: var(--spacing-lg);
+}
+
+.serviceTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #F1F5F9;
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: -0.01em;
+}
+
+.serviceDesc {
+    font-size: 0.9375rem;
+    color: #94A3B8;
+    line-height: 1.65;
+    margin-bottom: var(--spacing-xl);
+}
+
+.serviceList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: var(--spacing-lg);
+}
+
+.serviceListItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: #CBD5E1;
+    font-weight: 500;
+}
+
+.serviceListBullet {
+    color: var(--color-accent-light);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SECTION 4: PROCESS (4 Steps)
+   ════════════════════════════════════════════════════════════ */
+.processSection {
+    padding: 120px 0;
+    background: var(--color-bg-secondary);
+}
+
+.stepsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 1060px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Connecting line across steps */
+.stepsGrid::before {
+    content: '';
+    position: absolute;
+    top: 42px;
+    left: 12%;
+    right: 12%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--color-border-light) 15%,
+        var(--color-border-light) 85%,
+        transparent 100%
+    );
+    z-index: 0;
+}
+
+.stepCard {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.stepNumber {
+    font-family: var(--font-family-mono);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgba(99, 102, 241, 0.15);
+    line-height: 1;
+    display: block;
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: -0.04em;
+}
+
+.stepTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: -0.01em;
+}
+
+.stepDesc {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SECTION 5: BENEFITS (What You Get)
+   ════════════════════════════════════════════════════════════ */
+.benefitsSection {
+    padding: 120px 0;
+    background: #111827;
+}
+
+.benefitsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 900px;
     margin: var(--spacing-2xl) auto 0;
 }
 
@@ -224,16 +484,16 @@
     align-items: flex-start;
     gap: var(--spacing-lg);
     padding: var(--spacing-xl) var(--spacing-xl);
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-lg);
     transition: all 0.2s ease;
 }
 
 .benefitCard:hover {
-    border-color: var(--color-accent-glow);
-    background: var(--color-bg-card-hover);
-    transform: translateX(4px);
+    border-color: rgba(99, 102, 241, 0.25);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
 }
 
 .benefitIcon {
@@ -245,67 +505,21 @@
 .benefitTitle {
     font-size: 1.0625rem;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: #F1F5F9;
     margin-bottom: 4px;
     letter-spacing: -0.01em;
     line-height: 1.4;
 }
 
 .benefitDesc {
-    color: var(--color-text-secondary);
+    color: #94A3B8;
     font-size: 0.9375rem;
     line-height: 1.65;
     margin: 0;
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 3: HOW IT WORKS (3 Steps)
-   ════════════════════════════════════════════════════════════ */
-.processSection {
-    padding: 120px 0;
-    background: #111827;
-}
-
-.stepsGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-2xl);
-    max-width: 960px;
-    margin: 0 auto;
-}
-
-.stepCard {
-    position: relative;
-}
-
-.stepNumber {
-    font-family: var(--font-family-mono);
-    font-size: 4rem;
-    font-weight: 700;
-    color: rgba(99, 102, 241, 0.12);
-    line-height: 1;
-    display: block;
-    margin-bottom: var(--spacing-md);
-    letter-spacing: -0.04em;
-}
-
-.stepTitle {
-    font-size: 1.1875rem;
-    font-weight: 700;
-    color: #F1F5F9;
-    margin-bottom: var(--spacing-sm);
-    letter-spacing: -0.01em;
-}
-
-.stepDesc {
-    color: #94A3B8;
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    margin: 0;
-}
-
-/* ════════════════════════════════════════════════════════════
-   SECTION 4: WORK / SHOWCASE
+   SECTION 6: WORK / PORTFOLIO
    ════════════════════════════════════════════════════════════ */
 .workSection {
     padding: 120px 0;
@@ -378,61 +592,11 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 5: WHY CHOOSE US
-   ════════════════════════════════════════════════════════════ */
-.whySection {
-    padding: 120px 0;
-    background: #111827;
-}
-
-.whyGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xl);
-    max-width: 800px;
-    margin: var(--spacing-2xl) auto 0;
-}
-
-.whyCard {
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    transition: all 0.2s ease;
-}
-
-.whyCard:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(99, 102, 241, 0.25);
-}
-
-.whyIcon {
-    font-size: 1.5rem;
-    display: block;
-    margin-bottom: var(--spacing-md);
-}
-
-.whyTitle {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: #F1F5F9;
-    margin-bottom: 6px;
-    letter-spacing: -0.01em;
-}
-
-.whyDesc {
-    color: #94A3B8;
-    font-size: 0.875rem;
-    line-height: 1.65;
-    margin: 0;
-}
-
-/* ════════════════════════════════════════════════════════════
-   SECTION 6: TESTIMONIALS
+   SECTION 7: TESTIMONIALS
    ════════════════════════════════════════════════════════════ */
 .testimonialsSection {
     padding: 120px 0;
-    background: var(--color-bg-secondary);
+    background: #111827;
 }
 
 .testimonialsGrid {
@@ -443,12 +607,18 @@
 }
 
 .testimonialCard {
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-lg);
     padding: var(--spacing-2xl);
     display: flex;
     flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+.testimonialCard:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(99, 102, 241, 0.2);
 }
 
 .testimonialStars {
@@ -460,11 +630,18 @@
 
 .testimonialQuote {
     font-size: 0.9375rem;
-    color: var(--color-text-secondary);
+    color: #CBD5E1;
     line-height: 1.7;
     margin: 0 0 var(--spacing-xl);
     flex-grow: 1;
     font-style: italic;
+}
+
+.testimonialFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
 }
 
 .testimonialAuthor {
@@ -490,18 +667,70 @@
 .testimonialName {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--color-text-primary);
+    color: #F1F5F9;
     margin: 0;
 }
 
 .testimonialRole {
     font-size: 0.75rem;
-    color: var(--color-text-muted);
+    color: #94A3B8;
     margin: 0;
 }
 
+.testimonialContext {
+    font-family: var(--font-family-mono);
+    font-size: 0.6875rem;
+    color: var(--color-accent-light);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 3px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
 /* ════════════════════════════════════════════════════════════
-   SECTION 7: FINAL CTA
+   SECTION 8: STATS
+   ════════════════════════════════════════════════════════════ */
+.statsSection {
+    padding: 80px 0;
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.statCard {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.statValue {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-accent-light);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: var(--spacing-xs);
+}
+
+.statLabel {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SECTION 9: FINAL CTA
    ════════════════════════════════════════════════════════════ */
 .finalCtaSection {
     padding: 140px 0;
@@ -520,7 +749,7 @@
 }
 
 .finalCtaTitle {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     font-weight: 800;
     color: #F1F5F9;
     line-height: 1.15;
@@ -542,7 +771,7 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 8: CONTACT
+   SECTION 10: CONTACT
    ════════════════════════════════════════════════════════════ */
 .contactSection {
     padding: 120px 0;
@@ -691,8 +920,20 @@ a.contactInfoValue:hover {
     color: var(--color-accent);
 }
 
+.contactInfoDivider {
+    height: 1px;
+    background: var(--color-border);
+}
+
+.contactInfoNote {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
 /* ════════════════════════════════════════════════════════════
-   RESPONSIVE — TABLET
+   RESPONSIVE — TABLET (768px)
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
     .hero {
@@ -708,6 +949,11 @@ a.contactInfoValue:hover {
         font-size: 1.0625rem;
     }
 
+    .heroCta {
+        flex-direction: column;
+        align-items: center;
+    }
+
     .trustBarInner {
         flex-direction: column;
         gap: var(--spacing-xs);
@@ -717,10 +963,11 @@ a.contactInfoValue:hover {
         display: none;
     }
 
-    .benefitsSection,
+    .aboutSection,
+    .servicesSection,
     .processSection,
+    .benefitsSection,
     .workSection,
-    .whySection,
     .testimonialsSection,
     .contactSection {
         padding: 80px 0;
@@ -735,14 +982,39 @@ a.contactInfoValue:hover {
         font-size: 1.875rem;
     }
 
-    .stepsGrid,
+    .aboutGrid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-2xl);
+    }
+
+    .aboutContent .sectionTitle {
+        text-align: center !important;
+    }
+
+    .servicesGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .stepsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stepsGrid::before {
+        display: none;
+    }
+
+    .benefitsGrid {
+        grid-template-columns: 1fr;
+    }
+
     .projectsGrid,
     .testimonialsGrid {
         grid-template-columns: 1fr;
     }
 
-    .whyGrid {
-        grid-template-columns: 1fr;
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
     }
 
     .contactGrid {
@@ -758,17 +1030,23 @@ a.contactInfoValue:hover {
         font-size: 1.875rem;
     }
 
-    .stepNumber {
-        font-size: 3rem;
-    }
-
     .formSubmit {
         width: 100%;
+    }
+
+    .testimonialFooter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .statValue {
+        font-size: 2rem;
     }
 }
 
 /* ════════════════════════════════════════════════════════════
-   RESPONSIVE — MOBILE
+   RESPONSIVE — MOBILE (480px)
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     .heroTitle {
@@ -779,9 +1057,14 @@ a.contactInfoValue:hover {
         font-size: 0.9375rem;
     }
 
+    .heroBadge {
+        font-size: 0.6875rem;
+    }
+
     .btnPrimary,
     .btnPrimaryLight,
-    .btnPrimaryLarge {
+    .btnPrimaryLarge,
+    .btnSecondary {
         width: 100%;
     }
 
@@ -799,8 +1082,15 @@ a.contactInfoValue:hover {
         font-size: 1rem;
     }
 
-    .benefitCard {
-        flex-direction: column;
-        gap: var(--spacing-sm);
+    .stepsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .statsSection {
+        padding: 60px 0;
     }
 }
