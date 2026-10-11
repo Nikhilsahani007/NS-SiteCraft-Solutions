@@ -61,9 +61,9 @@ const Footer = () => {
                         © {currentYear} NS SiteCraft Solutions. All rights reserved.
                     </p>
                     <div className={styles.legalLinks}>
-                        <a href="#" className={styles.legalLink}>Privacy</a>
+                        <Link to="/privacy-policy" className={styles.legalLink}>Privacy</Link>
                         <span className={styles.separator}>·</span>
-                        <a href="#" className={styles.legalLink}>Terms</a>
+                        <Link to="/terms-and-conditions" className={styles.legalLink}>Terms</Link>
                     </div>
                 </div>
             </div>
