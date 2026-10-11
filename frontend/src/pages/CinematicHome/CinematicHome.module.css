@@ -1455,3 +1455,98 @@
     opacity: 0.3;
   }
 }
+
+/* ─── Animation Support Additions ───────────────────────── */
+
+/* Hero radial vignette for cinematic depth */
+.heroVignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 30% 50%, transparent 0%, rgba(8, 8, 12, 0.4) 100%);
+}
+
+/* Intro depth background layer (parallaxed) */
+.introBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 70%);
+}
+
+.intro {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Quote word split wrappers */
+.quoteWord {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.3em;
+}
+
+.quoteInner {
+  display: inline-block;
+}
+
+/* Project card hover glow */
+.projectGlow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 0;
+  transform: translate(0, 0);
+}
+
+.projectCard {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Process timeline track */
+.processTrack {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-left: 1.25rem;
+}
+
+.processLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, #3b82f6, #6366f1);
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+/* Service card initial state (clip-path reveal via GSAP) */
+.serviceCard {
+  /* Start hidden for GSAP clip-path reveal — GSAP sets this */
+  will-change: clip-path, opacity, transform;
+  transform-style: preserve-3d;
+}
+
+/* Service accent line — GSAP scales scaleX from 0 */
+.serviceAccentLine {
+  transform-origin: left;
+}
+
+/* Stat counter values */
+.statValue > span {
+  display: inline;
+}
+

@@ -1,22 +1,40 @@
 /**
  * CinematicHome.jsx — NS SiteCraft Solutions
- * Full cinematic one-page experience with 3D hero, scroll-driven storytelling,
- * editorial typography and deliberate composition.
+ * Full cinematic one-page experience with:
+ * - 3D scroll-driven hero
+ * - Split-text word reveals on headings
+ * - Clip-path image/block reveals
+ * - Staggered grid entrances (varied per section)
+ * - Parallax depth layers
+ * - Scroll-progress process timeline
+ * - Magnetic CTA buttons
+ * - Animated footer reveal
  */
 
 import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SEOHead from '../../components/SEOHead/SEOHead';
+import {
+  FM, VP, EASE, DUR, STAGGER,
+  prefersReducedMotion,
+  splitReveal,
+  clipReveal,
+  fadeUpStagger,
+  parallaxY,
+  countUpGSAP,
+  magneticHover,
+} from '../../utils/motion';
 import styles from './CinematicHome.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Lazy-load the 3D scene to prevent main-thread blocking
+// Lazy-load the 3D scene
 const HeroScene = lazy(() => import('../../components/HeroScene/HeroScene'));
 
-/* ─── Data ─────────────────────────────────────────────────────────── */
+/* ─── Data ─────────────────────────────────────────────────────── */
 const services = [
   {
     index: '01',
@@ -124,64 +142,75 @@ const faqs = [
   },
 ];
 
-/* ─── Hooks ──────────────────────────────────────────────────────────── */
-const useCountUp = (target, duration = 1800) => {
-  const [count, setCount] = useState(0);
-  const elRef = useRef(null);
-  const started = useRef(false);
+/* ─── Sub-Components ─────────────────────────────────────────────── */
 
-  useEffect(() => {
-    const el = elRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const start = Date.now();
-          const tick = () => {
-            const progress = Math.min((Date.now() - start) / duration, 1);
-            const ease = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(ease * target));
-            if (progress < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [target, duration]);
-
-  return [count, elRef];
-};
-
-/* ─── Sub-Components ─────────────────────────────────────────────────── */
+// Service card with clip-path reveal + tilt on hover
 const ServiceCard = ({ service, index }) => {
   const cardRef = useRef(null);
+  const accentLineRef = useRef(null);
 
   useEffect(() => {
     const el = cardRef.current;
-    if (!el) return;
+    if (!el || prefersReducedMotion()) return;
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    // Staggered clip reveal from bottom
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 },
+        {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          opacity: 1,
+          duration: 0.9,
+          ease: 'expo.out',
+          delay: index * 0.12,
+          scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+        }
+      );
+    });
 
-    gsap.fromTo(el,
-      { opacity: 0, y: 40 },
+    // Accent line expand on scroll into view
+    gsap.fromTo(
+      accentLineRef.current,
+      { scaleX: 0 },
       {
-        opacity: 1,
-        y: 0,
+        scaleX: 1,
         duration: 0.8,
         ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 88%',
-        },
+        delay: index * 0.12 + 0.4,
+        scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+        transformOrigin: 'left',
       }
     );
-  }, []);
+
+    // Hover tilt
+    const onEnter = (e) => {
+      const rect = el.getBoundingClientRect();
+      const rx = ((e.clientY - rect.top) / rect.height - 0.5) * 8;
+      const ry = ((e.clientX - rect.left) / rect.width - 0.5) * -8;
+      gsap.to(el, { rotateX: rx, rotateY: ry, duration: 0.4, ease: 'power2.out', transformPerspective: 800 });
+    };
+    const onLeave = () => {
+      gsap.to(el, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+    };
+    const onMove = (e) => {
+      const rect = el.getBoundingClientRect();
+      const rx = ((e.clientY - rect.top) / rect.height - 0.5) * 8;
+      const ry = ((e.clientX - rect.left) / rect.width - 0.5) * -8;
+      gsap.to(el, { rotateX: rx, rotateY: ry, duration: 0.2, ease: 'none', transformPerspective: 800 });
+    };
+
+    el.addEventListener('mouseenter', onEnter);
+    el.addEventListener('mouseleave', onLeave);
+    el.addEventListener('mousemove', onMove);
+
+    return () => {
+      ctx.revert();
+      el.removeEventListener('mouseenter', onEnter);
+      el.removeEventListener('mouseleave', onLeave);
+      el.removeEventListener('mousemove', onMove);
+    };
+  }, [index]);
 
   return (
     <div ref={cardRef} className={styles.serviceCard} style={{ '--accent': service.accent }}>
@@ -195,35 +224,55 @@ const ServiceCard = ({ service, index }) => {
           ))}
         </ul>
       </div>
-      <div className={styles.serviceAccentLine} />
+      <div ref={accentLineRef} className={styles.serviceAccentLine} />
     </div>
   );
 };
 
-const ProcessStep = ({ step, index }) => {
+// Process step with scroll-progress line
+const ProcessStep = ({ step, index, total, progressRef }) => {
   const ref = useRef(null);
+  const numRef = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    if (!el || prefersReducedMotion()) return;
 
-    gsap.fromTo(el,
-      { opacity: 0, x: index % 2 === 0 ? -30 : 30 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%' },
-      }
-    );
+    const ctx = gsap.context(() => {
+      // Slide in from alternating sides
+      gsap.fromTo(
+        el,
+        { opacity: 0, x: index % 2 === 0 ? -50 : 50 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        }
+      );
+
+      // Step number scale pop
+      gsap.fromTo(
+        numRef.current,
+        { scale: 0.5, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'back.out(2)',
+          delay: 0.2,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        }
+      );
+    });
+
+    return () => ctx.revert();
   }, [index]);
 
   return (
     <div ref={ref} className={styles.processStep}>
-      <div className={styles.processNum}>{step.num}</div>
+      <div ref={numRef} className={styles.processNum}>{step.num}</div>
       <div className={styles.processContent}>
         <h3 className={styles.processTitle}>{step.title}</h3>
         <p className={styles.processDesc}>{step.description}</p>
@@ -232,31 +281,68 @@ const ProcessStep = ({ step, index }) => {
   );
 };
 
+// Project card with layered parallax + clip reveal
 const ProjectCard = ({ project, index }) => {
   const ref = useRef(null);
+  const glowRef = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    if (!el || prefersReducedMotion()) return;
 
-    gsap.fromTo(el,
-      { opacity: 0, y: 50, scale: 0.97 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.9,
-        ease: 'power3.out',
-        delay: index * 0.12,
-        scrollTrigger: { trigger: el, start: 'top 88%' },
-      }
-    );
+    const ctx = gsap.context(() => {
+      // Staggered scale + fade with clip
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 60, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          ease: 'expo.out',
+          delay: index * 0.15,
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+        }
+      );
+    });
+
+    // Hover glow follow
+    const onMove = (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      gsap.to(glowRef.current, {
+        x: x - 100,
+        y: y - 100,
+        duration: 0.4,
+        ease: 'none',
+      });
+    };
+    const onEnter = () => {
+      gsap.to(glowRef.current, { opacity: 1, duration: 0.3 });
+    };
+    const onLeave = () => {
+      gsap.to(glowRef.current, { opacity: 0, duration: 0.4 });
+    };
+
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseenter', onEnter);
+    el.addEventListener('mouseleave', onLeave);
+
+    return () => {
+      ctx.revert();
+      el.removeEventListener('mousemove', onMove);
+      el.removeEventListener('mouseenter', onEnter);
+      el.removeEventListener('mouseleave', onLeave);
+    };
   }, [index]);
 
   return (
     <article ref={ref} className={styles.projectCard}>
+      {/* Radial glow that follows cursor */}
+      <div ref={glowRef} className={styles.projectGlow} />
+
       <div className={styles.projectMeta}>
         <span className={styles.projectLabel}>{project.label}</span>
         <div className={styles.projectIndex}>0{project.id}</div>
@@ -276,15 +362,31 @@ const ProjectCard = ({ project, index }) => {
   );
 };
 
-/* ─── Main Component ─────────────────────────────────────────────────── */
+/* ─── Main Component ─────────────────────────────────────────────── */
 const CinematicHome = () => {
   const pointerRef = useRef({ x: 0, y: 0 });
   const heroTextRef = useRef(null);
+  const introRef = useRef(null);
+  const servicesRef = useRef(null);
+  const workRef = useRef(null);
+  const processRef = useRef(null);
+  const aboutRef = useRef(null);
+  const faqRef = useRef(null);
+  const contactRef = useRef(null);
+  const footerRef = useRef(null);
+  const ctaPrimRef = useRef(null);
+  const ctaSecRef = useRef(null);
+  const processLineRef = useRef(null);
+  const statsRef = useRef(null);
+  const stat0Ref = useRef(null);
+  const stat1Ref = useRef(null);
+  const stat2Ref = useRef(null);
+
   const [openFaq, setOpenFaq] = useState(null);
   const [formState, setFormState] = useState({ name: '', email: '', type: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
 
-  // Pointer tracking for 3D parallax
+  // Pointer tracking
   useEffect(() => {
     const onMove = (e) => {
       pointerRef.current = {
@@ -296,25 +398,402 @@ const CinematicHome = () => {
     return () => window.removeEventListener('pointermove', onMove);
   }, []);
 
-  // Hero text reveal animation
+  // ── Hero text reveal ───────────────────────────────────────────
   useEffect(() => {
     const el = heroTextRef.current;
-    if (!el) return;
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    if (!el || prefersReducedMotion()) return;
 
-    const lines = el.querySelectorAll('[data-reveal]');
-    gsap.fromTo(lines,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.1,
-        ease: 'power4.out',
-        stagger: 0.15,
-        delay: 0.2,
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: 0.4 });
+
+      // Eyebrow slides in from left
+      tl.fromTo(
+        '[data-reveal="eyebrow"]',
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.8, ease: 'expo.out' }
+      );
+
+      // Headline lines wipe up sequentially
+      tl.fromTo(
+        '[data-reveal="line"]',
+        { clipPath: 'inset(0 0 100% 0)', opacity: 0, y: 10 },
+        { clipPath: 'inset(0 0 0% 0)', opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.18 },
+        '-=0.5'
+      );
+
+      // Sub fades up
+      tl.fromTo(
+        '[data-reveal="sub"]',
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.6'
+      );
+
+      // CTAs scale in
+      tl.fromTo(
+        '[data-reveal="cta"]',
+        { opacity: 0, scale: 0.9, y: 16 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.7)', stagger: 0.1 },
+        '-=0.4'
+      );
+
+      // Scroll hint slides up
+      tl.fromTo(
+        '[data-reveal="scroll-hint"]',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        '-=0.3'
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── Magnetic CTAs ──────────────────────────────────────────────
+  useEffect(() => {
+    const cleanups = [];
+    if (ctaPrimRef.current) cleanups.push(magneticHover(ctaPrimRef.current, 0.3));
+    if (ctaSecRef.current)  cleanups.push(magneticHover(ctaSecRef.current, 0.3));
+    return () => cleanups.forEach(fn => fn && fn());
+  }, []);
+
+  // ── Intro section animations ────────────────────────────────
+  useEffect(() => {
+    const el = introRef.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // Large quote reveals word by word
+      const quote = el.querySelector('[data-quote]');
+      if (quote) {
+        const words = quote.innerText.split(' ');
+        quote.innerHTML = words
+          .map(w => `<span class="${styles.quoteWord}"><span class="${styles.quoteInner}">${w}</span></span>`)
+          .join(' ');
+
+        gsap.fromTo(
+          `[data-quote] .${styles.quoteInner}`,
+          { y: '110%' },
+          {
+            y: '0%',
+            duration: 1.1,
+            ease: 'expo.out',
+            stagger: 0.035,
+            scrollTrigger: { trigger: quote, start: 'top 80%', once: true },
+          }
+        );
       }
-    );
+
+      // Stats count up
+      scrollTriggerStats();
+
+      // Label reveal
+      gsap.fromTo(
+        el.querySelector('[data-intro-label]'),
+        { opacity: 0, x: -20 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        }
+      );
+
+      // Parallax on intro background depth
+      parallaxY(el.querySelector('[data-intro-bg]'), 60, { trigger: el });
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  const scrollTriggerStats = useCallback(() => {
+    if (!statsRef.current || prefersReducedMotion()) return;
+    countUpGSAP(stat0Ref.current, 15, { trigger: statsRef.current, suffix: '+' });
+    countUpGSAP(stat1Ref.current, 98, { trigger: statsRef.current, suffix: '%' });
+    countUpGSAP(stat2Ref.current, 30, { trigger: statsRef.current, suffix: 'd' });
+  }, []);
+
+  // ── Services section ──────────────────────────────────────────
+  useEffect(() => {
+    const el = servicesRef.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // Section header wipe
+      gsap.fromTo(
+        el.querySelector('[data-section-header]'),
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── Work section parallax ─────────────────────────────────────
+  useEffect(() => {
+    const el = workRef.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // Section label reveals
+      gsap.fromTo(
+        el.querySelector('[data-section-header]'),
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── Process scroll progress line ────────────────────────────
+  useEffect(() => {
+    const el = processRef.current;
+    const line = processLineRef.current;
+    if (!el || !line || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // Animated progress line that draws as you scroll
+      gsap.fromTo(
+        line,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: 'none',
+          transformOrigin: 'top',
+          scrollTrigger: {
+            trigger: el.querySelector('[data-process-steps]'),
+            start: 'top 70%',
+            end: 'bottom 60%',
+            scrub: 1,
+          },
+        }
+      );
+
+      // Process left content
+      gsap.fromTo(
+        el.querySelector('[data-process-left]'),
+        { opacity: 0, x: -60 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── About section ────────────────────────────────────────────
+  useEffect(() => {
+    const el = aboutRef.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // About title letter stagger (editorial)
+      gsap.fromTo(
+        el.querySelector('[data-about-title]'),
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+        }
+      );
+
+      // Paragraphs stagger
+      gsap.fromTo(
+        el.querySelectorAll('[data-about-p]'),
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          stagger: 0.15,
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+          delay: 0.3,
+        }
+      );
+
+      // About tags slide in
+      gsap.fromTo(
+        el.querySelectorAll('[data-about-tag]'),
+        { opacity: 0, scale: 0.8, y: 10 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'back.out(2)',
+          stagger: 0.08,
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+          delay: 0.6,
+        }
+      );
+
+      // Grid cells animate in sequentially
+      gsap.fromTo(
+        el.querySelectorAll('[data-grid-cell]'),
+        { opacity: 0, scale: 0 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: 'back.out(2)',
+          stagger: 0.04,
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+          delay: 0.2,
+        }
+      );
+
+      // Brand mark pop
+      gsap.fromTo(
+        el.querySelector('[data-brand-mark]'),
+        { opacity: 0, scale: 0.5, rotation: -15 },
+        {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+          duration: 1,
+          ease: 'elastic.out(1, 0.5)',
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+          delay: 0.5,
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── FAQ section ──────────────────────────────────────────────
+  useEffect(() => {
+    const el = faqRef.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el.querySelectorAll('[data-faq-item]'),
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.1,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── Contact section ──────────────────────────────────────────
+  useEffect(() => {
+    const el = contactRef.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      // Left column reveals
+      gsap.fromTo(
+        el.querySelector('[data-contact-left]'),
+        { opacity: 0, x: -60 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+        }
+      );
+
+      // Right form reveals
+      gsap.fromTo(
+        el.querySelector('[data-contact-right]'),
+        { opacity: 0, x: 60 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+          delay: 0.15,
+        }
+      );
+
+      // Contact detail links stagger
+      gsap.fromTo(
+        el.querySelectorAll('[data-contact-detail]'),
+        { opacity: 0, y: 15 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out',
+          stagger: 0.12,
+          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+          delay: 0.5,
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── Footer reveal ────────────────────────────────────────────
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 95%', once: true },
+        }
+      );
+
+      gsap.fromTo(
+        el.querySelectorAll('[data-footer-col]'),
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.1,
+          scrollTrigger: { trigger: el, start: 'top 95%', once: true },
+          delay: 0.3,
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
   }, []);
 
   const scrollTo = useCallback((id) => (e) => {
@@ -331,17 +810,11 @@ const CinematicHome = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setFormStatus('sending');
-    // Simulate submission (replace with EmailJS or backend call)
     await new Promise(r => setTimeout(r, 1600));
     setFormStatus('sent');
     setFormState({ name: '', email: '', type: '', message: '' });
     setTimeout(() => setFormStatus('idle'), 5000);
   };
-
-  // Stats
-  const [s0, r0] = useCountUp(15);
-  const [s1, r1] = useCountUp(98);
-  const [s2, r2] = useCountUp(30);
 
   const localBusinessSchema = {
     '@context': 'https://schema.org',
@@ -369,6 +842,7 @@ const CinematicHome = () => {
       />
 
       <main className={styles.main}>
+
         {/* ══════════════════════════════════════════════
             HERO — 3D + Editorial Typography
         ══════════════════════════════════════════════ */}
@@ -383,36 +857,41 @@ const CinematicHome = () => {
           {/* Noise grain overlay */}
           <div className={styles.heroNoise} aria-hidden="true" />
 
+          {/* Radial vignette overlay */}
+          <div className={styles.heroVignette} aria-hidden="true" />
+
           {/* Text composition */}
           <div className={styles.heroContent} ref={heroTextRef}>
-            <div className={styles.heroEyebrow} data-reveal="">
+            <div className={styles.heroEyebrow} data-reveal="eyebrow">
               <span className={styles.eyebrowDot} />
               Digital Studio · Hyderabad
             </div>
 
             <h1 className={styles.heroHeadline}>
-              <span data-reveal="" className={styles.headlineRow}>
+              <span data-reveal="line" className={styles.headlineRow}>
                 We turn
               </span>
-              <span data-reveal="" className={`${styles.headlineRow} ${styles.headlineAccent}`}>
+              <span data-reveal="line" className={`${styles.headlineRow} ${styles.headlineAccent}`}>
                 ambitious ideas
               </span>
-              <span data-reveal="" className={styles.headlineRow}>
+              <span data-reveal="line" className={styles.headlineRow}>
                 into digital experiences.
               </span>
             </h1>
 
-            <p className={styles.heroSub} data-reveal="">
+            <p className={styles.heroSub} data-reveal="sub">
               Thoughtfully designed websites, intelligent software, and digital
               products built to move businesses forward.
             </p>
 
-            <div className={styles.heroCtas} data-reveal="">
+            <div className={styles.heroCtas}>
               <a
                 href="#contact"
                 onClick={scrollTo('contact')}
                 className={styles.ctaPrimary}
                 id="hero-cta-start"
+                ref={ctaPrimRef}
+                data-reveal="cta"
               >
                 Start a Project
               </a>
@@ -421,6 +900,8 @@ const CinematicHome = () => {
                 onClick={scrollTo('work')}
                 className={styles.ctaSecondary}
                 id="hero-cta-explore"
+                ref={ctaSecRef}
+                data-reveal="cta"
               >
                 Explore Our Work
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -431,39 +912,48 @@ const CinematicHome = () => {
           </div>
 
           {/* Scroll indicator */}
-          <div className={styles.scrollHint} aria-hidden="true">
+          <div className={styles.scrollHint} data-reveal="scroll-hint" aria-hidden="true">
             <div className={styles.scrollLine} />
             <span>Scroll</span>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════
-            INTRO — Philosophy statement
+            INTRO — Philosophy + animated quote
         ══════════════════════════════════════════════ */}
-        <section className={styles.intro} id="about">
+        <section className={styles.intro} id="about" ref={introRef}>
+          {/* Depth background element */}
+          <div className={styles.introBg} data-intro-bg aria-hidden="true" />
+
           <div className={styles.introInner}>
-            <div className={styles.introLabel}>Our Philosophy</div>
+            <div className={styles.introLabel} data-intro-label>Our Philosophy</div>
             <blockquote className={styles.introStatement}>
-              <p>
+              <p data-quote>
                 Good digital work is not decoration. It is the precise engineering
                 of how a business communicates, operates, and grows — executed
                 with enough craft that the engineering disappears entirely.
               </p>
             </blockquote>
 
-            <div className={styles.statsRow}>
-              <div className={styles.statItem} ref={r0}>
-                <div className={styles.statValue}>{s0}<span>+</span></div>
+            <div className={styles.statsRow} ref={statsRef}>
+              <div className={styles.statItem}>
+                <div className={styles.statValue}>
+                  <span ref={stat0Ref}>0</span>
+                </div>
                 <div className={styles.statLabel}>Projects Delivered</div>
               </div>
               <div className={styles.statDivider} />
-              <div className={styles.statItem} ref={r1}>
-                <div className={styles.statValue}>{s1}<span>%</span></div>
+              <div className={styles.statItem}>
+                <div className={styles.statValue}>
+                  <span ref={stat1Ref}>0</span>
+                </div>
                 <div className={styles.statLabel}>On-Time Delivery</div>
               </div>
               <div className={styles.statDivider} />
-              <div className={styles.statItem} ref={r2}>
-                <div className={styles.statValue}>{s2}<span>d</span></div>
+              <div className={styles.statItem}>
+                <div className={styles.statValue}>
+                  <span ref={stat2Ref}>0</span>
+                </div>
                 <div className={styles.statLabel}>Post-Launch Support</div>
               </div>
             </div>
@@ -471,10 +961,10 @@ const CinematicHome = () => {
         </section>
 
         {/* ══════════════════════════════════════════════
-            SERVICES
+            SERVICES — Clip-path reveals + tilt cards
         ══════════════════════════════════════════════ */}
-        <section id="services" className={styles.servicesSection}>
-          <div className={styles.sectionHeader}>
+        <section id="services" className={styles.servicesSection} ref={servicesRef}>
+          <div className={styles.sectionHeader} data-section-header>
             <div className={styles.sectionLabel}>What We Build</div>
             <h2 className={styles.sectionTitle}>
               Capabilities
@@ -493,10 +983,10 @@ const CinematicHome = () => {
         </section>
 
         {/* ══════════════════════════════════════════════
-            SELECTED WORK
+            SELECTED WORK — Glow cards + stagger
         ══════════════════════════════════════════════ */}
-        <section id="work" className={styles.workSection}>
-          <div className={styles.sectionHeader}>
+        <section id="work" className={styles.workSection} ref={workRef}>
+          <div className={styles.sectionHeader} data-section-header>
             <div className={styles.sectionLabel}>Selected Work</div>
             <h2 className={styles.sectionTitle}>
               Projects That Moved the Needle
@@ -524,11 +1014,11 @@ const CinematicHome = () => {
         </section>
 
         {/* ══════════════════════════════════════════════
-            PROCESS / APPROACH
+            PROCESS — Scroll-progress timeline
         ══════════════════════════════════════════════ */}
-        <section id="process" className={styles.processSection}>
+        <section id="process" className={styles.processSection} ref={processRef}>
           <div className={styles.processInner}>
-            <div className={styles.processLeft}>
+            <div className={styles.processLeft} data-process-left>
               <div className={styles.sectionLabel}>How We Work</div>
               <h2 className={styles.sectionTitle}>
                 A process built for clarity, not comfort.
@@ -546,55 +1036,62 @@ const CinematicHome = () => {
             </div>
 
             <div className={styles.processRight}>
-              {processSteps.map((step, i) => (
-                <ProcessStep key={step.num} step={step} index={i} />
-              ))}
+              {/* Animated scroll progress line */}
+              <div className={styles.processTrack}>
+                <div ref={processLineRef} className={styles.processLine} />
+              </div>
+
+              <div data-process-steps>
+                {processSteps.map((step, i) => (
+                  <ProcessStep key={step.num} step={step} index={i} total={processSteps.length} />
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════
-            ABOUT
+            ABOUT — Editorial composition
         ══════════════════════════════════════════════ */}
-        <section className={styles.aboutSection}>
+        <section className={styles.aboutSection} ref={aboutRef}>
           <div className={styles.aboutInner}>
             <div className={styles.aboutContent}>
               <div className={styles.sectionLabel}>The Studio</div>
-              <h2 className={styles.aboutTitle}>
+              <h2 className={styles.aboutTitle} data-about-title>
                 A focused team. <br />A clear standard.
               </h2>
-              <p className={styles.aboutParagraph}>
+              <p className={styles.aboutParagraph} data-about-p>
                 NS SiteCraft Solutions is a boutique digital studio based in Hyderabad.
                 We work with startups and established businesses to design, build, and
                 ship digital products that actually perform.
               </p>
-              <p className={styles.aboutParagraph}>
+              <p className={styles.aboutParagraph} data-about-p>
                 MSME registered. Independently operated. Every project is led directly
                 by the senior developer — no handoffs to junior teams, no diluted effort.
               </p>
               <div className={styles.aboutTags}>
-                <span className={styles.aboutTag}>MSME Registered</span>
-                <span className={styles.aboutTag}>Hyderabad, India</span>
-                <span className={styles.aboutTag}>Est. 2024</span>
+                <span className={styles.aboutTag} data-about-tag>MSME Registered</span>
+                <span className={styles.aboutTag} data-about-tag>Hyderabad, India</span>
+                <span className={styles.aboutTag} data-about-tag>Est. 2024</span>
               </div>
             </div>
             <div className={styles.aboutVisual} aria-hidden="true">
               <div className={styles.aboutGrid}>
                 {Array.from({ length: 16 }).map((_, i) => (
-                  <div key={i} className={styles.aboutGridCell} style={{ '--delay': `${i * 0.06}s` }} />
+                  <div key={i} data-grid-cell className={styles.aboutGridCell} style={{ '--delay': `${i * 0.06}s` }} />
                 ))}
               </div>
               <div className={styles.aboutBrand}>
-                <span className={styles.aboutBrandMark}>NS</span>
+                <span className={styles.aboutBrandMark} data-brand-mark>NS</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════
-            FAQ
+            FAQ — Slide-in from left
         ══════════════════════════════════════════════ */}
-        <section className={styles.faqSection}>
+        <section className={styles.faqSection} ref={faqRef}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionLabel}>Common Questions</div>
             <h2 className={styles.sectionTitle}>Direct Answers</h2>
@@ -603,6 +1100,7 @@ const CinematicHome = () => {
             {faqs.map((faq, i) => (
               <div
                 key={i}
+                data-faq-item
                 className={`${styles.faqItem} ${openFaq === i ? styles.faqOpen : ''}`}
               >
                 <button
@@ -632,11 +1130,11 @@ const CinematicHome = () => {
         </section>
 
         {/* ══════════════════════════════════════════════
-            CONTACT
+            CONTACT — Dual-column animated reveal
         ══════════════════════════════════════════════ */}
-        <section id="contact" className={styles.contactSection}>
+        <section id="contact" className={styles.contactSection} ref={contactRef}>
           <div className={styles.contactInner}>
-            <div className={styles.contactLeft}>
+            <div className={styles.contactLeft} data-contact-left>
               <div className={styles.sectionLabel}>Start a Conversation</div>
               <h2 className={styles.contactTitle}>
                 Let's build something worth building.
@@ -646,19 +1144,27 @@ const CinematicHome = () => {
                 and come back with a clear plan and a fixed quote — usually within 24 hours.
               </p>
               <div className={styles.contactDetails}>
-                <a href="mailto:nssitecraftsolution@gmail.com" className={styles.contactDetailLink}>
+                <a
+                  href="mailto:nssitecraftsolution@gmail.com"
+                  className={styles.contactDetailLink}
+                  data-contact-detail
+                >
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M2 4h14v10H2V4zm0 0l7 6 7-6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   nssitecraftsolution@gmail.com
                 </a>
-                <a href="tel:+919390969461" className={styles.contactDetailLink}>
+                <a
+                  href="tel:+919390969461"
+                  className={styles.contactDetailLink}
+                  data-contact-detail
+                >
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M3 3h3.5l1.5 4-2 1.5a10 10 0 004.5 4.5L12 11l4 1.5V16a1 1 0 01-1 1C6 17 1 12 1 4a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   +91 93909 69461
                 </a>
-                <span className={styles.contactDetailLink} style={{ cursor: 'default' }}>
+                <span className={styles.contactDetailLink} data-contact-detail style={{ cursor: 'default' }}>
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M9 2C6.24 2 4 4.24 4 7c0 4.24 5 9 5 9s5-4.76 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" stroke="currentColor" strokeWidth="1.4" />
                   </svg>
@@ -667,7 +1173,7 @@ const CinematicHome = () => {
               </div>
             </div>
 
-            <div className={styles.contactRight}>
+            <div className={styles.contactRight} data-contact-right>
               {formStatus === 'sent' ? (
                 <div className={styles.formSuccess} role="status">
                   <div className={styles.formSuccessIcon}>✓</div>
@@ -765,11 +1271,11 @@ const CinematicHome = () => {
         </section>
 
         {/* ══════════════════════════════════════════════
-            FOOTER
+            FOOTER — Staggered column reveal
         ══════════════════════════════════════════════ */}
-        <footer className={styles.footer}>
+        <footer className={styles.footer} ref={footerRef}>
           <div className={styles.footerTop}>
-            <div className={styles.footerBrand}>
+            <div className={styles.footerBrand} data-footer-col>
               <Link to="/" className={styles.footerLogo}>
                 <span className={styles.footerLogoMark}>NS</span>
                 <span className={styles.footerLogoName}>SiteCraft Solutions</span>
@@ -781,7 +1287,7 @@ const CinematicHome = () => {
             </div>
 
             <div className={styles.footerLinks}>
-              <div className={styles.footerCol}>
+              <div className={styles.footerCol} data-footer-col>
                 <h4 className={styles.footerColTitle}>Services</h4>
                 <a href="#services" onClick={scrollTo('services')} className={styles.footerLink}>Web Development</a>
                 <a href="#services" onClick={scrollTo('services')} className={styles.footerLink}>Custom Software</a>
@@ -789,7 +1295,7 @@ const CinematicHome = () => {
                 <a href="#services" onClick={scrollTo('services')} className={styles.footerLink}>Digital Strategy</a>
               </div>
 
-              <div className={styles.footerCol}>
+              <div className={styles.footerCol} data-footer-col>
                 <h4 className={styles.footerColTitle}>Studio</h4>
                 <a href="#about" onClick={scrollTo('about')} className={styles.footerLink}>About</a>
                 <a href="#work" onClick={scrollTo('work')} className={styles.footerLink}>Work</a>
@@ -797,7 +1303,7 @@ const CinematicHome = () => {
                 <Link to="/projects" className={styles.footerLink}>All Projects</Link>
               </div>
 
-              <div className={styles.footerCol}>
+              <div className={styles.footerCol} data-footer-col>
                 <h4 className={styles.footerColTitle}>Contact</h4>
                 <a href="mailto:nssitecraftsolution@gmail.com" className={styles.footerLink}>Email Us</a>
                 <a href="tel:+919390969461" className={styles.footerLink}>+91 93909 69461</a>

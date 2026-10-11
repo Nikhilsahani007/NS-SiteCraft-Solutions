@@ -1,9 +1,11 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { AnimatePresence } from 'framer-motion';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import CustomCursor from './components/CustomCursor/CustomCursor';
 
 // Route-based code splitting
 const CinematicHome = lazy(() => import('./pages/CinematicHome/CinematicHome'));
@@ -17,7 +19,7 @@ const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions/TermsAndConditions'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy/PrivacyPolicy'));
 
-// Minimal loading fallback — prevents layout shifts
+// Minimal loading fallback
 const PageLoader = () => (
   <div
     style={{
@@ -44,27 +46,39 @@ const PageLoader = () => (
   </div>
 );
 
+// Inner component to access location for AnimatePresence key
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <Suspense fallback={<PageLoader />} key={location.pathname}>
+        <Routes location={location}>
+          <Route path="/" element={<CinematicHome />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/solutions" element={<Solutions />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </AnimatePresence>
+  );
+};
+
 function App() {
   return (
     <HelmetProvider>
       <ErrorBoundary>
         <Router>
+          <CustomCursor />
           <ScrollToTop />
           <Navigation />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<CinematicHome />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/solutions" element={<Solutions />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+          <AnimatedRoutes />
         </Router>
       </ErrorBoundary>
     </HelmetProvider>
