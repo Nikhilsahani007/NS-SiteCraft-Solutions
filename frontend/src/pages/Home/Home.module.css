@@ -1,6 +1,6 @@
 /* ============================================================
    NS SiteCraft Solutions — One-Page Professional Website
-   Home.module.css — Complete Redesign
+   Home.module.css — Complete Redesign with Comparison & FAQ
    ============================================================ */
 
 .home {
@@ -413,7 +413,6 @@
     position: relative;
 }
 
-/* Connecting line across steps */
 .stepsGrid::before {
     content: '';
     position: absolute;
@@ -483,7 +482,7 @@
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-lg);
-    padding: var(--spacing-xl) var(--spacing-xl);
+    padding: var(--spacing-xl);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-lg);
@@ -519,11 +518,111 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 6: WORK / PORTFOLIO
+   SECTION 6: COMPARISON TABLE (Why Us)
+   ════════════════════════════════════════════════════════════ */
+.comparisonSection {
+    padding: 120px 0;
+    background: var(--color-bg-primary);
+}
+
+.comparisonTableWrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
+}
+
+.comparisonTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9375rem;
+}
+
+.comparisonTable th,
+.comparisonTable td {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.comparisonTable th {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.comparisonTable th.highlightCol {
+    color: var(--color-accent-light);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.featureCell {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.badCell {
+    color: var(--color-text-dim);
+}
+
+.warnCell {
+    color: var(--color-text-muted);
+}
+
+.goodCell {
+    font-weight: 600;
+    color: #F1F5F9;
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.checkIcon {
+    color: #10B981;
+    font-weight: 800;
+    margin-right: 6px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SECTION 7: PORTFOLIO / WORK (Filterable)
    ════════════════════════════════════════════════════════════ */
 .workSection {
     padding: 120px 0;
     background: var(--color-bg-secondary);
+}
+
+.categoryTabs {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-2xl);
+    flex-wrap: wrap;
+}
+
+.categoryTab {
+    padding: 8px 18px;
+    border-radius: 9999px;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.categoryTab:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-border-light);
+}
+
+.categoryTabActive {
+    background: var(--color-accent);
+    color: #ffffff;
+    border-color: var(--color-accent);
 }
 
 .projectsGrid {
@@ -565,10 +664,18 @@
     font-weight: 700;
     color: var(--color-text-primary);
     line-height: 1.35;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .projectImpact {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent-light);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-sm);
+}
+
+.projectDesc {
     font-size: 0.875rem;
     color: var(--color-text-secondary);
     line-height: 1.6;
@@ -580,6 +687,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    margin-top: auto;
 }
 
 .projectTag {
@@ -592,7 +700,7 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 7: TESTIMONIALS
+   SECTION 8: TESTIMONIALS
    ════════════════════════════════════════════════════════════ */
 .testimonialsSection {
     padding: 120px 0;
@@ -689,7 +797,7 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 8: STATS
+   SECTION 9: STATS
    ════════════════════════════════════════════════════════════ */
 .statsSection {
     padding: 80px 0;
@@ -730,7 +838,71 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 9: FINAL CTA
+   SECTION 10: FAQ (Accordion)
+   ════════════════════════════════════════════════════════════ */
+.faqSection {
+    padding: 120px 0;
+    background: var(--color-bg-primary);
+}
+
+.faqWrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.faqItem {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-card);
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.faqItemOpen {
+    border-color: var(--color-accent-glow);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.faqQuestion {
+    width: 100%;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    gap: var(--spacing-md);
+}
+
+.faqIcon {
+    font-size: 1.25rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.faqAnswerWrapper {
+    overflow: hidden;
+}
+
+.faqAnswer {
+    padding: 0 24px 20px;
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SECTION 11: FINAL CTA
    ════════════════════════════════════════════════════════════ */
 .finalCtaSection {
     padding: 140px 0;
@@ -771,7 +943,7 @@
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION 10: CONTACT
+   SECTION 12: CONTACT
    ════════════════════════════════════════════════════════════ */
 .contactSection {
     padding: 120px 0;
@@ -967,8 +1139,10 @@ a.contactInfoValue:hover {
     .servicesSection,
     .processSection,
     .benefitsSection,
+    .comparisonSection,
     .workSection,
     .testimonialsSection,
+    .faqSection,
     .contactSection {
         padding: 80px 0;
     }

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../../components/PageTransition/PageTransition';
 import SEOHead from '../../components/SEOHead/SEOHead';
-import { featuredProjects } from '../../data/projects';
+import projectsData from '../../data/projects';
 import styles from './Home.module.css';
 
 const Home = () => {
@@ -10,9 +10,12 @@ const Home = () => {
         name: '',
         email: '',
         projectType: '',
+        budget: '',
         message: '',
     });
     const [formStatus, setFormStatus] = useState('idle');
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [openFaq, setOpenFaq] = useState(0);
 
     const fadeUp = {
         hidden: { opacity: 0, y: 24 },
@@ -33,7 +36,7 @@ const Home = () => {
         setFormStatus('sending');
         setTimeout(() => {
             setFormStatus('sent');
-            setFormData({ name: '', email: '', projectType: '', message: '' });
+            setFormData({ name: '', email: '', projectType: '', budget: '', message: '' });
             setTimeout(() => setFormStatus('idle'), 4000);
         }, 1500);
     };
@@ -148,6 +151,62 @@ const Home = () => {
         },
     ];
 
+    const comparisonPoints = [
+        {
+            feature: 'Turnaround Time',
+            freelancers: 'Unpredictable (Weeks to Months)',
+            agencies: '3–6 Months (Heavy bureaucracy)',
+            us: '3–6 Weeks (Fast & Structured)',
+        },
+        {
+            feature: 'Pricing & Fees',
+            freelancers: 'Vague hourly billing',
+            agencies: 'Heavy overhead & high markups',
+            us: 'Fixed transparent quote (No surprises)',
+        },
+        {
+            feature: 'Code & Asset Ownership',
+            freelancers: 'Often ambiguous',
+            agencies: 'Proprietary lock-ins / retainers',
+            us: '100% Full ownership from Day 1',
+        },
+        {
+            feature: 'Communication',
+            freelancers: 'Inconsistent availability',
+            agencies: 'Middlemen / Account managers',
+            us: 'Direct developer access (24hr response)',
+        },
+        {
+            feature: 'Post-Launch Support',
+            freelancers: 'Vanishes after handoff',
+            agencies: 'Expensive monthly maintenance retainers',
+            us: '30-day support included + optional upkeep',
+        },
+    ];
+
+    const faqs = [
+        {
+            q: 'How long does a website or custom software project take?',
+            a: 'Most website and small business projects are launched within 3 to 4 weeks. Custom web applications and complex systems typically take 4 to 6 weeks. We provide a milestone timeline right after our discovery call.',
+        },
+        {
+            q: 'How much will my project cost?',
+            a: 'We offer fixed transparent pricing based on your scope rather than vague hourly billing. Small business websites start with affordable packages, and custom web applications are quoted clearly after initial discussion with zero hidden fees.',
+        },
+        {
+            q: 'Will I own 100% of the code, domain, and assets?',
+            a: 'Yes, absolutely. Once completed and handed over, you hold 100% complete ownership of all code, assets, accounts, and intellectual property. No vendor lock-in or recurring proprietary license fees.',
+        },
+        {
+            q: 'What happens after the website or application goes live?',
+            a: 'Every project includes 30 days of complimentary post-launch support for bug fixes, performance monitoring, and handoff training. We also offer affordable ongoing technical support if you prefer us to manage hosting and updates.',
+        },
+        {
+            q: 'Can you help if I already have an existing website that needs a redesign?',
+            a: 'Yes! We specialize in transforming outdated, low-converting websites into modern, high-performing digital platforms while preserving your existing domain SEO ranking and content assets.',
+        },
+    ];
+
     const testimonials = [
         {
             quote: 'I had a rough idea and a tight budget. NS SiteCraft turned it into a website I\'m genuinely proud of. They explained everything in simple terms and delivered exactly what they promised.',
@@ -176,6 +235,12 @@ const Home = () => {
         { value: 24, suffix: 'hr', label: 'Response Time' },
     ];
 
+    const projectCategories = ['All', 'Web Application', 'Software Solution', 'Website'];
+
+    const filteredProjects = selectedCategory === 'All'
+        ? projectsData
+        : projectsData.filter((p) => p.category === selectedCategory);
+
     const localBusinessSchema = {
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
@@ -190,6 +255,19 @@ const Home = () => {
             addressCountry: 'IN',
         },
         priceRange: '₹₹',
+    };
+
+    const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.q,
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.a,
+            },
+        })),
     };
 
     // Stats counter hooks
@@ -207,7 +285,7 @@ const Home = () => {
                 description="We design and build websites, web applications, and custom software for startups and small businesses ready to establish a strong digital presence. Based in Hyderabad."
                 canonicalPath="/"
                 keywords="website development, startup website, small business website, web design Hyderabad, custom software development, web application development"
-                structuredData={[localBusinessSchema]}
+                structuredData={[localBusinessSchema, faqSchema]}
             />
 
             <div className={styles.home}>
@@ -481,7 +559,63 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 6: PORTFOLIO / WORK
+                    SECTION 6: COMPARISON (Why Us)
+                ═══════════════════════════════════════════ */}
+                <section className={styles.comparisonSection} id="why-us">
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-80px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className={styles.sectionLabel}>WHY NS SITECRAFT</span>
+                            <h2 className={styles.sectionTitle}>
+                                Why Clients Choose Us Over Other Options
+                            </h2>
+                            <p className={styles.sectionSubtitle}>
+                                We combine the speed and personal care of a dedicated partner with the standards
+                                of an established dev house — minus the bloat.
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            className={styles.comparisonTableWrapper}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-50px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                        >
+                            <table className={styles.comparisonTable}>
+                                <thead>
+                                    <tr>
+                                        <th>Key Requirement</th>
+                                        <th>Freelancers</th>
+                                        <th>Traditional Agencies</th>
+                                        <th className={styles.highlightCol}>NS SiteCraft Solutions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {comparisonPoints.map((row, idx) => (
+                                        <tr key={idx}>
+                                            <td className={styles.featureCell}>{row.feature}</td>
+                                            <td className={styles.badCell}>{row.freelancers}</td>
+                                            <td className={styles.warnCell}>{row.agencies}</td>
+                                            <td className={styles.goodCell}>
+                                                <span className={styles.checkIcon}>✓</span> {row.us}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 7: PORTFOLIO / WORK (Filterable)
                 ═══════════════════════════════════════════ */}
                 <section className={styles.workSection} id="work">
                     <div className="container">
@@ -494,47 +628,67 @@ const Home = () => {
                         >
                             <span className={styles.sectionLabel}>OUR WORK</span>
                             <h2 className={styles.sectionTitle}>
-                                Projects We've Built
+                                Featured Projects & Solutions
                             </h2>
                             <p className={styles.sectionSubtitle}>
-                                Real solutions for real businesses. Here's a look at the work
-                                we've shipped and the outcomes we've delivered.
+                                Explore a selection of digital platforms, custom software tools, and modern websites
+                                built for our clients.
                             </p>
+
+                            {/* Category Filter Tabs */}
+                            <div className={styles.categoryTabs}>
+                                {projectCategories.map((cat) => (
+                                    <button
+                                        key={cat}
+                                        className={`${styles.categoryTab} ${selectedCategory === cat ? styles.categoryTabActive : ''}`}
+                                        onClick={() => setSelectedCategory(cat)}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
                         </motion.div>
 
                         <motion.div
                             className={styles.projectsGrid}
+                            layout
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: '-50px' }}
                             variants={stagger}
                         >
-                            {featuredProjects.map((project) => (
-                                <motion.div
-                                    key={project.id}
-                                    className={styles.projectCard}
-                                    variants={fadeUp}
-                                    transition={{ duration: 0.4 }}
-                                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                                >
-                                    <div className={styles.projectHeader}>
-                                        <span className={styles.projectCategory}>{project.category}</span>
-                                    </div>
-                                    <h3 className={styles.projectTitle}>{project.title}</h3>
-                                    <p className={styles.projectImpact}>{project.impact}</p>
-                                    <div className={styles.projectTags}>
-                                        {project.techStack.map((tech) => (
-                                            <span key={tech} className={styles.projectTag}>{tech}</span>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            ))}
+                            <AnimatePresence mode="popLayout">
+                                {filteredProjects.map((project) => (
+                                    <motion.div
+                                        key={project.id}
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.96 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.96 }}
+                                        transition={{ duration: 0.3 }}
+                                        className={styles.projectCard}
+                                        whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                                    >
+                                        <div className={styles.projectHeader}>
+                                            <span className={styles.projectCategory}>{project.category}</span>
+                                        </div>
+                                        <h3 className={styles.projectTitle}>{project.title}</h3>
+                                        <p className={styles.projectImpact}>{project.impact}</p>
+                                        <p className={styles.projectDesc}>{project.description}</p>
+                                        <div className={styles.projectTags}>
+                                            {project.techStack.map((tech) => (
+                                                <span key={tech} className={styles.projectTag}>{tech}</span>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </motion.div>
                     </div>
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 7: TESTIMONIALS
+                    SECTION 8: TESTIMONIALS
                 ═══════════════════════════════════════════ */}
                 <section className={styles.testimonialsSection}>
                     <div className="container">
@@ -588,7 +742,7 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 8: STATS
+                    SECTION 9: STATS
                 ═══════════════════════════════════════════ */}
                 <section className={styles.statsSection}>
                     <div className="container">
@@ -618,7 +772,69 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 9: FINAL CTA
+                    SECTION 10: FAQ (Accordion)
+                ═══════════════════════════════════════════ */}
+                <section className={styles.faqSection} id="faq">
+                    <div className="container">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: '-80px' }}
+                            variants={fadeUp}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className={styles.sectionLabel}>QUESTIONS & ANSWERS</span>
+                            <h2 className={styles.sectionTitle}>
+                                Frequently Asked Questions
+                            </h2>
+                            <p className={styles.sectionSubtitle}>
+                                Everything you need to know about working with us before getting started.
+                            </p>
+                        </motion.div>
+
+                        <div className={styles.faqWrapper}>
+                            {faqs.map((faq, index) => {
+                                const isOpen = openFaq === index;
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        className={`${styles.faqItem} ${isOpen ? styles.faqItemOpen : ''}`}
+                                        initial="hidden"
+                                        whileInView="visible"
+                                        viewport={{ once: true }}
+                                        variants={fadeUp}
+                                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    >
+                                        <button
+                                            className={styles.faqQuestion}
+                                            onClick={() => setOpenFaq(isOpen ? -1 : index)}
+                                            aria-expanded={isOpen}
+                                        >
+                                            <span>{faq.q}</span>
+                                            <span className={styles.faqIcon}>{isOpen ? '−' : '+'}</span>
+                                        </button>
+                                        <AnimatePresence>
+                                            {isOpen && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: 'auto' }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    transition={{ duration: 0.25 }}
+                                                    className={styles.faqAnswerWrapper}
+                                                >
+                                                    <p className={styles.faqAnswer}>{faq.a}</p>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+
+                {/* ═══════════════════════════════════════════
+                    SECTION 11: FINAL CTA
                 ═══════════════════════════════════════════ */}
                 <section className={styles.finalCtaSection}>
                     <div className="container">
@@ -649,7 +865,7 @@ const Home = () => {
                 </section>
 
                 {/* ═══════════════════════════════════════════
-                    SECTION 10: CONTACT
+                    SECTION 12: CONTACT
                 ═══════════════════════════════════════════ */}
                 <section className={styles.contactSection} id="contact">
                     <div className="container">
@@ -697,21 +913,37 @@ const Home = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className={styles.formGroup}>
-                                    <label htmlFor="projectType" className={styles.formLabel}>What do you need?</label>
-                                    <select
-                                        id="projectType" name="projectType"
-                                        value={formData.projectType} onChange={handleInputChange}
-                                        className={styles.formSelect} required
-                                    >
-                                        <option value="" disabled>Choose one</option>
-                                        <option value="website">A business website</option>
-                                        <option value="web-app">A web application</option>
-                                        <option value="software">Custom software / backend</option>
-                                        <option value="redesign">A redesign of my existing site</option>
-                                        <option value="consulting">Technical consulting</option>
-                                        <option value="not-sure">Not sure yet — help me figure it out</option>
-                                    </select>
+                                <div className={styles.formRow}>
+                                    <div className={styles.formGroup}>
+                                        <label htmlFor="projectType" className={styles.formLabel}>What do you need?</label>
+                                        <select
+                                            id="projectType" name="projectType"
+                                            value={formData.projectType} onChange={handleInputChange}
+                                            className={styles.formSelect} required
+                                        >
+                                            <option value="" disabled>Choose service</option>
+                                            <option value="website">A business website</option>
+                                            <option value="web-app">A web application</option>
+                                            <option value="software">Custom software / backend</option>
+                                            <option value="redesign">A redesign of my existing site</option>
+                                            <option value="consulting">Technical consulting</option>
+                                            <option value="not-sure">Not sure yet — help me figure it out</option>
+                                        </select>
+                                    </div>
+                                    <div className={styles.formGroup}>
+                                        <label htmlFor="budget" className={styles.formLabel}>Estimated Budget</label>
+                                        <select
+                                            id="budget" name="budget"
+                                            value={formData.budget} onChange={handleInputChange}
+                                            className={styles.formSelect}
+                                        >
+                                            <option value="" disabled>Select range (optional)</option>
+                                            <option value="under-25k">Under ₹25,000</option>
+                                            <option value="25k-50k">₹25,000 - ₹50,000</option>
+                                            <option value="50k-1l">₹50,000 - ₹1,00,000</option>
+                                            <option value="above-1l">₹1,00,000+</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div className={styles.formGroup}>
                                     <label htmlFor="message" className={styles.formLabel}>Tell us more (optional)</label>
