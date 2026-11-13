@@ -17,6 +17,16 @@
 - Fixed horizontal overflow on `/contact` at 375 px.
 - Known, not fixed here: `/services` cards overflow briefly during their slide-in at 375 px; several inner pages have no `<h1>`; EmailJS delivery itself could not be tested from the sandbox.
 
+## Homepage rebuild, first cinematic slice (2026-11-13)
+Owner instruction: park email/backend, build the 3D and cinematic frontend now.
+- New homepage at `/` (`pages/HomePage`), composed from `src/sections/*`, content in `src/content/site.js`, tokens scoped in `sections/home.module.css`. The old `CinematicHome` is no longer routed but is kept in the repo.
+- New hero scene `scenes/HeroStructure`: a five-layer architectural model of a product (infrastructure to experience), assembles on load, follows the pointer, separates on scroll, pauses off-screen. Static SVG fallback without WebGL or with data saver; single static frame with reduced motion. 3D chunk 134 kB gzip, loaded after first paint.
+- Sections: services (6), expertise and stack, industries, selected work, process (6 steps), founder, honest reviews note, contact, footer. No GSAP or Framer Motion on the homepage; motion is CSS plus two small scroll hooks.
+- Navigation: Process link, skip link, closed drawer is `inert`, Esc closes and returns focus.
+- Evidence (Playwright, local production build): no horizontal overflow and no hidden content at 320/375/768/1024/1366/1920/2560; axe-core WCAG 2.1 AA: 0 violations on `/`; reduced motion and no-WebGL paths checked; all 10 routes render; form validation, failure, success and honeypot paths pass.
+- Not done yet: inner pages (`/services`, `/projects`, `/about`, `/contact`, legal) still use the old design, styled-components and Framer Motion; real project screenshots and case studies; founder photo; FAQ removed pending confirmed terms; Safari/Firefox not yet tested.
+- Content needing owner confirmation: founder quote (shortened from the handoff HTML), "MSME registered", "clients across India", and the four projects shown.
+
 ## Next
 1. Owner reviews and merges the hotfix.
 2. Phase 1: content inventory and design spec.

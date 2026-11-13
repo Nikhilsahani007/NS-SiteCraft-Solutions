@@ -63,7 +63,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
   font-weight: 400;
-  color: rgba(248, 250, 252, 0.4);
+  color: rgba(248, 250, 252, 0.62);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -272,4 +272,22 @@
   .drawer { padding: 1.5rem 1.25rem 2rem; }
   .logoSub { display: none; }
   .logoDivider { display: none; }
+}
+
+/* Skip link: visible only when focused */
+.skip {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  padding: 10px 16px;
+  background: #f8fafc;
+  color: #08080c;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: none;
 }
