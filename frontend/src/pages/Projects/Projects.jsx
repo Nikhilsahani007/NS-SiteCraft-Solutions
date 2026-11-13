@@ -90,7 +90,7 @@ const Projects = () => {
 
                                         <div className={styles.cardCategory}>{project.category}</div>
                                         <h3 className={styles.cardTitle}>{project.title}</h3>
-                                        <p className={styles.cardImpact}>{project.impact}</p>
+                                        {project.impact && <p className={styles.cardImpact}>{project.impact}</p>}
                                         <p className={styles.cardDescription}>{project.description}</p>
 
                                         {/* Tech stack */}

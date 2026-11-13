@@ -1550,3 +1550,34 @@
   display: inline;
 }
 
+
+/* ── Form validation and delivery states (hotfix) ── */
+.formError {
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: #f87171;
+}
+
+.formErrorBanner {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  background: rgba(248, 113, 113, 0.08);
+  color: #fecaca;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.formErrorBanner a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.formHoneypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

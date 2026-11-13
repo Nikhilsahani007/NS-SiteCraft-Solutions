@@ -32,6 +32,11 @@
     margin: 0 auto;
 }
 
+/* Let grid columns shrink below their content width (long email address on mobile). */
+.contactGrid > * {
+    min-width: 0;
+}
+
 .contactInfo {
     background-color: var(--color-bg-secondary);
     padding: var(--spacing-3xl);
@@ -217,4 +222,7 @@
     .formContainer {
         padding: var(--spacing-2xl);
     }
+}
+.infoValue {
+    overflow-wrap: anywhere;
 }

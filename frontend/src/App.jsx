@@ -2,6 +2,8 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AnimatePresence } from 'framer-motion';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { siteTheme } from './design-system/theme/siteTheme';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
@@ -73,14 +75,16 @@ const AnimatedRoutes = () => {
 function App() {
   return (
     <HelmetProvider>
-      <ErrorBoundary>
-        <Router>
-          <CustomCursor />
-          <ScrollToTop />
-          <Navigation />
-          <AnimatedRoutes />
-        </Router>
-      </ErrorBoundary>
+      <StyledThemeProvider theme={siteTheme}>
+        <ErrorBoundary>
+          <Router>
+            <CustomCursor />
+            <ScrollToTop />
+            <Navigation />
+            <AnimatedRoutes />
+          </Router>
+        </ErrorBoundary>
+      </StyledThemeProvider>
     </HelmetProvider>
   );
 }
