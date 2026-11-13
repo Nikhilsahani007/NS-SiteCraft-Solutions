@@ -1,0 +1,14 @@
+// Cloudflare Workers config for the repo's connected "ns-sitecraft-solutions" project.
+// Serves the Vite build of frontend/ as static assets with SPA fallback (same as vercel.json rewrites).
+// Primary hosting is still Vercel; see docs/project/DEPLOYMENT-RUNBOOK.md.
+{
+  "name": "ns-sitecraft-solutions",
+  "compatibility_date": "2026-11-01",
+  "build": {
+    "command": "cd frontend && npm ci --no-audit --no-fund && npm run build"
+  },
+  "assets": {
+    "directory": "./frontend/dist",
+    "not_found_handling": "single-page-application"
+  }
+}
