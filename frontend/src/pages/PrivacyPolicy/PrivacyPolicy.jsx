@@ -1,7 +1,4 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import SEOHead from '../../components/SEOHead/SEOHead';
-import styles from './PrivacyPolicy.module.css';
+import LegalPage from '../../sections/LegalPage';
 
 const sections = [
     {
@@ -112,143 +109,27 @@ const sections = [
     },
 ];
 
-const fadeUp = {
-    hidden: { opacity: 0, y: 24 },
-    visible: (i) => ({
-        opacity: 1,
-        y: 0,
-        transition: { delay: i * 0.06, duration: 0.45, ease: 'easeOut' },
-    }),
+const seo = {
+  title: 'Privacy Policy',
+  description:
+    'How NS SiteCraft Solutions collects, uses and protects your personal information.',
+  canonicalPath: '/privacy-policy',
+  keywords: 'privacy policy, NS SiteCraft Solutions privacy, data protection, personal information',
 };
 
-const PrivacyPolicy = () => {
-    return (
-        <>
-            <SEOHead
-                title="Privacy Policy - NS SiteCraft Solutions"
-                description="Learn how NS SiteCraft Solutions collects, uses, and protects your personal information. Our Privacy Policy is transparent and straightforward."
-                canonicalPath="/privacy-policy"
-                keywords="privacy policy, NS SiteCraft Solutions privacy, data protection, personal information, GDPR"
-            />
-
-            <div className={styles.page}>
-                {/* Hero */}
-                <section className={styles.hero}>
-                    <div className="container">
-                        <motion.div
-                            className={styles.heroContent}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.55, ease: 'easeOut' }}
-                        >
-                            <div className={styles.badge}>Legal</div>
-                            <h1 className={styles.heroTitle}>Privacy Policy</h1>
-                            <p className={styles.heroSubtitle}>
-                                Your privacy matters to us. We are transparent about what we collect and why.
-                            </p>
-                            <p className={styles.effectiveDate}>
-                                <span className={styles.effectiveLabel}>Effective Date:</span> September 29, 2026
-                            </p>
-                        </motion.div>
-                    </div>
-                    <div className={styles.heroBg} aria-hidden="true" />
-                </section>
-
-                {/* Content */}
-                <section className={styles.contentSection}>
-                    <div className="container">
-                        <div className={styles.layout}>
-                            {/* Table of Contents */}
-                            <aside className={styles.toc}>
-                                <div className={styles.tocCard}>
-                                    <h2 className={styles.tocTitle}>Contents</h2>
-                                    <nav>
-                                        <ul className={styles.tocList}>
-                                            {sections.map((s) => (
-                                                <li key={s.id}>
-                                                    <a href={`#${s.id}`} className={styles.tocLink}>
-                                                        {s.title}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </aside>
-
-                            {/* Main Content */}
-                            <main className={styles.main}>
-                                {sections.map((section, i) => (
-                                    <motion.div
-                                        key={section.id}
-                                        id={section.id}
-                                        className={styles.section}
-                                        custom={i}
-                                        variants={fadeUp}
-                                        initial="hidden"
-                                        whileInView="visible"
-                                        viewport={{ once: true, margin: '-60px' }}
-                                    >
-                                        <h2 className={styles.sectionTitle}>{section.title}</h2>
-                                        {section.content.map((para, j) => (
-                                            <p key={j} className={styles.paragraph}>{para}</p>
-                                        ))}
-                                        {section.list && (
-                                            <ul className={styles.detailList}>
-                                                {section.list.map((item, k) => (
-                                                    <li key={k} className={styles.detailItem}>
-                                                        <span className={styles.detailLabel}>{item.label}:</span>
-                                                        <span className={styles.detailText}>{item.detail}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
-                                        {section.contact && (
-                                            <div className={styles.contactBox}>
-                                                <div className={styles.contactItem}>
-                                                    <span className={styles.contactIcon}>✉️</span>
-                                                    <a href="mailto:nssitecraftsolution@gmail.com" className={styles.contactLink}>
-                                                        nssitecraftsolution@gmail.com
-                                                    </a>
-                                                </div>
-                                                <div className={styles.contactItem}>
-                                                    <span className={styles.contactIcon}>📞</span>
-                                                    <a href="tel:+919390969461" className={styles.contactLink}>
-                                                        +91 93909 69461
-                                                    </a>
-                                                </div>
-                                                <div className={styles.contactItem}>
-                                                    <span className={styles.contactIcon}>📍</span>
-                                                    <span className={styles.contactText}>Hyderabad, Telangana, India</span>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </motion.div>
-                                ))}
-
-                                {/* Bottom CTA */}
-                                <motion.div
-                                    className={styles.ctaBox}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.2, duration: 0.45 }}
-                                >
-                                    <p className={styles.ctaText}>
-                                        Also read our{' '}
-                                        <Link to="/terms-and-conditions" className={styles.ctaLink}>
-                                            Terms &amp; Conditions
-                                        </Link>{' '}
-                                        for our service agreement.
-                                    </p>
-                                </motion.div>
-                            </main>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </>
-    );
-};
+const PrivacyPolicy = () => (
+  <LegalPage
+    seo={seo}
+    title={
+      <>
+        Privacy <em>Policy</em>
+      </>
+    }
+    lede="Your privacy matters to us. We are transparent about what we collect and why."
+    effective="September 29, 2026"
+    sections={sections}
+    other={{ to: '/terms-and-conditions', label: 'Terms & Conditions', text: 'for our service agreement.' }}
+  />
+);
 
 export default PrivacyPolicy;

@@ -1,7 +1,4 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import SEOHead from '../../components/SEOHead/SEOHead';
-import styles from './TermsAndConditions.module.css';
+import LegalPage from '../../sections/LegalPage';
 
 const sections = [
     {
@@ -86,133 +83,27 @@ const sections = [
     },
 ];
 
-const fadeUp = {
-    hidden: { opacity: 0, y: 24 },
-    visible: (i) => ({
-        opacity: 1,
-        y: 0,
-        transition: { delay: i * 0.07, duration: 0.45, ease: 'easeOut' },
-    }),
+const seo = {
+  title: 'Terms and Conditions',
+  description:
+    'The Terms and Conditions governing the use of NS SiteCraft Solutions services: your rights, responsibilities and our policies.',
+  canonicalPath: '/terms-and-conditions',
+  keywords: 'terms and conditions, NS SiteCraft Solutions terms, web development terms, service agreement',
 };
 
-const TermsAndConditions = () => {
-    return (
-        <>
-            <SEOHead
-                title="Terms and Conditions - NS SiteCraft Solutions"
-                description="Read the Terms and Conditions governing the use of NS SiteCraft Solutions services. Understand your rights, responsibilities, and our policies."
-                canonicalPath="/terms-and-conditions"
-                keywords="terms and conditions, NS SiteCraft Solutions terms, web development terms, service agreement"
-            />
-
-            <div className={styles.page}>
-                {/* Hero */}
-                <section className={styles.hero}>
-                    <div className="container">
-                        <motion.div
-                            className={styles.heroContent}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.55, ease: 'easeOut' }}
-                        >
-                            <div className={styles.badge}>Legal</div>
-                            <h1 className={styles.heroTitle}>Terms &amp; Conditions</h1>
-                            <p className={styles.heroSubtitle}>
-                                Please read these terms carefully before using our services.
-                            </p>
-                            <p className={styles.effectiveDate}>
-                                <span className={styles.effectiveLabel}>Effective Date:</span> September 29, 2026
-                            </p>
-                        </motion.div>
-                    </div>
-                    <div className={styles.heroBg} aria-hidden="true" />
-                </section>
-
-                {/* Content */}
-                <section className={styles.contentSection}>
-                    <div className="container">
-                        <div className={styles.layout}>
-                            {/* Table of Contents */}
-                            <aside className={styles.toc}>
-                                <div className={styles.tocCard}>
-                                    <h2 className={styles.tocTitle}>Contents</h2>
-                                    <nav>
-                                        <ul className={styles.tocList}>
-                                            {sections.map((s) => (
-                                                <li key={s.id}>
-                                                    <a href={`#${s.id}`} className={styles.tocLink}>
-                                                        {s.title}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </aside>
-
-                            {/* Main Content */}
-                            <main className={styles.main}>
-                                {sections.map((section, i) => (
-                                    <motion.div
-                                        key={section.id}
-                                        id={section.id}
-                                        className={styles.section}
-                                        custom={i}
-                                        variants={fadeUp}
-                                        initial="hidden"
-                                        whileInView="visible"
-                                        viewport={{ once: true, margin: '-60px' }}
-                                    >
-                                        <h2 className={styles.sectionTitle}>{section.title}</h2>
-                                        {section.content.map((para, j) => (
-                                            <p key={j} className={styles.paragraph}>{para}</p>
-                                        ))}
-                                        {section.contact && (
-                                            <div className={styles.contactBox}>
-                                                <div className={styles.contactItem}>
-                                                    <span className={styles.contactIcon}>✉️</span>
-                                                    <a href="mailto:nssitecraftsolution@gmail.com" className={styles.contactLink}>
-                                                        nssitecraftsolution@gmail.com
-                                                    </a>
-                                                </div>
-                                                <div className={styles.contactItem}>
-                                                    <span className={styles.contactIcon}>📞</span>
-                                                    <a href="tel:+919390969461" className={styles.contactLink}>
-                                                        +91 93909 69461
-                                                    </a>
-                                                </div>
-                                                <div className={styles.contactItem}>
-                                                    <span className={styles.contactIcon}>📍</span>
-                                                    <span className={styles.contactText}>Hyderabad, Telangana, India</span>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </motion.div>
-                                ))}
-
-                                {/* Bottom CTA */}
-                                <motion.div
-                                    className={styles.ctaBox}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.2, duration: 0.45 }}
-                                >
-                                    <p className={styles.ctaText}>
-                                        Also read our{' '}
-                                        <Link to="/privacy-policy" className={styles.ctaLink}>
-                                            Privacy Policy
-                                        </Link>{' '}
-                                        to understand how we handle your data.
-                                    </p>
-                                </motion.div>
-                            </main>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </>
-    );
-};
+const TermsAndConditions = () => (
+  <LegalPage
+    seo={seo}
+    title={
+      <>
+        Terms &amp; <em>Conditions</em>
+      </>
+    }
+    lede="Please read these terms carefully before using our services."
+    effective="September 29, 2026"
+    sections={sections}
+    other={{ to: '/privacy-policy', label: 'Privacy Policy', text: 'to understand how we handle your data.' }}
+  />
+);
 
 export default TermsAndConditions;

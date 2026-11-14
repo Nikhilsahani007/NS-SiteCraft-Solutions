@@ -2,13 +2,15 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AnimatePresence } from 'framer-motion';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { siteTheme } from './design-system/theme/siteTheme';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import CustomCursor from './components/CustomCursor/CustomCursor';
 
 // Route-based code splitting
-const CinematicHome = lazy(() => import('./pages/CinematicHome/CinematicHome'));
+const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const Services = lazy(() => import('./pages/Services/Services'));
 const Solutions = lazy(() => import('./pages/Solutions/Solutions'));
 const Pricing = lazy(() => import('./pages/Pricing/Pricing'));
@@ -54,7 +56,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait" initial={false}>
       <Suspense fallback={<PageLoader />} key={location.pathname}>
         <Routes location={location}>
-          <Route path="/" element={<CinematicHome />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/services" element={<Services />} />
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/pricing" element={<Pricing />} />
@@ -73,14 +75,16 @@ const AnimatedRoutes = () => {
 function App() {
   return (
     <HelmetProvider>
-      <ErrorBoundary>
-        <Router>
-          <CustomCursor />
-          <ScrollToTop />
-          <Navigation />
-          <AnimatedRoutes />
-        </Router>
-      </ErrorBoundary>
+      <StyledThemeProvider theme={siteTheme}>
+        <ErrorBoundary>
+          <Router>
+            <CustomCursor />
+            <ScrollToTop />
+            <Navigation />
+            <AnimatedRoutes />
+          </Router>
+        </ErrorBoundary>
+      </StyledThemeProvider>
     </HelmetProvider>
   );
 }

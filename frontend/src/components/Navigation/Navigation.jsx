@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Navigation.module.css';
 
 const navLinks = [
   { id: 'services', label: 'Services' },
   { id: 'work', label: 'Work' },
+  { id: 'process', label: 'Process' },
   { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -42,17 +43,44 @@ const Navigation = () => {
 
   useEffect(() => { setMenuOpen(false); }, [location]);
 
+  // Closed drawer must not be reachable by keyboard or assistive tech.
+  const drawerRef = useRef(null);
+  const burgerRef = useRef(null);
+  useEffect(() => {
+    const drawer = drawerRef.current;
+    if (!drawer) return undefined;
+    if (!menuOpen) {
+      drawer.setAttribute('inert', '');
+      return undefined;
+    }
+    drawer.removeAttribute('inert');
+    drawer.querySelector('a')?.focus();
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+        burgerRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
+
   const scrollTo = useCallback((e, id) => {
     e.preventDefault();
     setMenuOpen(false);
     const el = document.getElementById(id);
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 80;
-    window.scrollTo({ top, behavior: 'smooth' });
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const top = el.getBoundingClientRect().top + window.scrollY - 72;
+    window.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+    window.history.replaceState(null, '', `#${id}`);
+    el.setAttribute('tabindex', '-1');
+    el.focus({ preventScroll: true });
   }, []);
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`} role="banner">
+      <a className={styles.skip} href="#main">Skip to content</a>
       <div className={styles.inner}>
         <Link to="/" className={styles.logo} aria-label="NS SiteCraft Solutions — Home">
           <span className={styles.logoMark}>NS</span>
@@ -95,7 +123,9 @@ const Navigation = () => {
 
           <button
             className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`}
+            ref={burgerRef}
             onClick={() => setMenuOpen(v => !v)}
+            aria-controls="mobile-menu"
             aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={menuOpen}
           >
@@ -106,7 +136,7 @@ const Navigation = () => {
         </div>
       </div>
 
-      <div className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`} aria-hidden={!menuOpen}>
+      <div id="mobile-menu" ref={drawerRef} className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`}>
         {isHome ? (
           navLinks.map(link => (
             <a key={link.id} href={`#${link.id}`} className={styles.drawerLink} onClick={e => scrollTo(e, link.id)}>

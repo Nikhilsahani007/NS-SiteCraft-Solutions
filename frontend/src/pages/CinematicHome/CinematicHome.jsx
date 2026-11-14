@@ -24,10 +24,10 @@ import {
   clipReveal,
   fadeUpStagger,
   parallaxY,
-  countUpGSAP,
   magneticHover,
 } from '../../utils/motion';
 import styles from './CinematicHome.module.css';
+import { sendEnquiry, validateEnquiry } from '../../utils/sendEnquiry';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,16 +96,14 @@ const projects = [
     title: 'Smart Customer Support Platform',
     description: 'Real-time customer support platform with AI-ready chat interface, session management, and structured conversation workflows designed for scale.',
     tech: ['React', 'Node.js', 'MongoDB'],
-    result: '40% reduction in average response time',
     featured: true,
   },
   {
     id: 2,
     label: 'AI Solution',
     title: 'E-Commerce Recommendation Engine',
-    description: 'Behavioral analysis system that surfaces personalized product recommendations — increasing average order value across connected stores.',
+    description: 'Behavioral analysis system that surfaces personalized product recommendations from browsing and purchase patterns.',
     tech: ['Python', 'Scikit-learn', 'REST API'],
-    result: 'Measurable uplift in cross-sell revenue',
     featured: true,
   },
   {
@@ -114,7 +112,6 @@ const projects = [
     title: 'Network Security Dashboard',
     description: 'Real-time network threat detection and classification system with intelligent monitoring for connected business environments.',
     tech: ['Python', 'TensorFlow', 'Dashboard UI'],
-    result: 'Proactive threat response capability',
     featured: true,
   },
 ];
@@ -377,14 +374,12 @@ const CinematicHome = () => {
   const ctaPrimRef = useRef(null);
   const ctaSecRef = useRef(null);
   const processLineRef = useRef(null);
-  const statsRef = useRef(null);
-  const stat0Ref = useRef(null);
-  const stat1Ref = useRef(null);
-  const stat2Ref = useRef(null);
 
   const [openFaq, setOpenFaq] = useState(null);
   const [formState, setFormState] = useState({ name: '', email: '', type: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle');
+  const [formErrors, setFormErrors] = useState({});
+  const [honeypot, setHoneypot] = useState('');
 
   // Pointer tracking
   useEffect(() => {
@@ -484,9 +479,6 @@ const CinematicHome = () => {
         );
       }
 
-      // Stats count up
-      scrollTriggerStats();
-
       // Label reveal
       gsap.fromTo(
         el.querySelector('[data-intro-label]'),
@@ -507,12 +499,6 @@ const CinematicHome = () => {
     return () => ctx.revert();
   }, []);
 
-  const scrollTriggerStats = useCallback(() => {
-    if (!statsRef.current || prefersReducedMotion()) return;
-    countUpGSAP(stat0Ref.current, 15, { trigger: statsRef.current, suffix: '+' });
-    countUpGSAP(stat1Ref.current, 98, { trigger: statsRef.current, suffix: '%' });
-    countUpGSAP(stat2Ref.current, 30, { trigger: statsRef.current, suffix: 'd' });
-  }, []);
 
   // ── Services section ──────────────────────────────────────────
   useEffect(() => {
@@ -804,16 +790,41 @@ const CinematicHome = () => {
   }, []);
 
   const handleFormChange = (e) => {
-    setFormState(s => ({ ...s, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormState(s => ({ ...s, [name]: value }));
+    if (formErrors[name]) setFormErrors(errs => ({ ...errs, [name]: undefined }));
   };
 
+  // Success is shown only after the email service accepts the message.
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    if (formStatus === 'sending') return;
+
+    const errors = validateEnquiry(formState);
+    if (Object.keys(errors).length) {
+      setFormErrors(errors);
+      const firstField = document.getElementById(`contact-${Object.keys(errors)[0]}`);
+      firstField?.focus();
+      return;
+    }
+
+    // Bots fill hidden fields; drop silently without contacting the service.
+    if (honeypot) return;
+
     setFormStatus('sending');
-    await new Promise(r => setTimeout(r, 1600));
-    setFormStatus('sent');
-    setFormState({ name: '', email: '', type: '', message: '' });
-    setTimeout(() => setFormStatus('idle'), 5000);
+    try {
+      const typeLabel = e.target.querySelector('#contact-type option:checked')?.textContent || formState.type;
+      await sendEnquiry({
+        name: formState.name.trim(),
+        email: formState.email.trim(),
+        message: `Project type: ${typeLabel}\n\n${formState.message.trim()}`,
+      });
+      setFormStatus('sent');
+      setFormState({ name: '', email: '', type: '', message: '' });
+    } catch (err) {
+      console.error('Enquiry failed to send', err);
+      setFormStatus('error');
+    }
   };
 
   const localBusinessSchema = {
@@ -935,28 +946,6 @@ const CinematicHome = () => {
               </p>
             </blockquote>
 
-            <div className={styles.statsRow} ref={statsRef}>
-              <div className={styles.statItem}>
-                <div className={styles.statValue}>
-                  <span ref={stat0Ref}>0</span>
-                </div>
-                <div className={styles.statLabel}>Projects Delivered</div>
-              </div>
-              <div className={styles.statDivider} />
-              <div className={styles.statItem}>
-                <div className={styles.statValue}>
-                  <span ref={stat1Ref}>0</span>
-                </div>
-                <div className={styles.statLabel}>On-Time Delivery</div>
-              </div>
-              <div className={styles.statDivider} />
-              <div className={styles.statItem}>
-                <div className={styles.statValue}>
-                  <span ref={stat2Ref}>0</span>
-                </div>
-                <div className={styles.statLabel}>Post-Launch Support</div>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -1177,8 +1166,8 @@ const CinematicHome = () => {
               {formStatus === 'sent' ? (
                 <div className={styles.formSuccess} role="status">
                   <div className={styles.formSuccessIcon}>✓</div>
-                  <h3>Message received.</h3>
-                  <p>We'll review your brief and respond within 24 hours.</p>
+                  <h3>Message sent.</h3>
+                  <p>Thank you. We'll review your brief and reply by email with next steps.</p>
                 </div>
               ) : (
                 <form
@@ -1200,7 +1189,10 @@ const CinematicHome = () => {
                         placeholder="Your name"
                         required
                         autoComplete="name"
+                        aria-invalid={formErrors.name ? 'true' : undefined}
+                        aria-describedby={formErrors.name ? 'contact-name-error' : undefined}
                       />
+                      {formErrors.name && <p id="contact-name-error" className={styles.formError}>{formErrors.name}</p>}
                     </div>
                     <div className={styles.formGroup}>
                       <label htmlFor="contact-email" className={styles.formLabel}>Email</label>
@@ -1214,7 +1206,10 @@ const CinematicHome = () => {
                         placeholder="you@company.com"
                         required
                         autoComplete="email"
+                        aria-invalid={formErrors.email ? 'true' : undefined}
+                        aria-describedby={formErrors.email ? 'contact-email-error' : undefined}
                       />
+                      {formErrors.email && <p id="contact-email-error" className={styles.formError}>{formErrors.email}</p>}
                     </div>
                   </div>
 
@@ -1227,6 +1222,8 @@ const CinematicHome = () => {
                       value={formState.type}
                       onChange={handleFormChange}
                       required
+                      aria-invalid={formErrors.type ? 'true' : undefined}
+                      aria-describedby={formErrors.type ? 'contact-type-error' : undefined}
                     >
                       <option value="" disabled>Select a service</option>
                       <option value="website">Business Website</option>
@@ -1236,6 +1233,7 @@ const CinematicHome = () => {
                       <option value="strategy">Digital Strategy</option>
                       <option value="other">Other</option>
                     </select>
+                    {formErrors.type && <p id="contact-type-error" className={styles.formError}>{formErrors.type}</p>}
                   </div>
 
                   <div className={styles.formGroup}>
@@ -1249,8 +1247,32 @@ const CinematicHome = () => {
                       placeholder="Describe your project, goals, timeline, and any relevant context..."
                       rows={5}
                       required
+                      aria-invalid={formErrors.message ? 'true' : undefined}
+                      aria-describedby={formErrors.message ? 'contact-message-error' : undefined}
+                    />
+                    {formErrors.message && <p id="contact-message-error" className={styles.formError}>{formErrors.message}</p>}
+                  </div>
+
+                  {/* Honeypot: hidden from people and assistive tech */}
+                  <div className={styles.formHoneypot} aria-hidden="true">
+                    <label htmlFor="contact-website">Website</label>
+                    <input
+                      id="contact-website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
                     />
                   </div>
+
+                  {formStatus === 'error' && (
+                    <p className={styles.formErrorBanner} role="alert">
+                      Sorry, your message could not be sent. Please try again, or email us at{' '}
+                      <a href="mailto:nssitecraftsolution@gmail.com">nssitecraftsolution@gmail.com</a>.
+                    </p>
+                  )}
 
                   <button
                     type="submit"
