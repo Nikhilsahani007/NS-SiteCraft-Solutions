@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 import { process } from '../content/site';
 import { useScrollProgress } from '../hooks/useScrollProgress';
-import { Arrow, goTo, pad } from './parts';
+import { Arrow, ContactLink, pad } from './parts';
 import styles from './home.module.css';
 
-const Process = () => {
+const Process = ({ no = '05' }) => {
   const listRef = useRef(null);
 
   useScrollProgress(
@@ -26,7 +26,7 @@ const Process = () => {
       <div className={`${styles.container} ${styles.processGrid}`}>
         <div className={styles.processIntro} data-reveal>
           <p className={styles.label}>
-            <b>05</b>
+            <b>{no}</b>
             How we work
           </p>
           <h2 className={styles.title} id="process-title">
@@ -37,10 +37,10 @@ const Process = () => {
             something you can see and approve.
           </p>
           <p style={{ marginTop: 28 }}>
-            <a className={styles.textLink} href="#contact" onClick={goTo('contact')}>
+            <ContactLink className={styles.textLink}>
               Talk through your project
               <Arrow size={14} />
-            </a>
+            </ContactLink>
           </p>
         </div>
 

@@ -1,150 +1,80 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import Button from '../../components/Button/Button';
-import SEOHead from '../../components/SEOHead/SEOHead';
-import styles from './About.module.css';
+import { about, company } from '../../content/site';
+import { PageShell, PageHero, CtaBand } from '../../sections/PageShell';
+import Founder from '../../sections/Founder';
+import { pad } from '../../sections/parts';
+import styles from '../../sections/home.module.css';
 
-const About = () => {
-    const values = [
-        {
-            title: 'Custom-Built',
-            description: 'Every solution is built specifically for your needs. No templates.',
-            icon: '⚙️'
-        },
-        {
-            title: 'Clarity',
-            description: 'Transparent communication. Clear roadmaps. No surprises.',
-            icon: '💡'
-        },
-        {
-            title: 'Scalability',
-            description: 'Systems that grow with you, not against you.',
-            icon: '📈'
-        },
-        {
-            title: 'Long-term',
-            description: 'We build for the future, not just for launch day.',
-            icon: '🎯'
-        }
-    ];
-
-    return (
-        <>
-            <SEOHead
-                title="About Us - MSME Registered Software Company in Hyderabad"
-                description="Learn about NS SiteCraft Solutions — an MSME registered software company in Hyderabad building custom web and software solutions for businesses and colleges. Our mission, values, and approach."
-                canonicalPath="/about"
-                keywords="about NS SiteCraft Solutions, software company Hyderabad, MSME registered, web development company India, custom software team"
-            />
-            <div className={styles.about}>
-                <section className={styles.storySection}>
-                    <div className="container">
-
-                        <div className={styles.storyContent}>
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                className={styles.storyText}
-                            >
-                                <h2 className={styles.sectionTitle}>Who we are</h2>
-                                <p className={styles.paragraph}>
-                                    NS SiteCraft Solutions is a software company based in Hyderabad. We're MSME registered and focused on building custom solutions for colleges and businesses.
-                                </p>
-                                <p className={styles.paragraph}>
-                                    We don't do templates. We don't do shortcuts. We build software that fits your workflows, not the other way around.
-                                </p>
-                                <p className={styles.paragraph}>
-                                    Our clients range from small businesses establishing their first online presence to educational institutions managing thousands of students. What they have in common: they need software that works.
-                                </p>
-                            </motion.div>
-                        </div>
-                    </div>
-                </section>
-
-                <section className={styles.missionSection}>
-                    <div className="container">
-                        <h2 className={styles.sectionTitle}>Mission</h2>
-                        <p className={styles.missionText}>
-                            Build software that solves real problems. Make technology accessible without compromising on quality. Help businesses and institutions operate more efficiently.
-                        </p>
-                    </div>
-                </section>
-
-                <section className={styles.valuesSection}>
-                    <div className="container">
-                        <h2 className={styles.sectionTitle}>How we work</h2>
-                        <div className={styles.valuesGrid}>
-                            {values.map((value, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className={styles.valueCard}
-                                >
-                                    <div className={styles.valueIcon}>{value.icon}</div>
-                                    <h3 className={styles.valueTitle}>{value.title}</h3>
-                                    <p className={styles.valueDescription}>{value.description}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                <section className={styles.approachSection}>
-                    <div className="container">
-                        <h2 className={styles.sectionTitle}>Our approach</h2>
-                        <div className={styles.approachSteps}>
-                            <div className={styles.stepCard}>
-                                <div className={styles.stepNumber}>1</div>
-                                <h3 className={styles.stepTitle}>Understand</h3>
-                                <p className={styles.stepDescription}>
-                                    We listen to your challenges and goals
-                                </p>
-                            </div>
-                            <div className={styles.stepCard}>
-                                <div className={styles.stepNumber}>2</div>
-                                <h3 className={styles.stepTitle}>Design</h3>
-                                <p className={styles.stepDescription}>
-                                    We create a solution tailored to your workflows
-                                </p>
-                            </div>
-                            <div className={styles.stepCard}>
-                                <div className={styles.stepNumber}>3</div>
-                                <h3 className={styles.stepTitle}>Build</h3>
-                                <p className={styles.stepDescription}>
-                                    We develop with quality and scalability in mind
-                                </p>
-                            </div>
-                            <div className={styles.stepCard}>
-                                <div className={styles.stepNumber}>4</div>
-                                <h3 className={styles.stepTitle}>Support</h3>
-                                <p className={styles.stepDescription}>
-                                    We provide ongoing maintenance and improvements
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section className={styles.ctaSection}>
-                    <div className="container">
-                        <div className={styles.ctaContent}>
-                            <h2 className={styles.ctaTitle}>Ready to start?</h2>
-                            <p className={styles.ctaSubtitle}>
-                                Let's talk about what you're building
-                            </p>
-                            <Link to="/contact">
-                                <Button size="large">Talk to us</Button>
-                            </Link>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </>
-    );
+const seo = {
+  title: 'About NS SiteCraft Solutions, a Software Studio in Hyderabad',
+  description:
+    'NS SiteCraft Solutions is an MSME registered software studio in Hyderabad building custom websites and software for schools, colleges and businesses.',
+  canonicalPath: '/about',
+  keywords: 'about NS SiteCraft Solutions, software company Hyderabad, MSME registered, web development studio India',
 };
+
+const About = () => (
+  <PageShell seo={seo}>
+    <PageHero
+      label="About"
+      title={
+        <>
+          A small studio that <em>builds carefully.</em>
+        </>
+      }
+      lede={`Based in ${company.location}. You work directly with the person who designs and builds your product.`}
+    />
+
+    <section className={styles.sectionTight} aria-labelledby="story-title">
+      <div className={`${styles.container} ${styles.split}`}>
+        <div data-reveal>
+          <p className={styles.label}>
+            <b>01</b>
+            Who we are
+          </p>
+          <h2 className={styles.srOnly} id="story-title">
+            Who we are
+          </h2>
+        </div>
+        <div className={styles.prose} data-reveal style={{ '--i': 1 }}>
+          {about.story.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+          <h3 className={styles.kicker}>Mission</h3>
+          <p>{about.mission}</p>
+        </div>
+      </div>
+    </section>
+
+    <section className={`${styles.section} ${styles.paper}`} aria-labelledby="values-title">
+      <div className={styles.container}>
+        <header className={styles.head}>
+          <div data-reveal>
+            <p className={styles.label}>
+              <b>02</b>
+              How we work
+            </p>
+            <h2 className={styles.title} id="values-title">
+              Four things we <em>hold to.</em>
+            </h2>
+          </div>
+        </header>
+        <ul className={styles.industries}>
+          {about.values.map((v, i) => (
+            <li className={styles.industry} key={v.name} data-reveal>
+              <span className={styles.industryNo} aria-hidden="true">
+                {pad(i + 1)}
+              </span>
+              <h3 className={styles.industryName}>{v.name}</h3>
+              <p className={styles.industryText}>{v.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <Founder no="03" />
+    <CtaBand />
+  </PageShell>
+);
 
 export default About;

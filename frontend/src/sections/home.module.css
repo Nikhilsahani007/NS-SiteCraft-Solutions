@@ -1138,7 +1138,7 @@
 
 .footerTop {
   display: grid;
-  grid-template-columns: minmax(0, 6fr) repeat(3, minmax(0, 2fr));
+  grid-template-columns: minmax(0, 5fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 3fr);
   gap: 40px 32px;
 }
 
@@ -1168,7 +1168,7 @@
   color: var(--muted);
 }
 
-.footerCol h3 {
+.footerCol h2 {
   margin: 0 0 16px;
   font-family: var(--mono);
   font-size: 12px;
@@ -1364,5 +1364,536 @@
   .page *::before,
   .page *::after {
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════
+   INNER PAGES — shared furniture for Services, Solutions,
+   Pricing, Work, About, Contact, legal pages and 404
+════════════════════════════════════════════════════════ */
+.pageHero {
+  position: relative;
+  padding: clamp(150px, 24vh, 232px) 0 clamp(56px, 8vw, 104px);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.pageHeroGrid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(ellipse 60% 90% at 85% 20%, #000 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 90% at 85% 20%, #000 0%, transparent 75%);
+}
+
+.pageHero .eyebrow {
+  animation: fadeUp 900ms var(--ease) both;
+}
+
+.pageTitle {
+  margin: 0;
+  max-width: 15em;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(2.375rem, 5.4vw, 4.75rem);
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  animation: fadeUp 1000ms var(--ease) 80ms both;
+}
+
+.pageTitle em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+.pageLede {
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  max-width: 58ch;
+  font-size: clamp(1rem, 1.3vw, 1.1875rem);
+  line-height: 1.65;
+  color: var(--body);
+  animation: fadeUp 1000ms var(--ease) 220ms both;
+}
+
+.sectionTight {
+  padding-block: clamp(56px, 7vw, 104px);
+  position: relative;
+}
+
+/* a section that opens the page sits below the fixed header */
+.sectionTop {
+  padding-top: clamp(150px, 24vh, 232px);
+  border-top: 0;
+}
+
+.sectionTop .pageTitle {
+  font-size: clamp(2.25rem, 4.6vw, 4rem);
+}
+
+.kicker {
+  display: block;
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.page .paper .kicker {
+  color: var(--paper-muted);
+}
+
+/* ── Closing call to action ── */
+.cta {
+  border-bottom: 0;
+}
+
+.ctaInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 32px 48px;
+}
+
+.ctaInner .title {
+  max-width: 16em;
+}
+
+/* ── Services in detail ── */
+.detail {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-strong);
+}
+
+.detailRow {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 5fr) minmax(0, 5fr);
+  gap: 20px 32px;
+  padding: clamp(32px, 4vw, 60px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.detailSummary {
+  margin: 18px 0 0;
+  max-width: 38ch;
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--body);
+}
+
+.detailBody .kicker:not(:first-child) {
+  margin-top: 26px;
+}
+
+.detailBody .tags {
+  margin-top: 0;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9375rem;
+  color: var(--body);
+}
+
+/* ── Problem and answer pairs ── */
+.pairs {
+  margin: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.paper .pairs {
+  border-top-color: var(--paper-ink);
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 16px clamp(32px, 6vw, 96px);
+  padding: clamp(24px, 3vw, 40px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.paper .pair {
+  border-bottom-color: var(--paper-line);
+}
+
+.pair dt {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.pair dd {
+  margin: 0;
+  line-height: 1.65;
+  color: var(--body);
+}
+
+.paper .pair dd {
+  color: var(--paper-body);
+}
+
+.pair .kicker {
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+}
+
+/* ── Pricing ── */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line-strong);
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(28px, 3vw, 44px);
+}
+
+.plan + .plan {
+  border-left: 1px solid var(--line);
+}
+
+.planName {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+
+.planPrice {
+  margin: 28px 0 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--text);
+}
+
+.planPrice span {
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.planFor {
+  margin: 16px 0 0;
+  color: var(--body);
+  line-height: 1.5;
+}
+
+.planList {
+  flex: 1;
+  margin: 28px 0 28px;
+  padding: 24px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+  font-size: 0.9375rem;
+  color: var(--body);
+}
+
+.planList li {
+  display: flex;
+  gap: 12px;
+  padding: 7px 0;
+  line-height: 1.45;
+}
+
+.planList li::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 1px;
+  margin-top: 0.7em;
+  background: var(--accent-soft);
+}
+
+/* ── About ── */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  gap: 24px 32px;
+}
+
+.prose p {
+  margin: 0 0 1.1em;
+  max-width: 34em;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 2.2vw, 1.875rem);
+  line-height: 1.32;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.prose p:first-child ~ p {
+  color: var(--body);
+}
+
+.prose .kicker {
+  margin-top: 44px;
+}
+
+/* ── Work filters ── */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.filter {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--body);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    background 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease;
+}
+
+.filter:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.filter[aria-pressed='true'] {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--ink);
+}
+
+.projectLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 28px;
+  margin: 14px 0 0;
+}
+
+/* ── Legal pages ── */
+.effective {
+  margin: 28px 0 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--body);
+}
+
+.effective span {
+  margin-right: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.legal {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);
+  gap: 40px clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+
+.toc {
+  position: sticky;
+  top: 112px;
+}
+
+.toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: toc;
+  border-top: 1px solid var(--paper-ink);
+}
+
+.toc li {
+  counter-increment: toc;
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.toc a {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  font-size: 0.9063rem;
+  line-height: 1.4;
+  color: var(--paper-body);
+  text-decoration: none;
+}
+
+.toc a::before {
+  content: counter(toc, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--paper-muted);
+}
+
+.toc a:hover {
+  color: var(--paper-accent);
+}
+
+.legalBody {
+  max-width: 68ch;
+  color: var(--paper-body);
+  line-height: 1.7;
+}
+
+.legalBody section {
+  scroll-margin-top: 104px;
+}
+
+.legalBody section + section {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--paper-line);
+}
+
+.legalBody h2 {
+  margin: 0 0 16px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--paper-ink);
+}
+
+.legalBody p {
+  margin: 0 0 1em;
+  color: inherit;
+}
+
+.legalBody dl {
+  margin: 20px 0 0;
+  border-top: 1px solid var(--paper-line);
+}
+
+.legalBody dl > div {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
+  gap: 4px 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.legalBody dt {
+  font-weight: 600;
+  color: var(--paper-ink);
+}
+
+.legalBody dd {
+  margin: 0;
+}
+
+.legalBody address {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  font-style: normal;
+}
+
+.legalBody a {
+  color: var(--paper-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legalOther {
+  margin-top: 56px !important;
+  padding-top: 24px;
+  border-top: 1px solid var(--paper-ink);
+}
+
+@media (max-width: 900px) {
+  .detailRow {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .detailBody {
+    grid-column: 2;
+  }
+
+  .pair,
+  .split,
+  .legal {
+    grid-template-columns: 1fr;
+  }
+
+  .toc {
+    position: static;
+  }
+
+  .plans {
+    grid-template-columns: 1fr;
+  }
+
+  .plan + .plan {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 700px) {
+  .pageHero,
+  .sectionTop {
+    padding-top: 128px;
+  }
+
+  .detailRow {
+    grid-template-columns: 1fr;
+  }
+
+  .detailRow > .projectNo {
+    padding-top: 0;
+  }
+
+  .detailBody {
+    grid-column: 1;
+  }
+
+  .legalBody dl > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageHero .eyebrow,
+  .pageTitle,
+  .pageLede,
+  .pageHero .heroCtas {
+    animation: none;
   }
 }

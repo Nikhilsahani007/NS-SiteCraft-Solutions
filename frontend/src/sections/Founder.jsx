@@ -1,5 +1,5 @@
 import { founder, reviews } from '../content/site';
-import { Arrow, goTo } from './parts';
+import { Arrow, ContactLink } from './parts';
 import styles from './home.module.css';
 
 const initials = founder.name
@@ -7,11 +7,11 @@ const initials = founder.name
   .map((w) => w[0])
   .join('');
 
-const Founder = () => (
+const Founder = ({ no = '06' }) => (
   <section className={styles.section} id="about" aria-labelledby="about-title">
     <div className={styles.container}>
       <p className={styles.label} data-reveal>
-        <b>06</b>
+        <b>{no}</b>
         The studio
       </p>
       <h2 className={styles.srOnly} id="about-title">
@@ -48,10 +48,10 @@ const Founder = () => (
           {reviews.title}
         </h3>
         <p className={styles.reviewsText}>{reviews.text}</p>
-        <a className={styles.textLink} href="#contact" onClick={goTo('contact')}>
+        <ContactLink className={styles.textLink}>
           Get in touch
           <Arrow size={14} />
-        </a>
+        </ContactLink>
       </aside>
     </div>
   </section>

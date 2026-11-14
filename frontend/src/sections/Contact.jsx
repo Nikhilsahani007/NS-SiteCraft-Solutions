@@ -6,7 +6,7 @@ import styles from './home.module.css';
 
 const empty = { name: '', email: '', type: '', message: '' };
 
-const Contact = () => {
+const Contact = ({ no = '07', as: Heading = 'h2', top = false }) => {
   const [values, setValues] = useState(empty);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
@@ -65,16 +65,18 @@ const Contact = () => {
     );
 
   return (
-    <section className={`${styles.section} ${styles.surface}`} id="contact" aria-labelledby="contact-title">
+    <section
+      className={`${styles.section} ${styles.surface} ${top ? styles.sectionTop : ''}`}
+      id="contact" aria-labelledby="contact-title">
       <div className={`${styles.container} ${styles.contactGrid}`}>
         <div data-reveal>
           <p className={styles.label}>
-            <b>07</b>
+            <b>{no}</b>
             Start a project
           </p>
-          <h2 className={styles.title} id="contact-title">
+          <Heading className={top ? styles.pageTitle : styles.title} id="contact-title">
             Tell us what you <em>need built.</em>
-          </h2>
+          </Heading>
           <p className={styles.lede}>
             Describe your organisation and the idea. We reply with clear next steps and a written quote, with no
             pressure.

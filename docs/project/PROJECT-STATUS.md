@@ -27,6 +27,13 @@ Owner instruction: park email/backend, build the 3D and cinematic frontend now.
 - Not done yet: inner pages (`/services`, `/projects`, `/about`, `/contact`, legal) still use the old design, styled-components and Framer Motion; real project screenshots and case studies; founder photo; FAQ removed pending confirmed terms; Safari/Firefox not yet tested.
 - Content needing owner confirmation: founder quote (shortened from the handoff HTML), "MSME registered", "clients across India", and the four projects shown.
 
+## Inner pages in the new design (2026-11-14)
+- Services, Solutions, Pricing, Work (/projects), About, Contact, Privacy Policy, Terms and the 404 page now use the homepage design system through a shared shell (`src/sections/PageShell.jsx`, `LegalPage.jsx`) and the styles in `src/sections/home.module.css`. No page imports styled-components or Framer Motion any more; only the app shell does.
+- Content kept from the old pages, with unverified claims removed: "We'll respond within 24 hours", "clients managing thousands of students", the "Recommended" pricing badge and the first-person portfolio copy on /projects. Pricing figures, support periods and package features are unchanged and still need owner confirmation (D5).
+- Verified on a local production build: 10 routes at 320, 390, 768, 1024, 1440 and 2560 px with no horizontal overflow, one h1 and one main landmark each, no console errors; axe-core WCAG A/AA plus best-practice 0 violations on all nine inner routes at 390 and 1440; scroll reveals all complete with motion on; project filter, footer and CTA navigation, legal contents links, skip link, and the contact form validation and honest failure path.
+- Not verified: Firefox, Safari, real devices, real email delivery (still parked).
+- Left in place, unused, pending approval to delete: the old per-page CSS modules, `components/Button`, `PageTransition`, `pages/Home`, `pages/CinematicHome`.
+
 ## Next
 1. Owner reviews and merges the hotfix.
 2. Phase 1: content inventory and design spec.

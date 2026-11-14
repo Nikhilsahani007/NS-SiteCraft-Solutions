@@ -36,11 +36,11 @@ export const Services = () => (
   </section>
 );
 
-export const Expertise = () => (
+export const Expertise = ({ no = '02' }) => (
   <section className={`${styles.section} ${styles.surface}`} id="expertise" aria-labelledby="expertise-title">
     <div className={styles.container}>
       <SectionHead
-        no="02"
+        no={no}
         label="Expertise and stack"
         id="expertise-title"
         title={

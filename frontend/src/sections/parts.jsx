@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './home.module.css';
 
 export const Arrow = ({ size = 16 }) => (
@@ -39,3 +40,25 @@ export const SectionHead = ({ no, label, title, lede, id }) => (
 );
 
 export const pad = (n) => String(n).padStart(2, '0');
+
+/**
+ * Link to the enquiry form. Scrolls to it when the form is on the current
+ * page (homepage), otherwise goes to the contact page.
+ */
+export const ContactLink = ({ className, children }) => {
+  const navigate = useNavigate();
+  const onClick = (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    if (document.getElementById('contact')) {
+      goTo('contact')(e);
+      return;
+    }
+    e.preventDefault();
+    navigate('/contact');
+  };
+  return (
+    <a className={className} href="/contact" onClick={onClick}>
+      {children}
+    </a>
+  );
+};
