@@ -10,7 +10,9 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import CustomCursor from './components/CustomCursor/CustomCursor';
 
 // Route-based code splitting
-const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
+// Homepage: the original animated homepage, restored at the owner's request (2026-11-15).
+// The redesigned one is kept at ./pages/HomePage/HomePage.
+const CinematicHome = lazy(() => import('./pages/CinematicHome/CinematicHome'));
 const Services = lazy(() => import('./pages/Services/Services'));
 const Solutions = lazy(() => import('./pages/Solutions/Solutions'));
 const Pricing = lazy(() => import('./pages/Pricing/Pricing'));
@@ -56,7 +58,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait" initial={false}>
       <Suspense fallback={<PageLoader />} key={location.pathname}>
         <Routes location={location}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<CinematicHome />} />
           <Route path="/services" element={<Services />} />
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/pricing" element={<Pricing />} />
