@@ -852,7 +852,7 @@ const CinematicHome = () => {
         structuredData={[localBusinessSchema]}
       />
 
-      <main className={styles.main}>
+      <main id="main" className={styles.main}>
 
         {/* ══════════════════════════════════════════════
             HERO — 3D + Editorial Typography

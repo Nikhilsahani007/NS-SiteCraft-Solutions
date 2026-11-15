@@ -34,6 +34,11 @@ Owner instruction: park email/backend, build the 3D and cinematic frontend now.
 - Not verified: Firefox, Safari, real devices, real email delivery (still parked).
 - Left in place, unused, pending approval to delete: the old per-page CSS modules, `components/Button`, `PageTransition`, `pages/Home`, `pages/CinematicHome`.
 
+## Original homepage restored (2026-11-15)
+- The owner preferred the original homepage animation, so `/` renders `pages/CinematicHome` again (orbit scene, GSAP and Framer Motion). It keeps the hotfix changes: the honest enquiry form and no unverified statistics.
+- The redesigned homepage stays in the repo, unrouted, at `pages/HomePage`. The redesigned inner pages are unchanged.
+- Checked on a local build at 320, 390, 768 and 1440 px: renders with its 3D canvas, no horizontal overflow, no console errors, form validation works, navigation to and from inner pages works.
+
 ## Next
 1. Owner reviews and merges the hotfix.
 2. Phase 1: content inventory and design spec.
