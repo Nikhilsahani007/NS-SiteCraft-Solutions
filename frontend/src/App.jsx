@@ -8,9 +8,12 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import CustomCursor from './components/CustomCursor/CustomCursor';
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 
 // Route-based code splitting
-const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
+// Homepage: the original animated homepage, restored at the owner's request (2026-11-15).
+// The redesigned one is kept at ./pages/HomePage/HomePage.
+const CinematicHome = lazy(() => import('./pages/CinematicHome/CinematicHome'));
 const Services = lazy(() => import('./pages/Services/Services'));
 const Solutions = lazy(() => import('./pages/Solutions/Solutions'));
 const Pricing = lazy(() => import('./pages/Pricing/Pricing'));
@@ -20,6 +23,7 @@ const Projects = lazy(() => import('./pages/Projects/Projects'));
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions/TermsAndConditions'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy/PrivacyPolicy'));
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy/RefundPolicy'));
 
 // Minimal loading fallback
 const PageLoader = () => (
@@ -56,7 +60,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait" initial={false}>
       <Suspense fallback={<PageLoader />} key={location.pathname}>
         <Routes location={location}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<CinematicHome />} />
           <Route path="/services" element={<Services />} />
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/pricing" element={<Pricing />} />
@@ -65,6 +69,7 @@ const AnimatedRoutes = () => {
           <Route path="/projects" element={<Projects />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
@@ -82,6 +87,7 @@ function App() {
             <ScrollToTop />
             <Navigation />
             <AnimatedRoutes />
+            <WhatsAppButton />
           </Router>
         </ErrorBoundary>
       </StyledThemeProvider>

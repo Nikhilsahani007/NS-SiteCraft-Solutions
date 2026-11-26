@@ -247,3 +247,13 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
     --font-size-4xl: 1.5rem;
   }
 }
+@media print {
+  body > #root > header,
+  body > #root > nav {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+}

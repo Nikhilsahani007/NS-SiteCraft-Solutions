@@ -10,8 +10,13 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-// Connect to database
-connectDB();
+// Connect to database. Without MONGO_URI the API runs in local mode:
+// enquiries are appended to backend/data/enquiries.jsonl instead of MongoDB.
+if (process.env.MONGO_URI) {
+  connectDB();
+} else {
+  logger.warn('MONGO_URI not set: running in local mode. Enquiries are saved to backend/data/enquiries.jsonl');
+}
 
 // Start server
 const PORT = process.env.PORT || 5000;

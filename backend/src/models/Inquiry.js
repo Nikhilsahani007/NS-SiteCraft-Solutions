@@ -27,7 +27,7 @@ const inquirySchema = new mongoose.Schema({
         required: [true, 'Message is required'],
         trim: true,
         minlength: [10, 'Message must be at least 10 characters'],
-        maxlength: [1000, 'Message cannot exceed 1000 characters'],
+        maxlength: [5000, 'Message cannot exceed 5000 characters'],
     },
     sourcePage: {
         type: String,

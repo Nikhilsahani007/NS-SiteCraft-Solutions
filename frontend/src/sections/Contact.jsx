@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { company, projectTypes } from '../content/site';
+import { Link } from 'react-router-dom';
+import { business, company, projectTypes } from '../content/site';
 import { sendEnquiry, validateEnquiry } from '../utils/sendEnquiry';
 import { Arrow } from './parts';
 import styles from './home.module.css';
@@ -91,10 +92,24 @@ const Contact = ({ no = '07', as: Heading = 'h2', top = false }) => {
               <span>Phone</span>
               <a href={company.phoneHref}>{company.phone}</a>
             </li>
+            {business.whatsapp && (
+              <li>
+                <span>WhatsApp</span>
+                <a href={`https://wa.me/${business.whatsapp}`} target="_blank" rel="noopener noreferrer">
+                  Message us on WhatsApp
+                </a>
+              </li>
+            )}
             <li>
               <span>Studio</span>
               <address>{company.location}</address>
             </li>
+            {business.hours && (
+              <li>
+                <span>Hours</span>
+                {business.hours}
+              </li>
+            )}
           </ul>
         </div>
 
@@ -165,7 +180,9 @@ const Contact = ({ no = '07', as: Heading = 'h2', top = false }) => {
                   {status === 'sending' ? 'Sending…' : 'Send project brief'}
                   <Arrow />
                 </button>
-                <p className={styles.formNote}>We only use these details to reply to you.</p>
+                <p className={styles.formNote}>
+                  We only use these details to reply to you. <Link to="/privacy-policy">Privacy Policy</Link>
+                </p>
               </div>
             </form>
           )}

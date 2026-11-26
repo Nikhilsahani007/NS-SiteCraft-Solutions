@@ -9,19 +9,15 @@ const logger = require('./config/logger');
 const routes = require('./routes');
 const { errorHandler, notFound } = require('./middlewares/errorHandler.middleware');
 
-// Initialize Sentry (must be before creating Express app)
-initializeSentry();
+// Initialize Sentry (must be before creating Express app).
+// Returns null when SENTRY_DSN is not set.
+const sentry = initializeSentry();
 
 const app = express();
 
 // Trust proxy (for rate limiting behind reverse proxy)
 app.set('trust proxy', 1);
 
-// Sentry request handler (must be first middleware)
-if (Sentry) {
-    app.use(Sentry.Handlers.requestHandler());
-    app.use(Sentry.Handlers.tracingHandler());
-}
 
 // Security middleware
 app.use(helmet()); // Set security HTTP headers
@@ -84,8 +80,9 @@ app.get('/', (req, res) => {
 app.use(notFound);
 
 // Sentry error handler (must be before other error handlers)
-if (Sentry) {
-    app.use(Sentry.Handlers.errorHandler());
+if (sentry) {
+    // Sentry v8+ instruments requests automatically; only the error handler is wired here.
+    Sentry.setupExpressErrorHandler(app);
 }
 
 // Global error handler (must be last)

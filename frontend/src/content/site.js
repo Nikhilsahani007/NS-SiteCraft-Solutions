@@ -284,3 +284,104 @@ export const afterEnquiry = [
   { title: 'A short conversation', text: 'We talk through goals, audience and timeline, and ask the questions a good plan needs.' },
   { title: 'Written scope and quote', text: 'You receive what will be built and what it costs, in writing, before any work begins.' },
 ];
+
+/* ── Trust and business details ──
+ * Fields left as '' (or empty arrays) render nothing on the site. Fill them in
+ * only with true, checkable information. See docs/project/OWNER-CHECKLIST.md.
+ */
+
+export const business = {
+  // Name as it appears on your Udyam certificate or bank account.
+  legalName: 'NS SiteCraft Solutions',
+  founder: 'Nikhil Sahani',
+  // Udyam Registration Number, e.g. 'UDYAM-TS-00-0000000'. Shown in the footer when filled.
+  udyam: '',
+  // GSTIN, only if registered. Shown in the footer and legal pages when filled.
+  gstin: '',
+  // Working hours shown on the contact page, e.g. 'Monday to Saturday, 10 AM to 7 PM IST'.
+  hours: '',
+  // WhatsApp number with country code and no symbols, e.g. '919390969461'.
+  // When filled, a WhatsApp button appears on every page.
+  whatsapp: '',
+  // Person who handles privacy and legal requests (required by Indian IT Rules).
+  grievanceOfficer: 'Nikhil Sahani',
+  // Date the legal pages were last revised. Update when you change them.
+  legalUpdated: '26 November 2026',
+};
+
+/** What a client can rely on. Each line restates a policy already in the Terms or FAQ. */
+export const commitments = [
+  {
+    title: 'Written scope, fixed quote',
+    text: 'You get a written scope and a fixed price before any work starts. If the scope changes, we agree the change in writing first.',
+  },
+  {
+    title: 'You own what you pay for',
+    text: 'After final payment, the code, designs, content and accounts made for your project are yours. No lock-in.',
+  },
+  {
+    title: 'Progress you can see',
+    text: 'Regular updates and working previews during the build, so nothing is a surprise at the end.',
+  },
+  {
+    title: 'Direct line to the builder',
+    text: 'You talk to the person designing and writing your software, not a chain of account managers.',
+  },
+  {
+    title: 'Your information stays private',
+    text: 'Business details, data and access you share are kept confidential and used only for your project.',
+  },
+  {
+    title: 'Support after launch',
+    text: 'Every project includes a post-launch support period, stated in your proposal, for fixes and questions.',
+  },
+];
+
+export const techStack = ['React', 'Next.js', 'JavaScript', 'Node.js', 'Express', 'Java', 'MongoDB', 'Python', 'Vercel'];
+
+/**
+ * Real client reviews only, with the client's permission.
+ * Shape: { quote, name, role, organisation }. The section stays hidden while empty.
+ */
+export const testimonials = [];
+
+/**
+ * Real clients only, with permission to show their name.
+ * Shape: { name, url }. The section stays hidden while empty.
+ */
+export const clients = [];
+
+export const homeFaqs = [
+  {
+    q: 'How long does a typical project take?',
+    a: 'A business website usually takes 3 to 4 weeks, and a custom web application 4 to 6 weeks or more depending on scope. You get a milestone timeline with your proposal, after the first conversation.',
+  },
+  {
+    q: 'How is pricing structured?',
+    a: 'Fixed quotes based on a written scope, not open-ended hourly billing. You know the cost before we begin. Starting prices are listed on the pricing page.',
+  },
+  {
+    q: 'How do payments work?',
+    a: 'Payments are split into milestones agreed in your proposal, usually an advance to begin and the rest as stages are delivered. You receive an invoice for every payment.',
+  },
+  {
+    q: 'Do I own the code and assets?',
+    a: 'Yes. Once the project is paid in full, you own the code, design files and content made for you. Domains, hosting and other accounts are set up in your name so you stay in control.',
+  },
+  {
+    q: 'Who will I actually work with?',
+    a: 'With the founder, who plans, designs and builds your project. You will always know who is responsible and how to reach them.',
+  },
+  {
+    q: 'What support is available after launch?',
+    a: 'Every project includes a support period after launch for fixes and questions. Its length depends on the package and is written in your proposal. Ongoing maintenance can be arranged after that.',
+  },
+  {
+    q: 'Can you redesign an existing website without hurting search rankings?',
+    a: 'Yes. We keep or redirect existing URLs, carry over page titles and descriptions, and check speed and indexing after launch.',
+  },
+  {
+    q: 'What do you need from me to get started?',
+    a: 'A short description of what you need, any examples you like, and your logo or brand material if you have it. We help with the rest during the first conversation.',
+  },
+];

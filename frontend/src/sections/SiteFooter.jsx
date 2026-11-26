@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { company } from '../content/site';
+import { business, company } from '../content/site';
 import { goTo } from './parts';
 import styles from './home.module.css';
 
@@ -100,10 +100,13 @@ const SiteFooter = () => {
       <div className={styles.footerBottom}>
         <span>
           © {new Date().getFullYear()} {company.name}. {company.location}.
+          {business.udyam && <> Udyam: {business.udyam}.</>}
+          {business.gstin && <> GSTIN: {business.gstin}.</>}
         </span>
         <nav aria-label="Legal">
           <Link to="/privacy-policy">Privacy</Link>
           <Link to="/terms-and-conditions">Terms</Link>
+          <Link to="/refund-policy">Refunds</Link>
         </nav>
       </div>
     </div>
