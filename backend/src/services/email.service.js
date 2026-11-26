@@ -1,6 +1,15 @@
 const { sendEmail } = require('../config/email');
 const logger = require('../config/logger');
 
+// Escape user-supplied text before putting it in an HTML email.
+const esc = (value = '') =>
+    String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
 /**
  * Email Service - Handle all email notifications
  */
@@ -21,16 +30,16 @@ const sendNewInquiryNotification = async (inquiry) => {
       <h2 style="color: #06B6D4;">New Inquiry Received</h2>
       
       <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
-        <p><strong>Name:</strong> ${inquiry.name}</p>
-        <p><strong>Email:</strong> <a href="mailto:${inquiry.email}">${inquiry.email}</a></p>
-        ${inquiry.phone ? `<p><strong>Phone:</strong> ${inquiry.phone}</p>` : ''}
-        <p><strong>Source Page:</strong> ${inquiry.sourcePage}</p>
+        <p><strong>Name:</strong> ${esc(inquiry.name)}</p>
+        <p><strong>Email:</strong> <a href="mailto:${esc(inquiry.email)}">${esc(inquiry.email)}</a></p>
+        ${inquiry.phone ? `<p><strong>Phone:</strong> ${esc(inquiry.phone)}</p>` : ''}
+        <p><strong>Source Page:</strong> ${esc(inquiry.sourcePage)}</p>
         <p><strong>Date:</strong> ${new Date(inquiry.createdAt).toLocaleString('en-IN')}</p>
       </div>
 
       <div style="margin: 20px 0;">
         <h3>Message:</h3>
-        <p style="white-space: pre-wrap;">${inquiry.message}</p>
+        <p style="white-space: pre-wrap;">${esc(inquiry.message)}</p>
       </div>
 
       <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
@@ -73,13 +82,13 @@ const sendInquiryConfirmation = async (inquiry) => {
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #06B6D4;">Thank You for Reaching Out!</h2>
       
-      <p>Hi ${inquiry.name},</p>
+      <p>Hi ${esc(inquiry.name)},</p>
       
       <p>We've received your inquiry and will get back to you within 24 hours.</p>
 
       <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
         <h3>Your Message:</h3>
-        <p style="white-space: pre-wrap;">${inquiry.message}</p>
+        <p style="white-space: pre-wrap;">${esc(inquiry.message)}</p>
       </div>
 
       <p>If you have any urgent questions, feel free to reach out to us directly at 

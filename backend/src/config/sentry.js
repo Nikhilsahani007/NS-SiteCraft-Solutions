@@ -1,5 +1,5 @@
 const Sentry = require('@sentry/node');
-const { ProfilingIntegration } = require('@sentry/profiling-node');
+const { nodeProfilingIntegration } = require('@sentry/profiling-node');
 
 /**
  * Initialize Sentry for error tracking and performance monitoring
@@ -27,7 +27,7 @@ const initializeSentry = () => {
         // Profiling
         profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
         integrations: [
-            new ProfilingIntegration(),
+            nodeProfilingIntegration(),
         ],
 
         // Release tracking

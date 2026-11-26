@@ -7,9 +7,32 @@ const emailService = require('./email.service');
  * Inquiry Service - Business logic for inquiry management
  */
 
+const fs = require('fs/promises');
+const path = require('path');
+const crypto = require('crypto');
+
+const LOCAL_STORE = path.join(__dirname, '..', '..', 'data', 'enquiries.jsonl');
+
+// Local mode (no MONGO_URI): keep enquiries in a JSON Lines file so the
+// site works end to end on a laptop without a database.
+const saveLocally = async (inquiryData) => {
+    const inquiry = {
+        _id: crypto.randomUUID(),
+        sourcePage: 'contact',
+        status: INQUIRY_STATUS.NEW,
+        ...inquiryData,
+        createdAt: new Date().toISOString(),
+    };
+    await fs.mkdir(path.dirname(LOCAL_STORE), { recursive: true });
+    await fs.appendFile(LOCAL_STORE, `${JSON.stringify(inquiry)}\n`, 'utf8');
+    return inquiry;
+};
+
 // Create new inquiry
 const createInquiry = async (inquiryData) => {
-    const inquiry = await Inquiry.create(inquiryData);
+    const inquiry = process.env.MONGO_URI
+        ? await Inquiry.create(inquiryData)
+        : await saveLocally(inquiryData);
 
     // Send email notification (don't wait for it)
     emailService.sendNewInquiryNotification(inquiry).catch(err => {

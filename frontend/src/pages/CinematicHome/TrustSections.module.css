@@ -1,0 +1,371 @@
+/* Trust sections — same language as CinematicHome.module.css:
+   obsidian #08080c, off-white #f8fafc, electric blue #3b82f6. */
+
+.section {
+  padding: 8rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.head {
+  max-width: 1400px;
+  margin: 0 auto 4rem;
+  padding: 0 3rem;
+}
+
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #3b82f6;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: #3b82f6;
+}
+
+.title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+  margin: 0 0 1.25rem;
+}
+
+.title em {
+  font-style: italic;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(248, 250, 252, 0.7);
+}
+
+.sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: rgba(248, 250, 252, 0.5);
+  max-width: 52ch;
+  margin: 0;
+}
+
+.sub a {
+  color: #8ab4ff;
+  text-underline-offset: 3px;
+}
+
+/* ── Commitments grid ── */
+.grid {
+  --inset: 3rem;
+  width: calc(100% - 2 * var(--inset));
+  max-width: calc(1400px - 6rem);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.card {
+  position: relative;
+  padding: 2.5rem 2.25rem 2.75rem;
+  background: #08080c;
+  transition: background 0.3s ease;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #3b82f6;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  background: rgba(15, 20, 35, 0.95);
+}
+
+.card:hover::after {
+  transform: scaleX(1);
+}
+
+.cardNo {
+  position: absolute;
+  top: 2.25rem;
+  right: 2.25rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2.25rem;
+  line-height: 1;
+  color: rgba(248, 250, 252, 0.06);
+}
+
+.check {
+  color: #3b82f6;
+  margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #f8fafc;
+  margin: 0 0 0.75rem;
+}
+
+.cardText {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: rgba(248, 250, 252, 0.5);
+  margin: 0;
+}
+
+/* ── Tech strip ── */
+.strip {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.25rem 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stripLabel {
+  flex-shrink: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.35);
+}
+
+.marquee {
+  flex: 1;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marqueeTrack {
+  display: flex;
+  gap: 3.5rem;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: marquee 32s linear infinite;
+}
+
+.marquee:hover .marqueeTrack {
+  animation-play-state: paused;
+}
+
+.marqueeTrack li {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.5rem;
+  color: rgba(248, 250, 252, 0.4);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.marqueeTrack li:hover {
+  color: #f8fafc;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-50% - 1.75rem));
+  }
+}
+
+/* ── Industries ── */
+.industries {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+}
+
+.industry {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.industryNo {
+  display: block;
+  margin-bottom: 2.5rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: #3b82f6;
+}
+
+.industryName {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: #f8fafc;
+  margin: 0 0 0.75rem;
+}
+
+/* ── Proof (only rendered with real content) ── */
+.clients {
+  max-width: 1400px;
+  margin: 0 auto 4rem;
+  padding: 0 3rem;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.5rem;
+  color: rgba(248, 250, 252, 0.55);
+}
+
+.clients a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.quotes {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.quote {
+  margin: 0;
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.quote blockquote {
+  margin: 0 0 2rem;
+}
+
+.quote p {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.quote figcaption {
+  display: grid;
+  gap: 0.25rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(248, 250, 252, 0.5);
+}
+
+.quote strong {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+  .head,
+  .industries,
+  .clients,
+  .quotes,
+  .strip {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .grid {
+    --inset: 2rem;
+  }
+
+  .industries {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 5rem 0;
+  }
+
+  .head,
+  .industries,
+  .clients,
+  .quotes {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .grid {
+    --inset: 1.25rem;
+  }
+
+  .head {
+    margin-bottom: 2.5rem;
+  }
+
+  .grid,
+  .industries {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 2rem 1.5rem;
+  }
+
+  .strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.75rem 1.25rem;
+  }
+
+  .marquee {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+    gap: 0.75rem 2rem;
+  }
+
+  .marqueeTrack li[aria-hidden='true'] {
+    display: none;
+  }
+}

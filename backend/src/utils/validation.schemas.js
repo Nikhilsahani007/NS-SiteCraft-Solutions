@@ -38,12 +38,12 @@ const createInquirySchema = Joi.object({
     message: Joi.string()
         .trim()
         .min(10)
-        .max(1000)
+        .max(5000)
         .required()
         .messages({
             'string.empty': 'Message is required',
             'string.min': 'Message must be at least 10 characters',
-            'string.max': 'Message cannot exceed 1000 characters',
+            'string.max': 'Message cannot exceed 5000 characters',
         }),
 
     sourcePage: Joi.string()

@@ -28,6 +28,8 @@ import {
 } from '../../utils/motion';
 import styles from './CinematicHome.module.css';
 import { sendEnquiry, validateEnquiry } from '../../utils/sendEnquiry';
+import { business, homeFaqs } from '../../content/site';
+import { StackStrip, Commitments, Industries, Proof } from './TrustSections';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -85,7 +87,7 @@ const processSteps = [
   {
     num: '04',
     title: 'Launch',
-    description: 'Rigorous testing, performance optimization, and a smooth deployment. Followed by 30 days of complimentary post-launch support.',
+    description: 'Rigorous testing, performance optimization, and a smooth deployment. Followed by a post-launch support period stated in your proposal.',
   },
 ];
 
@@ -116,28 +118,7 @@ const projects = [
   },
 ];
 
-const faqs = [
-  {
-    q: 'How long does a typical project take?',
-    a: 'Most website and small business projects launch within 3 to 4 weeks. Custom web applications typically take 4 to 6 weeks. We provide a milestone timeline immediately after the discovery call.',
-  },
-  {
-    q: 'How is pricing structured?',
-    a: 'Fixed, transparent quotes based on scope — not vague hourly billing. You know the cost before we begin. No hidden fees, no surprise invoices.',
-  },
-  {
-    q: 'Do I own all the code and assets?',
-    a: 'Yes, entirely. Once delivered and paid for, you own 100% of the code, design files, accounts, and intellectual property. No vendor lock-in.',
-  },
-  {
-    q: 'What support is available after launch?',
-    a: 'Every project includes 30 days of complimentary post-launch support. We also offer ongoing technical maintenance for teams that prefer a managed approach.',
-  },
-  {
-    q: 'Can you redesign an existing website without hurting SEO?',
-    a: 'Yes. We preserve URL structures, transfer existing authority signals, and implement proper redirects where needed. Performance typically improves.',
-  },
-];
+const faqs = homeFaqs;
 
 /* ─── Sub-Components ─────────────────────────────────────────────── */
 
@@ -818,6 +799,7 @@ const CinematicHome = () => {
         name: formState.name.trim(),
         email: formState.email.trim(),
         message: `Project type: ${typeLabel}\n\n${formState.message.trim()}`,
+        sourcePage: 'home',
       });
       setFormStatus('sent');
       setFormState({ name: '', email: '', type: '', message: '' });
@@ -842,6 +824,16 @@ const CinematicHome = () => {
     priceRange: '₹₹',
   };
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+
   return (
     <>
       <SEOHead
@@ -849,7 +841,7 @@ const CinematicHome = () => {
         description="We design and build custom websites, web applications, and intelligent software for startups and businesses in Hyderabad. Thoughtfully engineered, built to perform."
         canonicalPath="/"
         keywords="web development Hyderabad, custom software, web application, AI solutions, business website, digital product studio"
-        structuredData={[localBusinessSchema]}
+        structuredData={[localBusinessSchema, faqSchema]}
       />
 
       <main id="main" className={styles.main}>
@@ -971,6 +963,8 @@ const CinematicHome = () => {
           </div>
         </section>
 
+        <StackStrip />
+
         {/* ══════════════════════════════════════════════
             SELECTED WORK — Glow cards + stagger
         ══════════════════════════════════════════════ */}
@@ -978,11 +972,11 @@ const CinematicHome = () => {
           <div className={styles.sectionHeader} data-section-header>
             <div className={styles.sectionLabel}>Selected Work</div>
             <h2 className={styles.sectionTitle}>
-              Projects That Moved the Needle
+              Recent Builds
             </h2>
             <p className={styles.sectionSub}>
-              A selection of recent engagements — each one solving a specific
-              business problem through thoughtful engineering.
+              A selection of recent projects, each one solving a specific
+              problem through thoughtful engineering.
             </p>
           </div>
 
@@ -1001,6 +995,8 @@ const CinematicHome = () => {
             </Link>
           </div>
         </section>
+
+        <Commitments />
 
         {/* ══════════════════════════════════════════════
             PROCESS — Scroll-progress timeline
@@ -1039,6 +1035,8 @@ const CinematicHome = () => {
           </div>
         </section>
 
+        <Industries />
+
         {/* ══════════════════════════════════════════════
             ABOUT — Editorial composition
         ══════════════════════════════════════════════ */}
@@ -1076,6 +1074,8 @@ const CinematicHome = () => {
             </div>
           </div>
         </section>
+
+        <Proof />
 
         {/* ══════════════════════════════════════════════
             FAQ — Slide-in from left
@@ -1286,6 +1286,10 @@ const CinematicHome = () => {
                       'Send Project Brief'
                     )}
                   </button>
+                  <p className={styles.formNote}>
+                    We use your details only to reply to this enquiry. See our{' '}
+                    <Link to="/privacy-policy">Privacy Policy</Link>.
+                  </p>
                 </form>
               )}
             </div>
@@ -1337,11 +1341,15 @@ const CinematicHome = () => {
           <div className={styles.footerBottom}>
             <p className={styles.footerCopy}>
               © {new Date().getFullYear()} NS SiteCraft Solutions. MSME Registered.
+              {business.udyam && <> Udyam: {business.udyam}.</>}
+              {business.gstin && <> GSTIN: {business.gstin}.</>}
             </p>
             <div className={styles.footerLegal}>
               <Link to="/privacy-policy" className={styles.footerLegalLink}>Privacy</Link>
               <span aria-hidden="true">·</span>
               <Link to="/terms-and-conditions" className={styles.footerLegalLink}>Terms</Link>
+              <span aria-hidden="true">·</span>
+              <Link to="/refund-policy" className={styles.footerLegalLink}>Refunds</Link>
             </div>
           </div>
         </footer>

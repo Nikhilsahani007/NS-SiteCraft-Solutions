@@ -8,6 +8,39 @@
 
 ---
 
+## ⚡ Run locally in 2 minutes (no database needed)
+
+You need Node.js 18 or newer. Open two terminals in the project folder.
+
+**Terminal 1, the API:**
+
+```bash
+cd backend
+npm install
+cp .env.example .env      # Windows: copy .env.example .env
+npm run dev
+```
+
+With `MONGO_URI` left commented out, the API runs in local mode and saves every
+enquiry to `backend/data/enquiries.jsonl`. Fill in the `SMTP_*` and `ADMIN_EMAIL`
+values in `backend/.env` to also get each enquiry by email.
+
+**Terminal 2, the website:**
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:3000. The enquiry forms on the homepage and the contact page
+post to the local API through Vite's proxy (`frontend/.env.development`).
+Production builds keep using EmailJS until the API is deployed.
+
+To check a production build: `cd frontend && npm run build && npm run preview`.
+
+The full setup with MongoDB and admin routes is below.
+
 ## 📋 Table of Contents
 
 - [Features](#-features)

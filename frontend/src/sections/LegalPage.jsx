@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom';
-import { company } from '../content/site';
+import { business, company } from '../content/site';
 import { PageShell, PageHero } from './PageShell';
 import styles from './home.module.css';
 
-/** Layout shared by the Privacy Policy and Terms pages. Text comes from each page. */
-const LegalPage = ({ seo, title, lede, effective, sections, other }) => (
+/**
+ * Layout shared by the legal pages. Text comes from each page.
+ *
+ * Section shape: { id, title, content: string[], bullets?: string[],
+ *                  list?: {label, detail}[], after?: string[], contact?: bool }
+ */
+const LegalPage = ({ seo, title, lede, summary, sections, related }) => (
   <PageShell seo={seo}>
     <PageHero label="Legal" title={title} lede={lede}>
       <p className={styles.effective}>
-        <span>Effective date</span> {effective}
+        <span>Last updated</span> {business.legalUpdated}
       </p>
     </PageHero>
 
@@ -23,15 +28,37 @@ const LegalPage = ({ seo, title, lede, effective, sections, other }) => (
               </li>
             ))}
           </ol>
+          <button type="button" className={styles.printBtn} onClick={() => window.print()}>
+            Print or save as PDF
+          </button>
         </nav>
 
         <div className={styles.legalBody}>
+          {summary && (
+            <aside className={styles.legalSummary} aria-labelledby="summary-title">
+              <h2 id="summary-title">In short</h2>
+              <ul>
+                {summary.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              <p>This summary is for convenience. The full text below is what applies.</p>
+            </aside>
+          )}
+
           {sections.map((s) => (
             <section key={s.id} id={s.id} aria-labelledby={`${s.id}-title`}>
               <h2 id={`${s.id}-title`}>{s.title}</h2>
               {s.content.map((para) => (
                 <p key={para}>{para}</p>
               ))}
+              {s.bullets && (
+                <ul>
+                  {s.bullets.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+              )}
               {s.list && (
                 <dl>
                   {s.list.map((item) => (
@@ -42,17 +69,30 @@ const LegalPage = ({ seo, title, lede, effective, sections, other }) => (
                   ))}
                 </dl>
               )}
+              {s.after?.map((para) => (
+                <p key={para}>{para}</p>
+              ))}
               {s.contact && (
                 <address>
+                  <strong>{business.legalName}</strong>
+                  {business.grievanceOfficer && <span>Attention: {business.grievanceOfficer}</span>}
                   <a href={`mailto:${company.email}`}>{company.email}</a>
                   <a href={company.phoneHref}>{company.phone}</a>
                   <span>{company.location}</span>
+                  {business.gstin && <span>GSTIN: {business.gstin}</span>}
                 </address>
               )}
             </section>
           ))}
+
           <p className={styles.legalOther}>
-            Also read our <Link to={other.to}>{other.label}</Link> {other.text}
+            Related:{' '}
+            {related.map((r, i) => (
+              <span key={r.to}>
+                {i > 0 && ' · '}
+                <Link to={r.to}>{r.label}</Link>
+              </span>
+            ))}
           </p>
         </div>
       </div>

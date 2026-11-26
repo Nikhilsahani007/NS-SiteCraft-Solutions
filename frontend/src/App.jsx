@@ -8,6 +8,7 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import CustomCursor from './components/CustomCursor/CustomCursor';
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 
 // Route-based code splitting
 // Homepage: the original animated homepage, restored at the owner's request (2026-11-15).
@@ -22,6 +23,7 @@ const Projects = lazy(() => import('./pages/Projects/Projects'));
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions/TermsAndConditions'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy/PrivacyPolicy'));
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy/RefundPolicy'));
 
 // Minimal loading fallback
 const PageLoader = () => (
@@ -67,6 +69,7 @@ const AnimatedRoutes = () => {
           <Route path="/projects" element={<Projects />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
@@ -84,6 +87,7 @@ function App() {
             <ScrollToTop />
             <Navigation />
             <AnimatedRoutes />
+            <WhatsAppButton />
           </Router>
         </ErrorBoundary>
       </StyledThemeProvider>
