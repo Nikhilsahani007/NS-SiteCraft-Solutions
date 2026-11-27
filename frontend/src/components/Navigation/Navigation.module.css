@@ -291,3 +291,31 @@
 .skip:focus {
   transform: none;
 }
+
+/* ── Light mode: over light sections the bar turns solid white ── */
+.header.light {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom-color: rgba(11, 13, 18, 0.08);
+  box-shadow: 0 8px 30px -22px rgba(11, 13, 18, 0.35);
+}
+.header.light .logoMark { color: #2563eb; }
+.header.light .logoName { color: #0b0d12; }
+.header.light .logoDivider { color: rgba(11, 13, 18, 0.25); }
+.header.light .logoSub { color: rgba(11, 13, 18, 0.55); }
+.header.light .navLink { color: rgba(11, 13, 18, 0.62); }
+.header.light .navLink:hover,
+.header.light .navLink.active { color: #0b0d12; }
+.header.light .navLink::after { background: #2563eb; }
+.header.light .cta { color: #fff; background: #0b0d12; border-color: #0b0d12; }
+.header.light .cta::before { background: #2563eb; }
+.header.light .cta:hover { border-color: #2563eb; }
+.header.light .burger span { background: rgba(11, 13, 18, 0.8); }
+.header,
+.header .logoName,
+.header .navLink,
+.header .cta,
+.header .burger span {
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}

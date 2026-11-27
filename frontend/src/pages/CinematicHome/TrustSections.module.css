@@ -465,3 +465,8 @@
 :global(main[data-theme='light']) .stripLabel { color: rgba(11, 13, 18, 0.45); }
 :global(main[data-theme='light']) .marqueeTrack li { color: rgba(11, 13, 18, 0.4); }
 :global(main[data-theme='light']) .marqueeTrack li:hover { color: #0b0d12; }
+
+/* REDESIGN LAYER (2026-11-27): GSAP drives the marquee (see StackStrip). */
+.marqueeTrack { animation: none; gap: 0; }
+.marqueeTrack li { padding-right: 3.5rem; }
+.industry { position: relative; overflow: hidden; }

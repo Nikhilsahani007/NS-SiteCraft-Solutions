@@ -68,6 +68,7 @@ const Contact = ({ no = '07', as: Heading = 'h2', top = false }) => {
   return (
     <section
       className={`${styles.section} ${styles.surface} ${top ? styles.sectionTop : ''}`}
+      data-nav-dark={top ? '' : undefined}
       id="contact" aria-labelledby="contact-title">
       <div className={`${styles.container} ${styles.contactGrid}`}>
         <div data-reveal>

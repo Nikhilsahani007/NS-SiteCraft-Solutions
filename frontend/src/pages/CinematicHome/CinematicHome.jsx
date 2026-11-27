@@ -16,6 +16,8 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
+import { useGSAP } from '@gsap/react';
 import SEOHead from '../../components/SEOHead/SEOHead';
 import {
   FM, VP, EASE, DUR, STAGGER,
@@ -32,7 +34,7 @@ import { business, homeFaqs } from '../../content/site';
 import { StackStrip, Commitments, Industries, Proof } from './TrustSections';
 import ProjectDemo from './ProjectDemo';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
 // Lazy-load the 3D scene
 const HeroScene = lazy(() => import('../../components/HeroScene/HeroScene'));
@@ -122,199 +124,53 @@ const projects = [
 const faqs = homeFaqs;
 
 /* ─── Sub-Components ─────────────────────────────────────────────── */
+// Entrances live in the page-level motion system (see useGSAP below); hover
+// glow is CSS, driven by --mx/--my set from one delegated pointer listener.
 
-// Service card with clip-path reveal + tilt on hover
-const ServiceCard = ({ service, index }) => {
-  const cardRef = useRef(null);
-  const accentLineRef = useRef(null);
-
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el || prefersReducedMotion()) return;
-
-    // Staggered clip reveal from bottom
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 },
-        {
-          clipPath: 'inset(0% 0% 0% 0%)',
-          opacity: 1,
-          duration: 0.9,
-          ease: 'expo.out',
-          delay: index * 0.12,
-          scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-        }
-      );
-    });
-
-    // Accent line expand on scroll into view
-    gsap.fromTo(
-      accentLineRef.current,
-      { scaleX: 0 },
-      {
-        scaleX: 1,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: index * 0.12 + 0.4,
-        scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-        transformOrigin: 'left',
-      }
-    );
-
-    // Hover is a calm CSS lift (see the simplicity layer in the stylesheet).
-    return () => ctx.revert();
-  }, [index]);
-
-  return (
-    <div ref={cardRef} className={styles.serviceCard} style={{ '--accent': service.accent }}>
-      <div className={styles.serviceIndex}>{service.index}</div>
-      <div className={styles.serviceBody}>
-        <h3 className={styles.serviceTitle}>{service.title}</h3>
-        <p className={styles.serviceDesc}>{service.description}</p>
-        <ul className={styles.serviceList}>
-          {service.details.map(d => (
-            <li key={d} className={styles.serviceItem}>{d}</li>
-          ))}
-        </ul>
-      </div>
-      <div ref={accentLineRef} className={styles.serviceAccentLine} />
+const ServiceCard = ({ service }) => (
+  <div className={styles.serviceCard} style={{ '--accent': service.accent }} data-card>
+    <div className={styles.serviceIndex}>{service.index}</div>
+    <div className={styles.serviceBody}>
+      <h3 className={styles.serviceTitle}>{service.title}</h3>
+      <p className={styles.serviceDesc}>{service.description}</p>
+      <ul className={styles.serviceList}>
+        {service.details.map((d) => (
+          <li key={d} className={styles.serviceItem}>{d}</li>
+        ))}
+      </ul>
     </div>
-  );
-};
+  </div>
+);
 
-// Process step with scroll-progress line
-const ProcessStep = ({ step, index, total, progressRef }) => {
-  const ref = useRef(null);
-  const numRef = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // Slide in from alternating sides
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        }
-      );
-
-      // Step number scale pop
-      gsap.fromTo(
-        numRef.current,
-        { scale: 0.5, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'back.out(2)',
-          delay: 0.2,
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        }
-      );
-    });
-
-    return () => ctx.revert();
-  }, [index]);
-
-  return (
-    <div ref={ref} className={styles.processStep}>
-      <div ref={numRef} className={styles.processNum}>{step.num}</div>
-      <div className={styles.processContent}>
-        <h3 className={styles.processTitle}>{step.title}</h3>
-        <p className={styles.processDesc}>{step.description}</p>
-      </div>
+const ProcessStep = ({ step }) => (
+  <div className={styles.processStep} data-step>
+    <div className={styles.processNum}>{step.num}</div>
+    <div className={styles.processContent}>
+      <h3 className={styles.processTitle}>{step.title}</h3>
+      <p className={styles.processDesc}>{step.description}</p>
     </div>
-  );
-};
+  </div>
+);
 
-// Project card with layered parallax + clip reveal
-const ProjectCard = ({ project, index }) => {
-  const ref = useRef(null);
-  const glowRef = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // Staggered scale + fade with clip
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 60, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: 'expo.out',
-          delay: index * 0.15,
-          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-        }
-      );
-    });
-
-    // Hover glow follow
-    const onMove = (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      gsap.to(glowRef.current, {
-        x: x - 100,
-        y: y - 100,
-        duration: 0.4,
-        ease: 'none',
-      });
-    };
-    const onEnter = () => {
-      gsap.to(glowRef.current, { opacity: 1, duration: 0.3 });
-    };
-    const onLeave = () => {
-      gsap.to(glowRef.current, { opacity: 0, duration: 0.4 });
-    };
-
-    el.addEventListener('mousemove', onMove);
-    el.addEventListener('mouseenter', onEnter);
-    el.addEventListener('mouseleave', onLeave);
-
-    return () => {
-      ctx.revert();
-      el.removeEventListener('mousemove', onMove);
-      el.removeEventListener('mouseenter', onEnter);
-      el.removeEventListener('mouseleave', onLeave);
-    };
-  }, [index]);
-
-  return (
-    <article ref={ref} className={styles.projectCard}>
-      {/* Radial glow that follows cursor */}
-      <div ref={glowRef} className={styles.projectGlow} />
-
-      <div className={styles.projectMeta}>
-        <span className={styles.projectLabel}>{project.label}</span>
-        <div className={styles.projectIndex}>0{project.id}</div>
+const ProjectCard = ({ project }) => (
+  <article className={styles.projectCard} data-card>
+    <div className={styles.projectMeta}>
+      <span className={styles.projectLabel}>{project.label}</span>
+      <div className={styles.projectIndex}>0{project.id}</div>
+    </div>
+    <h3 className={styles.projectTitle}>{project.title}</h3>
+    <p className={styles.projectDesc}>{project.description}</p>
+    <div className={styles.projectTech}>
+      {project.tech.map((t) => <span key={t} className={styles.techBadge}>{t}</span>)}
+    </div>
+    {project.result && (
+      <div className={styles.projectResult}>
+        <span className={styles.resultDot} />
+        <span className={styles.resultText}>{project.result}</span>
       </div>
-      <h3 className={styles.projectTitle}>{project.title}</h3>
-      <p className={styles.projectDesc}>{project.description}</p>
-      <div className={styles.projectTech}>
-        {project.tech.map(t => <span key={t} className={styles.techBadge}>{t}</span>)}
-      </div>
-      {project.result && (
-        <div className={styles.projectResult}>
-          <span className={styles.resultDot} />
-          <span className={styles.resultText}>{project.result}</span>
-        </div>
-      )}
-    </article>
-  );
-};
+    )}
+  </article>
+);
 
 /* ─── Main Component ─────────────────────────────────────────────── */
 // Light page with a dark hero is the default (owner's choice, 2026-11-27).
@@ -327,6 +183,7 @@ const getTheme = () => {
 const CinematicHome = () => {
   const [theme] = useState(getTheme);
   const pointerRef = useRef({ x: 0, y: 0 });
+  const mainRef = useRef(null);
   const heroTextRef = useRef(null);
   const introRef = useRef(null);
   const servicesRef = useRef(null);
@@ -356,6 +213,21 @@ const CinematicHome = () => {
     };
     window.addEventListener('pointermove', onMove, { passive: true });
     return () => window.removeEventListener('pointermove', onMove);
+  }, []);
+
+  // Card spotlight: one listener feeds --mx/--my to the card under the pointer.
+  useEffect(() => {
+    const root = mainRef.current;
+    if (!root || !window.matchMedia('(hover: hover)').matches) return undefined;
+    const onMove = (e) => {
+      const card = e.target.closest?.('[data-card]');
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    };
+    root.addEventListener('pointermove', onMove, { passive: true });
+    return () => root.removeEventListener('pointermove', onMove);
   }, []);
 
   // ── Hero text reveal ───────────────────────────────────────────
@@ -409,343 +281,96 @@ const CinematicHome = () => {
     return () => ctx.revert();
   }, []);
 
-  // ── Magnetic CTAs ──────────────────────────────────────────────
+  // ── Magnetic buttons: hero CTAs pull harder, the rest gently ──
   useEffect(() => {
     const cleanups = [];
     if (ctaPrimRef.current) cleanups.push(magneticHover(ctaPrimRef.current, 0.3));
-    if (ctaSecRef.current)  cleanups.push(magneticHover(ctaSecRef.current, 0.3));
-    return () => cleanups.forEach(fn => fn && fn());
+    if (ctaSecRef.current) cleanups.push(magneticHover(ctaSecRef.current, 0.3));
+    mainRef.current?.querySelectorAll('[data-magnetic]').forEach((el) => {
+      cleanups.push(magneticHover(el, 0.18));
+    });
+    return () => cleanups.forEach((fn) => fn && fn());
   }, []);
 
-  // ── Intro section animations ────────────────────────────────
-  useEffect(() => {
-    const el = introRef.current;
-    if (!el || prefersReducedMotion()) return;
+  // ── Page motion (one system, GSAP + useGSAP, scoped to <main>) ──
+  // Headlines rise in line by line, supporting text follows, cards arrive in
+  // a soft wave, the process timeline fills as you scroll. Everything is
+  // reverted automatically on unmount, and skipped for reduced motion.
+  useGSAP(() => {
+    if (prefersReducedMotion()) return;
+    const root = mainRef.current;
+    if (!root) return;
 
-    const ctx = gsap.context(() => {
-      // Large quote reveals word by word
-      const quote = el.querySelector('[data-quote]');
-      if (quote) {
-        const words = quote.innerText.split(' ');
-        quote.innerHTML = words
-          .map(w => `<span class="${styles.quoteWord}"><span class="${styles.quoteInner}">${w}</span></span>`)
-          .join(' ');
-
-        gsap.fromTo(
-          `[data-quote] .${styles.quoteInner}`,
-          { y: '110%' },
-          {
-            y: '0%',
-            duration: 1.1,
+    // 1. Headlines: masked line reveal (re-splits on resize / font load).
+    root.querySelectorAll('section:not(#hero) h2, [data-split]').forEach((el) => {
+      SplitText.create(el, {
+        type: 'lines',
+        mask: 'lines',
+        autoSplit: true,
+        onSplit: (self) =>
+          gsap.from(self.lines, {
+            yPercent: 110,
+            duration: 1,
             ease: 'expo.out',
-            stagger: 0.035,
-            scrollTrigger: { trigger: quote, start: 'top 80%', once: true },
-          }
-        );
-      }
+            stagger: 0.09,
+            scrollTrigger: { trigger: el, start: 'top 86%', once: true },
+          }),
+      });
+    });
 
-      // Label reveal
-      gsap.fromTo(
-        el.querySelector('[data-intro-label]'),
-        { opacity: 0, x: -20 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.7,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        }
-      );
+    // 2. Labels, ledes and short copy: a quiet fade-up.
+    const rise = gsap.utils.toArray('[data-rise]', root);
+    gsap.set(rise, { autoAlpha: 0, y: 18 });
+    ScrollTrigger.batch(rise, {
+      start: 'top 90%',
+      once: true,
+      onEnter: (els) => gsap.to(els, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08, overwrite: true }),
+    });
 
-      // Parallax on intro background depth
-      parallaxY(el.querySelector('[data-intro-bg]'), 60, { trigger: el });
-    }, el);
+    // 3. Cards: a soft wave as each row enters.
+    const cards = gsap.utils.toArray('[data-card]', root);
+    gsap.set(cards, { autoAlpha: 0, y: 44 });
+    ScrollTrigger.batch(cards, {
+      start: 'top 88%',
+      interval: 0.12,
+      once: true,
+      onEnter: (els) => gsap.to(els, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.09, overwrite: true }),
+    });
 
-    return () => ctx.revert();
-  }, []);
-
-
-  // ── Services section ──────────────────────────────────────────
-  useEffect(() => {
-    const el = servicesRef.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // Section header wipe
-      gsap.fromTo(
-        el.querySelector('[data-section-header]'),
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-        }
-      );
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
-
-  // ── Work section parallax ─────────────────────────────────────
-  useEffect(() => {
-    const el = workRef.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // Section label reveals
-      gsap.fromTo(
-        el.querySelector('[data-section-header]'),
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        }
-      );
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
-
-  // ── Process scroll progress line ────────────────────────────
-  useEffect(() => {
-    const el = processRef.current;
+    // 4. Process: the line fills with scroll and each step lights up.
     const line = processLineRef.current;
-    if (!el || !line || prefersReducedMotion()) return;
+    const steps = root.querySelector('[data-process-steps]');
+    if (line && steps) {
+      gsap.fromTo(line, { scaleY: 0 }, {
+        scaleY: 1,
+        ease: 'none',
+        transformOrigin: 'top',
+        scrollTrigger: { trigger: steps, start: 'top 70%', end: 'bottom 60%', scrub: 0.8 },
+      });
+      steps.querySelectorAll('[data-step]').forEach((step) => {
+        ScrollTrigger.create({
+          trigger: step,
+          start: 'top 62%',
+          // Stay lit once reached; switch off only when scrolling back above.
+          onEnter: () => step.classList.add(styles.stepActive),
+          onLeaveBack: () => step.classList.remove(styles.stepActive),
+        });
+      });
+    }
 
-    const ctx = gsap.context(() => {
-      // Animated progress line that draws as you scroll
-      gsap.fromTo(
-        line,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          transformOrigin: 'top',
-          scrollTrigger: {
-            trigger: el.querySelector('[data-process-steps]'),
-            start: 'top 70%',
-            end: 'bottom 60%',
-            scrub: 1,
-          },
-        }
-      );
-
-      // Process left content
-      gsap.fromTo(
-        el.querySelector('[data-process-left]'),
-        { opacity: 0, x: -60 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-        }
-      );
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
-
-  // ── About section ────────────────────────────────────────────
-  useEffect(() => {
-    const el = aboutRef.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // About title letter stagger (editorial)
-      gsap.fromTo(
-        el.querySelector('[data-about-title]'),
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-        }
-      );
-
-      // Paragraphs stagger
-      gsap.fromTo(
-        el.querySelectorAll('[data-about-p]'),
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          stagger: 0.15,
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-          delay: 0.3,
-        }
-      );
-
-      // About tags slide in
-      gsap.fromTo(
-        el.querySelectorAll('[data-about-tag]'),
-        { opacity: 0, scale: 0.8, y: 10 },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'back.out(2)',
-          stagger: 0.08,
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-          delay: 0.6,
-        }
-      );
-
-      // Grid cells animate in sequentially
-      gsap.fromTo(
-        el.querySelectorAll('[data-grid-cell]'),
-        { opacity: 0, scale: 0 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          ease: 'back.out(2)',
-          stagger: 0.04,
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-          delay: 0.2,
-        }
-      );
-
-      // Brand mark pop
-      gsap.fromTo(
-        el.querySelector('[data-brand-mark]'),
-        { opacity: 0, scale: 0.5, rotation: -15 },
-        {
-          opacity: 1,
-          scale: 1,
-          rotation: 0,
-          duration: 1,
-          ease: 'elastic.out(1, 0.5)',
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-          delay: 0.5,
-        }
-      );
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
-
-  // ── FAQ section ──────────────────────────────────────────────
-  useEffect(() => {
-    const el = faqRef.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el.querySelectorAll('[data-faq-item]'),
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.7,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        }
-      );
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
-
-  // ── Contact section ──────────────────────────────────────────
-  useEffect(() => {
-    const el = contactRef.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // Left column reveals
-      gsap.fromTo(
-        el.querySelector('[data-contact-left]'),
-        { opacity: 0, x: -60 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-        }
-      );
-
-      // Right form reveals
-      gsap.fromTo(
-        el.querySelector('[data-contact-right]'),
-        { opacity: 0, x: 60 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-          delay: 0.15,
-        }
-      );
-
-      // Contact detail links stagger
-      gsap.fromTo(
-        el.querySelectorAll('[data-contact-detail]'),
-        { opacity: 0, y: 15 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out',
-          stagger: 0.12,
-          scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-          delay: 0.5,
-        }
-      );
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
-
-  // ── Footer reveal ────────────────────────────────────────────
-  useEffect(() => {
-    const el = footerRef.current;
-    if (!el || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 95%', once: true },
-        }
-      );
-
-      gsap.fromTo(
-        el.querySelectorAll('[data-footer-col]'),
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: el, start: 'top 95%', once: true },
-          delay: 0.3,
-        }
-      );
-    }, el);
-
-    return () => ctx.revert();
-  }, []);
+    // 5. Footer columns.
+    const footer = footerRef.current;
+    if (footer) {
+      gsap.from(footer.querySelectorAll('[data-footer-col]'), {
+        autoAlpha: 0,
+        y: 24,
+        duration: 0.8,
+        ease: 'power3.out',
+        stagger: 0.08,
+        scrollTrigger: { trigger: footer, start: 'top 92%', once: true },
+      });
+    }
+  }, { scope: mainRef });
 
   const scrollTo = useCallback((id) => (e) => {
     e.preventDefault();
@@ -828,12 +453,12 @@ const CinematicHome = () => {
         structuredData={[localBusinessSchema, faqSchema]}
       />
 
-      <main id="main" className={styles.main} data-theme={theme}>
+      <main id="main" ref={mainRef} className={styles.main} data-theme={theme} data-nav-dark={theme === 'dark' ? '' : undefined}>
 
         {/* ══════════════════════════════════════════════
             HERO — 3D + Editorial Typography
         ══════════════════════════════════════════════ */}
-        <section id="hero" className={styles.hero}>
+        <section id="hero" className={styles.hero} data-nav-dark>
           {/* 3D Canvas */}
           <div className={styles.heroCanvas} aria-hidden="true">
             <Suspense fallback={<div className={styles.canvasLoader} />}>
@@ -910,11 +535,11 @@ const CinematicHome = () => {
         ══════════════════════════════════════════════ */}
         <section id="services" className={styles.servicesSection} ref={servicesRef}>
           <div className={styles.sectionHeader} data-section-header>
-            <div className={styles.sectionLabel}>What We Build</div>
+            <div className={styles.sectionLabel} data-rise>What We Build</div>
             <h2 className={styles.sectionTitle}>
               Four things, <em>done properly.</em>
             </h2>
-            <p className={styles.sectionSub}>
+            <p className={styles.sectionSub} data-rise>
               Websites, software, AI features and the strategy that ties them
               together. One small team, start to finish.
             </p>
@@ -922,7 +547,7 @@ const CinematicHome = () => {
 
           <div className={styles.servicesGrid}>
             {services.map((service, i) => (
-              <ServiceCard key={service.index} service={service} index={i} />
+              <ServiceCard key={service.index} service={service} />
             ))}
           </div>
           <StackStrip />
@@ -933,23 +558,23 @@ const CinematicHome = () => {
         ══════════════════════════════════════════════ */}
         <section id="work" className={styles.workSection} ref={workRef}>
           <div className={styles.sectionHeader} data-section-header>
-            <div className={styles.sectionLabel}>Selected Work</div>
+            <div className={styles.sectionLabel} data-rise>Selected Work</div>
             <h2 className={styles.sectionTitle}>
               Recent <em>builds.</em>
             </h2>
-            <p className={styles.sectionSub}>
+            <p className={styles.sectionSub} data-rise>
               A few recent projects, each one solving a specific problem.
             </p>
           </div>
 
           <div className={styles.projectsGrid}>
             {projects.map((p, i) => (
-              <ProjectCard key={p.id} project={p} index={i} />
+              <ProjectCard key={p.id} project={p} />
             ))}
           </div>
 
-          <div className={styles.workCta}>
-            <Link to="/projects" className={styles.textLink}>
+          <div className={styles.workCta} data-rise>
+            <Link to="/projects" className={styles.textLink} data-magnetic>
               View all projects
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -964,16 +589,16 @@ const CinematicHome = () => {
         <section id="process" className={styles.processSection} ref={processRef}>
           <div className={styles.processInner}>
             <div className={styles.processLeft} data-process-left>
-              <div className={styles.sectionLabel}>How We Work</div>
+              <div className={styles.sectionLabel} data-rise>How We Work</div>
               <h2 className={styles.sectionTitle}>
                 Four steps. <em>No surprises.</em>
               </h2>
-              <p className={styles.processParagraph}>
+              <p className={styles.processParagraph} data-rise>
                 Clear milestones at every stage, so you always know where your
                 project stands.
               </p>
-              <ProjectDemo />
-              <a href="#contact" onClick={scrollTo('contact')} className={styles.processCtaLink}>
+              <div data-rise><ProjectDemo /></div>
+              <a href="#contact" onClick={scrollTo('contact')} className={styles.processCtaLink} data-magnetic>
                 Discuss your project
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -989,7 +614,7 @@ const CinematicHome = () => {
 
               <div data-process-steps>
                 {processSteps.map((step, i) => (
-                  <ProcessStep key={step.num} step={step} index={i} total={processSteps.length} />
+                  <ProcessStep key={step.num} step={step} />
                 ))}
               </div>
             </div>
@@ -1005,23 +630,23 @@ const CinematicHome = () => {
         <section id="about" className={styles.aboutSection} ref={aboutRef}>
           <div className={styles.aboutInner}>
             <div className={styles.aboutContent}>
-              <div className={styles.sectionLabel}>The Studio</div>
+              <div className={styles.sectionLabel} data-rise>The Studio</div>
               <h2 className={styles.aboutTitle} data-about-title>
                 A focused team. <br />A clear standard.
               </h2>
-              <p className={styles.aboutParagraph} data-about-p>
+              <p className={styles.aboutParagraph} data-about-p data-rise>
                 NS SiteCraft Solutions is a boutique digital studio based in Hyderabad.
                 We work with startups and established businesses to design, build, and
                 ship digital products that actually perform.
               </p>
-              <p className={styles.aboutParagraph} data-about-p>
+              <p className={styles.aboutParagraph} data-about-p data-rise>
                 MSME registered. Independently operated. Every project is led directly
                 by the senior developer — no handoffs to junior teams, no diluted effort.
               </p>
               <div className={styles.aboutTags}>
-                <span className={styles.aboutTag} data-about-tag>MSME Registered</span>
-                <span className={styles.aboutTag} data-about-tag>Hyderabad, India</span>
-                <span className={styles.aboutTag} data-about-tag>Est. 2024</span>
+                <span className={styles.aboutTag} data-about-tag data-rise>MSME Registered</span>
+                <span className={styles.aboutTag} data-about-tag data-rise>Hyderabad, India</span>
+                <span className={styles.aboutTag} data-about-tag data-rise>Est. 2024</span>
               </div>
             </div>
             <div className={styles.aboutVisual} aria-hidden="true">
@@ -1044,7 +669,7 @@ const CinematicHome = () => {
         ══════════════════════════════════════════════ */}
         <section className={styles.faqSection} ref={faqRef}>
           <div className={styles.sectionHeader}>
-            <div className={styles.sectionLabel}>Common Questions</div>
+            <div className={styles.sectionLabel} data-rise>Common Questions</div>
             <h2 className={styles.sectionTitle}>Straight <em>answers.</em></h2>
           </div>
           <div className={styles.faqList}>
@@ -1052,6 +677,7 @@ const CinematicHome = () => {
               <div
                 key={i}
                 data-faq-item
+                data-rise
                 className={`${styles.faqItem} ${openFaq === i ? styles.faqOpen : ''}`}
               >
                 <button
@@ -1086,7 +712,7 @@ const CinematicHome = () => {
         <section id="contact" className={styles.contactSection} ref={contactRef}>
           <div className={styles.contactInner}>
             <div className={styles.contactLeft} data-contact-left>
-              <div className={styles.sectionLabel}>Start a Conversation</div>
+              <div className={styles.sectionLabel} data-rise>Start a Conversation</div>
               <h2 className={styles.contactTitle}>
                 Let's build something worth building.
               </h2>
@@ -1099,6 +725,7 @@ const CinematicHome = () => {
                   href="mailto:nssitecraftsolution@gmail.com"
                   className={styles.contactDetailLink}
                   data-contact-detail
+                  data-rise
                 >
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M2 4h14v10H2V4zm0 0l7 6 7-6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
@@ -1109,13 +736,14 @@ const CinematicHome = () => {
                   href="tel:+919390969461"
                   className={styles.contactDetailLink}
                   data-contact-detail
+                  data-rise
                 >
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M3 3h3.5l1.5 4-2 1.5a10 10 0 004.5 4.5L12 11l4 1.5V16a1 1 0 01-1 1C6 17 1 12 1 4a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   +91 93909 69461
                 </a>
-                <span className={styles.contactDetailLink} data-contact-detail style={{ cursor: 'default' }}>
+                <span className={styles.contactDetailLink} data-contact-detail data-rise style={{ cursor: 'default' }}>
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                     <path d="M9 2C6.24 2 4 4.24 4 7c0 4.24 5 9 5 9s5-4.76 5-9c0-2.76-2.24-5-5-5zm0 6.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" stroke="currentColor" strokeWidth="1.4" />
                   </svg>
@@ -1124,7 +752,7 @@ const CinematicHome = () => {
               </div>
             </div>
 
-            <div className={styles.contactRight} data-contact-right>
+            <div className={styles.contactRight} data-contact-right data-rise>
               {formStatus === 'sent' ? (
                 <div className={styles.formSuccess} role="status">
                   <div className={styles.formSuccessIcon}>✓</div>
@@ -1241,6 +869,7 @@ const CinematicHome = () => {
                     className={styles.formSubmit}
                     disabled={formStatus === 'sending'}
                     id="contact-submit-btn"
+                    data-magnetic
                   >
                     {formStatus === 'sending' ? (
                       <span className={styles.sendingState}>Sending<span className={styles.sendingDots} /></span>
@@ -1261,7 +890,7 @@ const CinematicHome = () => {
         {/* ══════════════════════════════════════════════
             FOOTER — Staggered column reveal
         ══════════════════════════════════════════════ */}
-        <footer className={styles.footer} ref={footerRef}>
+        <footer className={styles.footer} ref={footerRef} data-nav-dark>
           <div className={styles.footerTop}>
             <div className={styles.footerBrand} data-footer-col>
               <Link to="/" className={styles.footerLogo}>

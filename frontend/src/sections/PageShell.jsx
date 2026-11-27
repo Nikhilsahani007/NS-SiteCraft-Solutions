@@ -21,7 +21,7 @@ export const PageShell = ({ seo, children }) => {
 
 /** Opening band of an inner page. `title` may contain <em> for the serif accent. */
 export const PageHero = ({ label, title, lede, children }) => (
-  <section className={styles.pageHero} aria-labelledby="page-title">
+  <section className={styles.pageHero} aria-labelledby="page-title" data-nav-dark>
     <div className={styles.pageHeroGrid} aria-hidden="true" />
     <div className={styles.container}>
       <p className={styles.eyebrow}>
