@@ -1821,3 +1821,75 @@
 .main[data-theme='light'] .formSubmit { color: #fff; background: var(--ink); }
 .main[data-theme='light'] .formNote { color: var(--ink-3); }
 .main[data-theme='light'] .formNote a { color: var(--ink); }
+
+/* ════════════════════════════════════════════════════════
+   REDESIGN LAYER (2026-11-27): motion hooks and UI details
+════════════════════════════════════════════════════════ */
+
+/* Card spotlight: a soft blue glow follows the pointer (--mx/--my set in JS). */
+.main [data-card] {
+  position: relative;
+  overflow: hidden;
+}
+.main [data-card]:hover {
+  background-image: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(59, 130, 246, 0.11),
+    transparent 60%
+  );
+}
+.main[data-theme='light'] [data-card]:hover {
+  background-image: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(37, 99, 235, 0.08),
+    transparent 60%
+  );
+}
+
+/* Process: steps light up as the scroll line reaches them. */
+.processStep .processNum,
+.processStep .processTitle { transition: color 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.stepActive .processNum { color: #3b82f6; transform: translateX(4px); }
+.main[data-theme='light'] .stepActive .processNum { color: #2563eb; }
+.main[data-theme='dark'] .processTrack { background: rgba(248, 250, 252, 0.08); }
+.processLine { background: linear-gradient(180deg, #3b82f6, #60a5fa); }
+
+/* Masked line reveal: keep descenders visible inside the clip. */
+.main h2 [class*='-mask'],
+.main h2 > div { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+
+/* Hero: a soft fade into the page below. */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 120px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(8, 8, 12, 0), #08080c);
+}
+
+/* Buttons: focus ring and a little press. */
+.ctaPrimary:active,
+.formSubmit:active { transform: translateY(1px) scale(0.99); }
+.ctaPrimary:focus-visible,
+.formSubmit:focus-visible,
+.textLink:focus-visible,
+.processCtaLink:focus-visible { outline: 2px solid #60a5fa; outline-offset: 4px; }
+
+/* Phones: tighter rhythm and comfier tap targets. */
+@media (max-width: 640px) {
+  .servicesSection,
+  .workSection,
+  .processSection,
+  .aboutSection,
+  .faqSection,
+  .contactSection { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+  .sectionHeader { margin-bottom: 2rem; }
+  .sectionTitle { font-size: clamp(1.9rem, 8vw, 2.4rem); }
+  .faqQuestion { padding: 1.25rem 0; min-height: 48px; }
+  .heroCtas { gap: 1.25rem; }
+  .ctaPrimary { padding: 1rem 2rem; }
+}

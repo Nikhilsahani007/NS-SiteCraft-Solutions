@@ -12,16 +12,35 @@ const navLinks = [
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
+  // Light mode: the nav turns solid white once it sits over a light section.
+  // Dark bands (hero, inner-page openers, footer) carry data-nav-dark.
+  const [onLight, setOnLight] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
   const isHome = location.pathname === '/';
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      setScrolled(window.scrollY > 40);
+      const under = document.elementFromPoint(window.innerWidth / 2, 80);
+      setOnLight(Boolean(under) && !under.closest('[data-nav-dark]'));
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
+    check();
+    // Re-check after the new route has rendered.
+    const t = setTimeout(check, 400);
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    window.addEventListener('resize', onScroll);
+    return () => {
+      clearTimeout(t);
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!isHome) return;
@@ -79,7 +98,7 @@ const Navigation = () => {
   }, []);
 
   return (
-    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`} role="banner">
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''} ${onLight && !menuOpen ? styles.light : ''}`} role="banner">
       <a className={styles.skip} href="#main">Skip to content</a>
       <div className={styles.inner}>
         <Link to="/" className={styles.logo} aria-label="NS SiteCraft Solutions — Home">

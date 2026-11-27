@@ -22,7 +22,7 @@ const pages = [
 const SiteFooter = () => {
   const isHome = useLocation().pathname === '/';
   return (
-  <footer className={styles.footer}>
+  <footer className={styles.footer} data-nav-dark>
     <div className={styles.container}>
       <div className={styles.footerTop}>
         <div className={styles.footerBrand}>

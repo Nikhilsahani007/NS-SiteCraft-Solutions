@@ -9,6 +9,7 @@ import Navigation from './components/Navigation/Navigation';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import CustomCursor from './components/CustomCursor/CustomCursor';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
+import RouteFade from './components/RouteFade/RouteFade';
 
 // Route-based code splitting
 // Homepage: the original animated homepage, restored at the owner's request (2026-11-15).
@@ -59,6 +60,7 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <Suspense fallback={<PageLoader />} key={location.pathname}>
+        <RouteFade key={location.pathname}>
         <Routes location={location}>
           <Route path="/" element={<CinematicHome />} />
           <Route path="/services" element={<Services />} />
@@ -72,6 +74,7 @@ const AnimatedRoutes = () => {
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </RouteFade>
       </Suspense>
     </AnimatePresence>
   );
