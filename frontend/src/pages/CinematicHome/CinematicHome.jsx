@@ -317,7 +317,15 @@ const ProjectCard = ({ project, index }) => {
 };
 
 /* ─── Main Component ─────────────────────────────────────────────── */
+// Theme preview: ?theme=light shows the light option. Dark stays the default
+// until the owner picks one.
+const getTheme = () => {
+  if (typeof window === 'undefined') return 'dark';
+  return new URLSearchParams(window.location.search).get('theme') === 'light' ? 'light' : 'dark';
+};
+
 const CinematicHome = () => {
+  const [theme] = useState(getTheme);
   const pointerRef = useRef({ x: 0, y: 0 });
   const heroTextRef = useRef(null);
   const introRef = useRef(null);
@@ -820,7 +828,7 @@ const CinematicHome = () => {
         structuredData={[localBusinessSchema, faqSchema]}
       />
 
-      <main id="main" className={styles.main}>
+      <main id="main" className={styles.main} data-theme={theme}>
 
         {/* ══════════════════════════════════════════════
             HERO — 3D + Editorial Typography

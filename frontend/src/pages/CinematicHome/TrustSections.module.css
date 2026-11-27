@@ -436,3 +436,32 @@
 @media (prefers-reduced-motion: reduce) {
   .card:hover, .industry:hover { transform: none; }
 }
+
+/* LIGHT THEME OPTION (2026-11-27) — see CinematicHome.module.css */
+:global(main[data-theme='light']) .section { border-top-color: rgba(11, 13, 18, 0.09); }
+:global(main[data-theme='light']) .label { color: #2563eb; }
+:global(main[data-theme='light']) .label::before { background: #2563eb; }
+:global(main[data-theme='light']) .title,
+:global(main[data-theme='light']) .cardTitle,
+:global(main[data-theme='light']) .industryName { color: #0b0d12; }
+:global(main[data-theme='light']) .title em { color: #2563eb; }
+:global(main[data-theme='light']) .sub,
+:global(main[data-theme='light']) .cardText { color: rgba(11, 13, 18, 0.7); }
+:global(main[data-theme='light']) .sub a { color: #2563eb; }
+:global(main[data-theme='light']) .card,
+:global(main[data-theme='light']) .industry {
+  background: #fff;
+  border-color: rgba(11, 13, 18, 0.09);
+  box-shadow: 0 1px 2px rgba(11, 13, 18, 0.04), 0 12px 32px -20px rgba(11, 13, 18, 0.18);
+}
+:global(main[data-theme='light']) .card:hover,
+:global(main[data-theme='light']) .industry:hover {
+  background: #fff;
+  border-color: rgba(37, 99, 235, 0.45);
+}
+:global(main[data-theme='light']) .cardNo { color: rgba(37, 99, 235, 0.3); }
+:global(main[data-theme='light']) .check,
+:global(main[data-theme='light']) .industryNo { color: #2563eb; }
+:global(main[data-theme='light']) .stripLabel { color: rgba(11, 13, 18, 0.45); }
+:global(main[data-theme='light']) .marqueeTrack li { color: rgba(11, 13, 18, 0.4); }
+:global(main[data-theme='light']) .marqueeTrack li:hover { color: #0b0d12; }

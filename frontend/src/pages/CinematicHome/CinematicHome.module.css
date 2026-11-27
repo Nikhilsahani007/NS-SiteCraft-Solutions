@@ -1698,3 +1698,126 @@
   .serviceCard:hover,
   .projectCard:hover { transform: none; }
 }
+
+/* ════════════════════════════════════════════════════════
+   LIGHT THEME OPTION (2026-11-27) — preview with ?theme=light
+   Off-white page, white cards, ink text, the same electric blue.
+   The hero and footer stay dark so the animation keeps its stage.
+════════════════════════════════════════════════════════ */
+.main[data-theme='light'] {
+  --ink: #0b0d12;
+  --ink-2: rgba(11, 13, 18, 0.7);
+  --ink-3: rgba(11, 13, 18, 0.5);
+  --line: rgba(11, 13, 18, 0.09);
+  --paper: #f6f5f1;
+  --card: #ffffff;
+  --blue: #2563eb;
+  background: var(--paper);
+  color: var(--ink);
+}
+.main[data-theme='light'] .hero,
+.main[data-theme='light'] .footer { background: #08080c; }
+
+.main[data-theme='light'] .servicesSection,
+.main[data-theme='light'] .workSection,
+.main[data-theme='light'] .processSection,
+.main[data-theme='light'] .aboutSection,
+.main[data-theme='light'] .faqSection,
+.main[data-theme='light'] .contactSection {
+  background: var(--paper);
+  border-top-color: var(--line);
+}
+.main[data-theme='light'] .workSection,
+.main[data-theme='light'] .aboutSection,
+.main[data-theme='light'] .contactSection { background: #efeee9; }
+
+.main[data-theme='light'] .sectionLabel { color: var(--blue); }
+.main[data-theme='light'] .sectionLabel::before { background: var(--blue); }
+.main[data-theme='light'] .sectionTitle,
+.main[data-theme='light'] .aboutTitle,
+.main[data-theme='light'] .contactTitle,
+.main[data-theme='light'] .serviceTitle,
+.main[data-theme='light'] .projectTitle,
+.main[data-theme='light'] .processTitle { color: var(--ink); }
+.main[data-theme='light'] .sectionTitle em,
+.main[data-theme='light'] .aboutTitle em,
+.main[data-theme='light'] .contactTitle em { color: var(--blue); }
+
+.main[data-theme='light'] .sectionSub,
+.main[data-theme='light'] .processParagraph,
+.main[data-theme='light'] .aboutParagraph,
+.main[data-theme='light'] .contactParagraph,
+.main[data-theme='light'] .serviceDesc,
+.main[data-theme='light'] .projectDesc,
+.main[data-theme='light'] .processDesc,
+.main[data-theme='light'] .faqAnswer p { color: var(--ink-2); }
+
+/* Cards */
+.main[data-theme='light'] .serviceCard,
+.main[data-theme='light'] .projectCard {
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: 0 1px 2px rgba(11, 13, 18, 0.04), 0 12px 32px -20px rgba(11, 13, 18, 0.18);
+}
+.main[data-theme='light'] .serviceCard:hover,
+.main[data-theme='light'] .projectCard:hover {
+  background: var(--card);
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 1px 2px rgba(11, 13, 18, 0.04), 0 22px 44px -22px rgba(37, 99, 235, 0.35);
+}
+.main[data-theme='light'] .projectGlow { opacity: 0 !important; }
+.main[data-theme='light'] .serviceIndex { color: rgba(37, 99, 235, 0.55); }
+.main[data-theme='light'] .projectIndex { color: rgba(11, 13, 18, 0.15); }
+.main[data-theme='light'] .projectLabel { color: var(--blue); }
+.main[data-theme='light'] .serviceItem,
+.main[data-theme='light'] .techBadge,
+.main[data-theme='light'] .aboutTag {
+  color: var(--ink-2);
+  background: rgba(11, 13, 18, 0.04);
+  border-color: var(--line);
+}
+.main[data-theme='light'] .textLink,
+.main[data-theme='light'] .processCtaLink { color: var(--blue); }
+
+/* Process */
+.main[data-theme='light'] .processStep,
+.main[data-theme='light'] .processStep:first-child { border-color: var(--line); }
+.main[data-theme='light'] .processNum { color: rgba(37, 99, 235, 0.6); }
+.main[data-theme='light'] .processTrack { background: var(--line); }
+
+/* Studio visual */
+.main[data-theme='light'] .aboutGrid { background: var(--line); border-color: var(--line); }
+.main[data-theme='light'] .aboutGridCell { background: #f8f8f5; animation-name: cellPulseLight; }
+@keyframes cellPulseLight {
+  0%, 100% { background: #f8f8f5; }
+  50% { background: rgba(37, 99, 235, 0.06); }
+}
+.main[data-theme='light'] .aboutBrandMark { -webkit-text-stroke-color: rgba(37, 99, 235, 0.35); }
+
+/* FAQ */
+.main[data-theme='light'] .faqItem,
+.main[data-theme='light'] .faqItem:first-child { border-color: var(--line); }
+.main[data-theme='light'] .faqQuestion { color: var(--ink); }
+.main[data-theme='light'] .faqIcon { color: var(--blue); }
+
+/* Contact form */
+.main[data-theme='light'] .contactDetailLink { color: var(--ink-2); }
+.main[data-theme='light'] .contactDetailLink:hover { color: var(--ink); }
+.main[data-theme='light'] .formLabel { color: var(--ink-3); }
+.main[data-theme='light'] .formInput,
+.main[data-theme='light'] .formSelect,
+.main[data-theme='light'] .formTextarea {
+  color: var(--ink);
+  background: var(--card);
+  border-color: rgba(11, 13, 18, 0.14);
+  border-radius: 10px;
+}
+.main[data-theme='light'] .formInput::placeholder,
+.main[data-theme='light'] .formTextarea::placeholder { color: rgba(11, 13, 18, 0.35); }
+.main[data-theme='light'] .formInput:focus,
+.main[data-theme='light'] .formSelect:focus,
+.main[data-theme='light'] .formTextarea:focus { border-color: var(--blue); background: var(--card); }
+.main[data-theme='light'] .formSelect option { background: #fff; color: var(--ink); }
+.main[data-theme='light'] .formSubmit { color: #fff; background: var(--ink); }
+.main[data-theme='light'] .formNote { color: var(--ink-3); }
+.main[data-theme='light'] .formNote a { color: var(--ink); }

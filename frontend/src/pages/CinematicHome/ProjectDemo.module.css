@@ -123,3 +123,25 @@
   .now .mark, .pulse, .feedText { animation: none; }
   .bar span, .list li, .mark { transition: none; }
 }
+
+/* LIGHT THEME OPTION (2026-11-27) */
+:global(main[data-theme='light']) .card {
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0.06), rgba(37, 99, 235, 0) 55%), #fff;
+  border-color: rgba(11, 13, 18, 0.09);
+  box-shadow: 0 1px 2px rgba(11, 13, 18, 0.04), 0 24px 48px -28px rgba(11, 13, 18, 0.3);
+}
+:global(main[data-theme='light']) .dots i { background: rgba(11, 13, 18, 0.12); }
+:global(main[data-theme='light']) .tag { color: rgba(11, 13, 18, 0.55); border-color: rgba(11, 13, 18, 0.14); }
+:global(main[data-theme='light']) .title { color: #0b0d12; }
+:global(main[data-theme='light']) .pct { color: #2563eb; }
+:global(main[data-theme='light']) .bar { background: rgba(11, 13, 18, 0.08); }
+:global(main[data-theme='light']) .name { color: rgba(11, 13, 18, 0.8); }
+:global(main[data-theme='light']) .state { color: rgba(11, 13, 18, 0.45); }
+:global(main[data-theme='light']) .mark { border-color: rgba(11, 13, 18, 0.22); }
+:global(main[data-theme='light']) .done .mark { background: #2563eb; border-color: #2563eb; }
+:global(main[data-theme='light']) .done .state { color: #2563eb; }
+:global(main[data-theme='light']) .now { background: rgba(37, 99, 235, 0.07); }
+:global(main[data-theme='light']) .now .name { color: #0b0d12; }
+:global(main[data-theme='light']) .now .state { color: #1d4ed8; }
+:global(main[data-theme='light']) .next .name { color: rgba(11, 13, 18, 0.45); }
+:global(main[data-theme='light']) .feed { border-top-color: rgba(11, 13, 18, 0.08); color: rgba(11, 13, 18, 0.65); }
