@@ -30,6 +30,7 @@ import styles from './CinematicHome.module.css';
 import { sendEnquiry, validateEnquiry } from '../../utils/sendEnquiry';
 import { business, homeFaqs } from '../../content/site';
 import { StackStrip, Commitments, Industries, Proof } from './TrustSections';
+import ProjectDemo from './ProjectDemo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -161,33 +162,8 @@ const ServiceCard = ({ service, index }) => {
       }
     );
 
-    // Hover tilt
-    const onEnter = (e) => {
-      const rect = el.getBoundingClientRect();
-      const rx = ((e.clientY - rect.top) / rect.height - 0.5) * 8;
-      const ry = ((e.clientX - rect.left) / rect.width - 0.5) * -8;
-      gsap.to(el, { rotateX: rx, rotateY: ry, duration: 0.4, ease: 'power2.out', transformPerspective: 800 });
-    };
-    const onLeave = () => {
-      gsap.to(el, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
-    };
-    const onMove = (e) => {
-      const rect = el.getBoundingClientRect();
-      const rx = ((e.clientY - rect.top) / rect.height - 0.5) * 8;
-      const ry = ((e.clientX - rect.left) / rect.width - 0.5) * -8;
-      gsap.to(el, { rotateX: rx, rotateY: ry, duration: 0.2, ease: 'none', transformPerspective: 800 });
-    };
-
-    el.addEventListener('mouseenter', onEnter);
-    el.addEventListener('mouseleave', onLeave);
-    el.addEventListener('mousemove', onMove);
-
-    return () => {
-      ctx.revert();
-      el.removeEventListener('mouseenter', onEnter);
-      el.removeEventListener('mouseleave', onLeave);
-      el.removeEventListener('mousemove', onMove);
-    };
+    // Hover is a calm CSS lift (see the simplicity layer in the stylesheet).
+    return () => ctx.revert();
   }, [index]);
 
   return (
@@ -220,10 +196,10 @@ const ProcessStep = ({ step, index, total, progressRef }) => {
       // Slide in from alternating sides
       gsap.fromTo(
         el,
-        { opacity: 0, x: index % 2 === 0 ? -50 : 50 },
+        { opacity: 0, y: 24 },
         {
           opacity: 1,
-          x: 0,
+          y: 0,
           duration: 1,
           ease: 'expo.out',
           scrollTrigger: { trigger: el, start: 'top 85%', once: true },
@@ -922,37 +898,17 @@ const CinematicHome = () => {
         </section>
 
         {/* ══════════════════════════════════════════════
-            INTRO — Philosophy + animated quote
-        ══════════════════════════════════════════════ */}
-        <section className={styles.intro} id="about" ref={introRef}>
-          {/* Depth background element */}
-          <div className={styles.introBg} data-intro-bg aria-hidden="true" />
-
-          <div className={styles.introInner}>
-            <div className={styles.introLabel} data-intro-label>Our Philosophy</div>
-            <blockquote className={styles.introStatement}>
-              <p data-quote>
-                Good digital work is not decoration. It is the precise engineering
-                of how a business communicates, operates, and grows — executed
-                with enough craft that the engineering disappears entirely.
-              </p>
-            </blockquote>
-
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════════════
             SERVICES — Clip-path reveals + tilt cards
         ══════════════════════════════════════════════ */}
         <section id="services" className={styles.servicesSection} ref={servicesRef}>
           <div className={styles.sectionHeader} data-section-header>
             <div className={styles.sectionLabel}>What We Build</div>
             <h2 className={styles.sectionTitle}>
-              Capabilities
+              Four things, <em>done properly.</em>
             </h2>
             <p className={styles.sectionSub}>
-              Four disciplines, deeply practised.
-              Each one part of a coherent studio practice.
+              Websites, software, AI features and the strategy that ties them
+              together. One small team, start to finish.
             </p>
           </div>
 
@@ -961,9 +917,8 @@ const CinematicHome = () => {
               <ServiceCard key={service.index} service={service} index={i} />
             ))}
           </div>
+          <StackStrip />
         </section>
-
-        <StackStrip />
 
         {/* ══════════════════════════════════════════════
             SELECTED WORK — Glow cards + stagger
@@ -972,11 +927,10 @@ const CinematicHome = () => {
           <div className={styles.sectionHeader} data-section-header>
             <div className={styles.sectionLabel}>Selected Work</div>
             <h2 className={styles.sectionTitle}>
-              Recent Builds
+              Recent <em>builds.</em>
             </h2>
             <p className={styles.sectionSub}>
-              A selection of recent projects, each one solving a specific
-              problem through thoughtful engineering.
+              A few recent projects, each one solving a specific problem.
             </p>
           </div>
 
@@ -996,8 +950,6 @@ const CinematicHome = () => {
           </div>
         </section>
 
-        <Commitments />
-
         {/* ══════════════════════════════════════════════
             PROCESS — Scroll-progress timeline
         ══════════════════════════════════════════════ */}
@@ -1006,12 +958,13 @@ const CinematicHome = () => {
             <div className={styles.processLeft} data-process-left>
               <div className={styles.sectionLabel}>How We Work</div>
               <h2 className={styles.sectionTitle}>
-                A process built for clarity, not comfort.
+                Four steps. <em>No surprises.</em>
               </h2>
               <p className={styles.processParagraph}>
-                Four phases. No unnecessary complexity. Clear milestones at
-                every stage so you always know where your project stands.
+                Clear milestones at every stage, so you always know where your
+                project stands.
               </p>
+              <ProjectDemo />
               <a href="#contact" onClick={scrollTo('contact')} className={styles.processCtaLink}>
                 Discuss your project
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -1033,6 +986,7 @@ const CinematicHome = () => {
               </div>
             </div>
           </div>
+          <Commitments />
         </section>
 
         <Industries />
@@ -1040,7 +994,7 @@ const CinematicHome = () => {
         {/* ══════════════════════════════════════════════
             ABOUT — Editorial composition
         ══════════════════════════════════════════════ */}
-        <section className={styles.aboutSection} ref={aboutRef}>
+        <section id="about" className={styles.aboutSection} ref={aboutRef}>
           <div className={styles.aboutInner}>
             <div className={styles.aboutContent}>
               <div className={styles.sectionLabel}>The Studio</div>
@@ -1083,7 +1037,7 @@ const CinematicHome = () => {
         <section className={styles.faqSection} ref={faqRef}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionLabel}>Common Questions</div>
-            <h2 className={styles.sectionTitle}>Direct Answers</h2>
+            <h2 className={styles.sectionTitle}>Straight <em>answers.</em></h2>
           </div>
           <div className={styles.faqList}>
             {faqs.map((faq, i) => (

@@ -369,3 +369,70 @@
     display: none;
   }
 }
+
+/* ════════════════════════════════════════════════════════
+   SIMPLICITY LAYER (2026-11-27): readable emphasis, one card
+   style, calmer spacing. Remove this block to undo.
+════════════════════════════════════════════════════════ */
+.section { padding: clamp(5rem, 9vw, 7.5rem) 0; }
+.head { margin-bottom: 3rem; }
+
+.title em {
+  color: #8ab4ff;
+  -webkit-text-stroke: 0;
+}
+.sub, .cardText { color: rgba(248, 250, 252, 0.66); }
+.cardText { font-size: 1rem; }
+
+/* Promises sit inside the "How we work" section. */
+.embedded {
+  padding: 5rem 0 0;
+  border-top: 0;
+}
+.embedded .head { margin-bottom: 2rem; }
+.embedded .title { font-size: clamp(1.6rem, 2.6vw, 2.25rem); }
+
+.grid {
+  gap: 1.25rem;
+  background: transparent;
+  border: 0;
+}
+.card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(248, 250, 252, 0.08);
+  border-radius: 16px;
+  padding: 2rem;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease, background 0.35s ease;
+}
+.card:hover {
+  background: rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-4px);
+}
+.card::after { display: none; }
+.cardNo { top: 1.75rem; right: 1.75rem; color: rgba(96, 165, 250, 0.25); font-size: 1.75rem; }
+
+.industries { gap: 1.25rem; }
+.industry {
+  padding: 1.75rem;
+  border: 1px solid rgba(248, 250, 252, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
+}
+.industry:hover { transform: translateY(-4px); border-color: rgba(59, 130, 246, 0.4); }
+.industryNo { margin-bottom: 1.5rem; }
+
+/* Tech strip now lives at the foot of "What we build". */
+.strip { margin-top: 3.5rem; border-top: 0; padding-bottom: 0; }
+
+@media (max-width: 640px) {
+  .card, .industry { padding: 1.5rem; }
+  .grid, .industries { gap: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover, .industry:hover { transform: none; }
+}

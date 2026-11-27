@@ -64,12 +64,11 @@ export const StackStrip = () => (
 export const Commitments = () => {
   const ref = useStaggerReveal();
   return (
-    <section className={styles.section} ref={ref} aria-labelledby="commitments-title">
+    <div className={`${styles.section} ${styles.embedded}`} ref={ref} role="region" aria-labelledby="commitments-title">
       <div className={styles.head} data-trust-head>
-        <div className={styles.label}>Working With Us</div>
-        <h2 className={styles.title} id="commitments-title">
+        <h3 className={styles.title} id="commitments-title">
           Six promises, <em>in writing.</em>
-        </h2>
+        </h3>
         <p className={styles.sub}>
           The things clients worry about most when hiring a studio, answered before you ask.
           Each one is backed by our <Link to="/terms-and-conditions">Terms</Link>.
@@ -88,7 +87,7 @@ export const Commitments = () => {
           </li>
         ))}
       </ol>
-    </section>
+    </div>
   );
 };
 

@@ -1594,3 +1594,107 @@
   height: 1px;
   overflow: hidden;
 }
+
+/* ════════════════════════════════════════════════════════
+   SIMPLICITY LAYER (2026-11-27)
+   Blends a calmer, card-based, easy-to-read layout with the
+   original motion. Every rule here overrides one above it, so
+   removing this block restores the previous look.
+════════════════════════════════════════════════════════ */
+
+/* One rhythm for every section: label, headline, one line, cards. */
+.servicesSection,
+.workSection,
+.processSection,
+.aboutSection,
+.faqSection,
+.contactSection {
+  padding-top: clamp(5rem, 9vw, 7.5rem);
+  padding-bottom: clamp(5rem, 9vw, 7.5rem);
+}
+
+.sectionHeader { margin-bottom: 3rem; }
+
+/* Emphasised phrase: solid italic in soft blue, easy to read. */
+.sectionTitle em,
+.aboutTitle em,
+.contactTitle em {
+  font-style: italic;
+  color: #8ab4ff;
+}
+
+/* Brighter, larger body text. */
+.heroSub { color: rgba(248, 250, 252, 0.72); }
+.sectionSub,
+.processParagraph,
+.aboutParagraph,
+.contactParagraph {
+  color: rgba(248, 250, 252, 0.68);
+  font-size: 1.0625rem;
+}
+.serviceDesc,
+.projectDesc,
+.processDesc,
+.faqAnswer p {
+  color: rgba(248, 250, 252, 0.64);
+  font-size: 1rem;
+}
+.faqQuestion { color: rgba(248, 250, 252, 0.88); font-size: 1.0625rem; }
+
+/* One card style: soft border, rounded, gentle lift on hover. */
+.servicesGrid,
+.projectsGrid {
+  gap: 1.25rem;
+  background: transparent;
+  border: 0;
+}
+.serviceCard,
+.projectCard {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(248, 250, 252, 0.08);
+  border-radius: 16px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease, background 0.35s ease;
+}
+.serviceCard:hover,
+.projectCard:hover {
+  background: rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-4px);
+}
+.serviceCard { padding: 2.25rem; grid-template-columns: 56px 1fr; gap: 0 1.25rem; }
+.projectCard { padding: 2rem; }
+.serviceIndex { font-size: 2.25rem; color: rgba(96, 165, 250, 0.45); }
+.serviceCard:hover .serviceIndex { color: #60a5fa; opacity: 1; }
+.serviceItem {
+  border-radius: 999px;
+  color: rgba(248, 250, 252, 0.66);
+  font-size: 0.8125rem;
+}
+
+/* FAQ: header lines up with the centred question list. */
+.faqSection .sectionHeader { max-width: 860px; }
+
+/* Rounded chips everywhere, matching the service tags. */
+.techBadge,
+.aboutTag {
+  border-radius: 999px;
+  color: rgba(248, 250, 252, 0.62);
+}
+
+/* Process: readable step numbers, demo card sits under the intro. */
+.processSection { background: transparent; }
+.processNum { color: rgba(96, 165, 250, 0.55); }
+.processTitle { font-size: 1.125rem; }
+
+@media (max-width: 640px) {
+  .serviceCard { grid-template-columns: 1fr; padding: 1.5rem; }
+  .serviceIndex { font-size: 1.75rem; margin-bottom: 0.75rem; }
+  .projectCard { padding: 1.5rem; }
+  .servicesGrid, .projectsGrid { gap: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceCard:hover,
+  .projectCard:hover { transform: none; }
+}
