@@ -317,11 +317,11 @@ const ProjectCard = ({ project, index }) => {
 };
 
 /* ─── Main Component ─────────────────────────────────────────────── */
-// Theme preview: ?theme=light shows the light option. Dark stays the default
-// until the owner picks one.
+// Light page with a dark hero is the default (owner's choice, 2026-11-27).
+// ?theme=dark still shows the all-dark version for comparison.
 const getTheme = () => {
-  if (typeof window === 'undefined') return 'dark';
-  return new URLSearchParams(window.location.search).get('theme') === 'light' ? 'light' : 'dark';
+  if (typeof window === 'undefined') return 'light';
+  return new URLSearchParams(window.location.search).get('theme') === 'dark' ? 'dark' : 'light';
 };
 
 const CinematicHome = () => {
