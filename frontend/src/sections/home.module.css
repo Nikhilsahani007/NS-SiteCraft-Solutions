@@ -1975,3 +1975,43 @@
     padding: 0 !important;
   }
 }
+
+/* ════════════════════════════════════════════════════════
+   LIGHT THEME (owner's choice, 2026-11-27)
+   Light pages with a dark opening band and a dark footer, matching
+   the homepage. The dark tokens are re-declared on those two bands.
+════════════════════════════════════════════════════════ */
+.page {
+  --ink: #f6f5f1;
+  --surface: #efeee9;
+  --raised: #ffffff;
+  --line: rgba(11, 13, 18, 0.1);
+  --line-strong: rgba(11, 13, 18, 0.22);
+  --text: #0b0d12;
+  --body: rgba(11, 13, 18, 0.72);
+  --muted: rgba(11, 13, 18, 0.56);
+  --accent: #2563eb;
+  --accent-soft: #1d4ed8;
+}
+
+.pageHero,
+.sectionTop,
+.footer {
+  --ink: #08080c;
+  --surface: #0c0d12;
+  --raised: #12141b;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --text: #f5f6f8;
+  --body: rgba(245, 246, 248, 0.74);
+  --muted: rgba(245, 246, 248, 0.58);
+  --accent: #3b82f6;
+  --accent-soft: #8ab4ff;
+  background: var(--ink);
+  color: var(--text);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--muted);
+}
